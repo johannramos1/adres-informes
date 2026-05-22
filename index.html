@@ -1182,13 +1182,13 @@ function updateTopBar(data) {
 // ═══════════════════════════════════════════════════════
 //  SUPABASE CONFIG
 // ═══════════════════════════════════════════════════════
-const SUPABASE_URL = 'https://qzpgqmcnluperbivnpku.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF6cGdxbWNubHVwZXJiaXZucGt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5MjQ4NDUsImV4cCI6MjA5NDUwMDg0NX0.V0KnX_v2n2VcDWdNYmowo4Xmg_fGNQ1xL5u6tYGl9Tc';
-let supabase = null;
+const SB_URL = 'https://qzpgqmcnluperbivnpku.sbClient.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF6cGdxbWNubHVwZXJiaXZucGt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5MjQ4NDUsImV4cCI6MjA5NDUwMDg0NX0.V0KnX_v2n2VcDWdNYmowo4Xmg_fGNQ1xL5u6tYGl9Tc';
+let sbClient = null;
 
 function initSupabase() {
   try {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    sbClient = window.sbClient.createClient(SB_URL, SB_KEY);
     return true;
   } catch(e) {
     console.warn('Supabase not configured:', e.message);
@@ -1198,10 +1198,10 @@ function initSupabase() {
 
 // ── Save processed snapshot to Supabase ──
 async function saveToSupabase(ips, data) {
-  if (!supabase || SUPABASE_URL.includes('YOUR_PROJECT')) return false;
+  if (!sbClient || SB_URL.includes('YOUR_PROJECT')) return false;
   try {
     const snapshot = buildSnapshotFull(ips, data);
-    const { error } = await supabase
+    const { error } = await sbClient
       .from('adres_snapshots')
       .upsert({ ips_id: ips, data: snapshot, updated_at: new Date().toISOString() },
                { onConflict: 'ips_id' });
@@ -1216,9 +1216,9 @@ async function saveToSupabase(ips, data) {
 
 // ── Load snapshot from Supabase ──
 async function loadFromSupabase(ips) {
-  if (!supabase || SUPABASE_URL.includes('YOUR_PROJECT')) return null;
+  if (!sbClient || SB_URL.includes('YOUR_PROJECT')) return null;
   try {
-    const { data, error } = await supabase
+    const { data, error } = await sbClient
       .from('adres_snapshots')
       .select('data, updated_at')
       .eq('ips_id', ips)
