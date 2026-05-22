@@ -1221,10 +1221,11 @@ function handleFile(file) {
 //  GENERATE REPORT
 // ═══════════════════════════════════════════════════════
 function generateReport() {
-  // Legacy — now handled by loadSBFile
+  // Legacy function — main flow now uses loadSBFile via sidebar
+  return;
   if (!selectedFile) return;
-  document.getElementById('upload-screen').style.display = 'none';
-  document.getElementById('loading-screen').style.display = 'flex';
+  
+  
 
   const cutoffInputVal = document.getElementById('cutoff-input').value;
   window._manualCutoff = cutoffInputVal ? new Date(cutoffInputVal + 'T12:00:00') : null;
@@ -1238,8 +1239,8 @@ function generateReport() {
 
       const crossCheck = validateIPSMatch(rows, selectedIPS);
       if (crossCheck.mismatch) {
-        document.getElementById('loading-screen').style.display = 'none';
-        document.getElementById('upload-screen').style.display = 'flex';
+        
+        
         document.getElementById('btn-generate').disabled = false;
         const msg = 'BD incorrecta\n\nSeleccionó: ' + crossCheck.selected + '\nLa base parece ser: ' + crossCheck.detectedName + '\nPrefijos: ' + crossCheck.prefixes.join(', ') + '\n\n¿Continuar de todas formas?';
         if (!confirm(msg)) return;
@@ -1574,8 +1575,8 @@ function detectColumns(sampleRow) {
 //  RENDER REPORT
 // ═══════════════════════════════════════════════════════
 function renderReport(d) {
-  document.getElementById('loading-screen').style.display = 'none';
-  document.getElementById('report-screen').style.display = 'block';
+  
+  
 
   // Theme
   document.body.className = d.ips === 'redesimat' ? 'theme-redesimat' : '';
