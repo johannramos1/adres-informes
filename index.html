@@ -1055,11 +1055,13 @@ function loadSBFile() {
     alert('Seleccione un archivo antes de cargar.');
     return;
   }
+  // Save file and IPS references BEFORE cancelLoadPanel clears them
+  const fileToLoad = sbSelectedFile;
   const ips = sbLoadingIPS;
   const cutoffVal = document.getElementById('sb-cutoff-input').value;
   window._manualCutoff = cutoffVal ? new Date(cutoffVal + 'T12:00:00') : null;
   selectedIPS = ips;
-  cancelLoadPanel();
+  cancelLoadPanel();  // safe to call now — we already saved the references
 
   // Show loading state in report body
   document.getElementById('report-body').innerHTML =
@@ -1135,7 +1137,7 @@ function loadSBFile() {
         '<div style="padding:60px;text-align:center;color:#dc2626;">Error al procesar: ' + err.message + '</div>';
     }
   };
-  reader.readAsArrayBuffer(sbSelectedFile);
+  reader.readAsArrayBuffer(fileToLoad);
 }
 
 function updateSBCard(ips, data) {
