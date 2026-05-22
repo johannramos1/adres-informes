@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Informe Gerencial de Análisis Financiero ADRES</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -677,7 +678,20 @@ body {
 #sidebar.collapsed .sb-logo-text,
 #sidebar.collapsed .sb-ips-meta,
 #sidebar.collapsed .sb-ips-status,
-#sidebar.collapsed .nav-label { display: none; }
+#sidebar.collapsed .nav-label,
+#sidebar.collapsed .sb-ips-card img,
+#sidebar.collapsed .sb-ips-name,
+#sidebar.collapsed .sb-load-btn,
+#sidebar.collapsed .sb-mini-load { display: none; }
+
+#sidebar.collapsed .sb-ips-card {
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#sidebar.collapsed .sb-ips-dot { width: 10px; height: 10px; }
+#sidebar.collapsed .sb-logo img { display: none; }
 
 /* Nav items */
 .nav-item {
@@ -829,7 +843,7 @@ body.sb-collapsed #main-content {
     <div class="sb-section">Navegación</div>
     <div class="nav-item active" onclick="showSection('individual')" id="nav-individual">
       <span class="nav-icon">&#9783;</span>
-      <span class="nav-label">Informe Individual</span>
+      <span class="nav-label">Informe por IPS</span>
     </div>
     <div class="nav-item" onclick="showSection('comparativo')" id="nav-comparativo">
       <span class="nav-icon">&#9780;</span>
@@ -837,7 +851,7 @@ body.sb-collapsed #main-content {
     </div>
     <div class="nav-item" onclick="showSection('admin')" id="nav-admin">
       <span class="nav-icon">&#9881;</span>
-      <span class="nav-label">Administración</span>
+      <span class="nav-label">Configuración</span>
     </div>
 
     <!-- IPS Cards -->
@@ -853,9 +867,6 @@ body.sb-collapsed #main-content {
       <div class="sb-ips-status">
         <span class="sb-ips-badge empty" id="sb-badge-dolormed">Pendiente</span>
       </div>
-      <button class="sb-load-btn" onclick="event.stopPropagation(); openLoadPanel('dolormed')">
-        Cargar base de datos
-      </button>
     </div>
 
     <!-- Redesimat -->
@@ -868,9 +879,6 @@ body.sb-collapsed #main-content {
       <div class="sb-ips-status">
         <span class="sb-ips-badge empty" id="sb-badge-redesimat">Pendiente</span>
       </div>
-      <button class="sb-load-btn" onclick="event.stopPropagation(); openLoadPanel('redesimat')">
-        Cargar base de datos
-      </button>
     </div>
 
     <!-- Load panel (appears inline) -->
@@ -899,6 +907,10 @@ body.sb-collapsed #main-content {
 
     <!-- Bottom actions -->
     <div style="margin-top:auto; padding:12px 8px; border-top:1px solid rgba(255,255,255,.1);">
+      <div class="nav-item" onclick="showSection('admin')">
+        <span class="nav-icon">&#9881;</span>
+        <span class="nav-label">Configuración</span>
+      </div>
       <div class="nav-item" onclick="openEmailModal()">
         <span class="nav-icon">&#9993;</span>
         <span class="nav-label">Texto correo</span>
@@ -928,7 +940,7 @@ body.sb-collapsed #main-content {
     <div class="app-section active" id="section-individual">
       <div class="report-body fade-in" id="report-body"></div>
       <div class="report-footer">
-        ADRES · Sistema de Informes Gerenciales · Generado el <span id="footer-date"></span>
+        ADRES · Sistema de Informes Gerenciales · Generado el <span id="footer-date"></span> &nbsp;·&nbsp; Diseñado por: Johann S. Ramos C.
       </div>
     </div>
 
@@ -988,7 +1000,7 @@ function showSection(name) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('section-' + name).classList.add('active');
   document.getElementById('nav-' + name).classList.add('active');
-  const titles = { individual:'Informe Individual', comparativo:'Comparativo Gerencial', admin:'Administración' };
+  const titles = { individual:'Informe por IPS', comparativo:'Comparativo Gerencial', admin:'Configuración' };
   document.getElementById('top-section-title').textContent = titles[name] || '';
   if (name === 'comparativo') renderComparativo();
   if (name === 'admin') renderAdmin();
@@ -1117,7 +1129,11 @@ function loadSBFile() {
 
       saveSnapshot(processed);
       saveToHistory(processed);
-      // Clear file input after successful load
+      // Save to Supabase for cross-device persistence
+      saveToSupabase(ips, processed).then(ok => {
+        if (ok) console.log('Saved to Supabase');
+      });
+      // Clear file input
       const fi = document.getElementById('sb-file-input');
       if (fi) fi.value = '';
       sbSelectedFile = null;
@@ -1179,20 +1195,176 @@ function updateTopBar(data) {
 }
 
 // ═══════════════════════════════════════════════════════
+//  SUPABASE CONFIG
+// ═══════════════════════════════════════════════════════
+const SUPABASE_URL = 'https://qzpgqmcnluperbivnpku.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF6cGdxbWNubHVwZXJiaXZucGt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5MjQ4NDUsImV4cCI6MjA5NDUwMDg0NX0.V0KnX_v2n2VcDWdNYmowo4Xmg_fGNQ1xL5u6tYGl9Tc';
+let supabase = null;
+
+function initSupabase() {
+  try {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    return true;
+  } catch(e) {
+    console.warn('Supabase not configured:', e.message);
+    return false;
+  }
+}
+
+// ── Save processed snapshot to Supabase ──
+async function saveToSupabase(ips, data) {
+  if (!supabase || SUPABASE_URL.includes('YOUR_PROJECT')) return false;
+  try {
+    const snapshot = buildSnapshotFull(ips, data);
+    const { error } = await supabase
+      .from('adres_snapshots')
+      .upsert({ ips_id: ips, data: snapshot, updated_at: new Date().toISOString() },
+               { onConflict: 'ips_id' });
+    if (error) throw error;
+    console.log('Snapshot saved to Supabase for', ips);
+    return true;
+  } catch(e) {
+    console.warn('Supabase save failed:', e.message);
+    return false;
+  }
+}
+
+// ── Load snapshot from Supabase ──
+async function loadFromSupabase(ips) {
+  if (!supabase || SUPABASE_URL.includes('YOUR_PROJECT')) return null;
+  try {
+    const { data, error } = await supabase
+      .from('adres_snapshots')
+      .select('data, updated_at')
+      .eq('ips_id', ips)
+      .single();
+    if (error || !data) return null;
+    return { snap: data.data, updatedAt: data.updated_at };
+  } catch(e) {
+    console.warn('Supabase load failed:', e.message);
+    return null;
+  }
+}
+
+// ── Build full serializable snapshot (all byMes data for display) ──
+function buildSnapshotFull(ips, data) {
+  return {
+    ips,
+    ipsName:    data.ipsName,
+    cutoffStr:  data.cutoffStr,
+    savedAt:    new Date().toISOString(),
+    years:      data.years,
+    currentYear: data.currentYear,
+    totalRad:   data.totalRad,
+    totalPago:  data.totalPago,
+    totalPagoGlosa: data.totalPagoGlosa,
+    totalNc:    data.totalNc,
+    carteraTotal: data.carteraTotal,
+    byMes: Object.fromEntries(
+      Object.entries(data.byMes).map(([k, m]) => [k, {
+        n: m.n, radBruto: m.radBruto, rad: m.rad,
+        glosa: m.glosa, pagoInicial: m.pagoInicial,
+        pagoInicialNeto: m.pagoInicialNeto,
+        pagoGlosa: m.pagoGlosa, pagoGlosaNeto: m.pagoGlosaNeto,
+        nc: m.nc, auditados: m.auditados,
+        pctGlosa: m.pctGlosa, pctPagoInicial: m.pctPagoInicial,
+        pctPagoGlosa: m.pctPagoGlosa, pctPago: m.pctPago,
+        pctNc: m.pctNc, glosadoFinal: m.glosadoFinal,
+        pagadoFinal: m.pagadoFinal, pctAuditado: m.pctAuditado,
+        pago: m.pago, year: m.year, month: m.month,
+      }])
+    ),
+    prom: data.prom,
+    pagoEventsByMes: Object.fromEntries(
+      Object.entries(data.pagoEventsByMes).map(([k,v]) => [k, {total:v.total, n:v.n, mesesRad:v.mesesRad}])
+    ),
+    glosaEventsByMes: Object.fromEntries(
+      Object.entries(data.glosaEventsByMes).map(([k,v]) => [k, {total:v.total, n:v.n, mesesRad:v.mesesRad}])
+    ),
+    pagoGlosaEventsByMes: Object.fromEntries(
+      Object.entries(data.pagoGlosaEventsByMes).map(([k,v]) => [k, {total:v.total, n:v.n, mesesRad:v.mesesRad}])
+    ),
+    ncEventsByMes: Object.fromEntries(
+      Object.entries(data.ncEventsByMes).map(([k,v]) => [k, {
+        total:v.total, n:v.n, mesesRad:v.mesesRad,
+        detalle: v.detalle.map(d => ({
+          prefijo:d.prefijo, factura:d.factura,
+          fecha: d.fecha ? d.fecha.toISOString() : null,
+          valor:d.valor, noNc:d.noNc, mesRad:d.mesRad
+        }))
+      }])
+    ),
+    // Minimal enriched for NC export (no dates as objects)
+    enrichedCount: data.enriched.length,
+  };
+}
+
+// ── Restore data from Supabase snapshot (no Excel needed) ──
+function restoreFromSnapshot(snap) {
+  // Re-parse dates in ncEventsByMes
+  if (snap.ncEventsByMes) {
+    Object.values(snap.ncEventsByMes).forEach(v => {
+      if (v.detalle) v.detalle.forEach(d => {
+        if (d.fecha) d.fecha = new Date(d.fecha);
+      });
+    });
+  }
+  // Rebuild minimal enriched array for NC export
+  snap.enriched = [];
+  // Restore lastPagoMes / lastGlosaMes
+  const pagoKeys  = Object.keys(snap.pagoEventsByMes  || {}).sort();
+  const glosaKeys = Object.keys(snap.glosaEventsByMes || {}).sort();
+  snap.lastPagoMes  = pagoKeys[pagoKeys.length-1]   || null;
+  snap.lastGlosaMes = glosaKeys[glosaKeys.length-1]  || null;
+  snap.prevYear     = snap.currentYear - 1;
+  return snap;
+}
+
+// ══════════════════════════════════════════════════════════
 //  APP STARTUP
 // ═══════════════════════════════════════════════════════
-document.addEventListener('DOMContentLoaded', () => {
-  // Show empty state in report body
-  document.getElementById('report-body').innerHTML = `
-    <div style="padding:80px 32px;text-align:center;color:var(--text-light);">
-      <div style="font-size:48px;margin-bottom:16px;opacity:.3;">&#9783;</div>
-      <div style="font-size:18px;font-weight:600;color:var(--text-mid);margin-bottom:8px;">
-        Bienvenido al Sistema de Informes ADRES
-      </div>
-      <div style="font-size:14px;max-width:400px;margin:0 auto;line-height:1.7;">
-        Cargue la base de datos de cada IPS desde el panel lateral para generar los informes.
-      </div>
-    </div>`;
+document.addEventListener('DOMContentLoaded', async () => {
+  initSupabase();
+
+  // Try to load snapshots from Supabase
+  const ipsIds = ['dolormed', 'redesimat'];
+  let anyLoaded = false;
+
+  for (const ipsId of ipsIds) {
+    const result = await loadFromSupabase(ipsId);
+    if (result && result.snap) {
+      const snap = restoreFromSnapshot(result.snap);
+      ipsStore[ipsId].data     = snap;
+      ipsStore[ipsId].cutoff   = snap.cutoffStr;
+      ipsStore[ipsId].loadedAt = new Date(result.updatedAt).toLocaleString('es-CO') + ' (Supabase)';
+      updateSBCard(ipsId, snap);
+      anyLoaded = true;
+      console.log('Loaded from Supabase:', ipsId, snap.cutoffStr);
+    }
+  }
+
+  if (anyLoaded) {
+    // Auto-show first loaded IPS
+    const firstLoaded = ipsIds.find(id => ipsStore[id].data);
+    if (firstLoaded) {
+      selectedIPS = firstLoaded;
+      reportData = ipsStore[firstLoaded].data;
+      window._reportData = reportData;
+      document.body.className = firstLoaded === 'redesimat' ? 'theme-redesimat' : '';
+      updateTopBar(reportData);
+      renderReport(reportData);
+      document.querySelectorAll('.sb-ips-card').forEach(c => c.classList.remove('active-ips'));
+      const card = document.getElementById('sb-card-' + firstLoaded);
+      if (card) card.classList.add('active-ips');
+    }
+  } else {
+    document.getElementById('report-body').innerHTML =
+      '<div style="padding:80px 32px;text-align:center;color:var(--text-light);">' +
+      '<div style="font-size:48px;margin-bottom:16px;opacity:.3;">&#9783;</div>' +
+      '<div style="font-size:18px;font-weight:600;color:var(--text-mid);margin-bottom:8px;">Bienvenido al Sistema de Informes ADRES</div>' +
+      '<div style="font-size:14px;max-width:400px;margin:0 auto;line-height:1.7;">Cargue la base de datos de cada IPS desde Configuración para generar los informes.</div>' +
+      '</div>';
+  }
 });
 
 // ═══════════════════════════════════════════════════════
@@ -1606,12 +1778,9 @@ function renderReport(d) {
   <div class="report-header">
     <div class="rh-top">
       <div class="rh-title">
-        <div style="display:flex;align-items:center;gap:16px;margin-bottom:8px;">
-          <img src="${IPS_LOGOS[d.ips]}" alt="${d.ipsName}"
-               style="height:36px;object-fit:contain;background:rgba(255,255,255,.15);border-radius:6px;padding:3px 8px;">
-          <img src="${IPS_LOGOS.adres}" alt="ADRES"
-               style="height:28px;object-fit:contain;background:rgba(255,255,255,.15);border-radius:6px;padding:3px 8px;">
-        </div>
+        <img src="${IPS_LOGOS[d.ips]}" alt="${d.ipsName}"
+             style="height:52px;object-fit:contain;background:rgba(255,255,255,.18);
+                    border-radius:8px;padding:6px 14px;margin-bottom:12px;display:block;">
         <h2>Informe de Seguimiento ADRES</h2>
         <p>${d.ipsName} · Corte al ${d.cutoffStr}</p>
       </div>
@@ -3029,29 +3198,32 @@ function renderComparativo() {
           <div class="comp-kpi-sub">${Math.round(d.carteraTotal/d.totalRad*100)}% del radicado</div>
         </div>
         <div class="comp-kpi">
-          <div class="comp-kpi-label">% Pagado ${d.currentYear}</div>
-          <div class="comp-kpi-value" style="color:${ips.color};">${p ? Math.round(p.pctPago*100)+'%' : '—'}</div>
-          <div class="comp-kpi-sub">Promedio mensual</div>
+          <div class="comp-kpi-label">Pagos Totales (Final)</div>
+          <div class="comp-kpi-value" style="color:${ips.color};">${fmtCOP(d.totalPago + d.totalPagoGlosa + d.totalNc)}</div>
+          <div class="comp-kpi-sub">${Math.round((d.totalPago + d.totalPagoGlosa + d.totalNc)/d.totalRad*100)}% del radicado</div>
         </div>
         <div class="comp-kpi">
-          <div class="comp-kpi-label">% Glosado ${d.currentYear}</div>
-          <div class="comp-kpi-value" style="color:#dc2626;">${p ? Math.round(p.pctGlosa*100)+'%' : '—'}</div>
-          <div class="comp-kpi-sub">Promedio mensual</div>
+          <div class="comp-kpi-label">Glosa Viva</div>
+          <div class="comp-kpi-value" style="color:#dc2626;">${fmtCOP(Math.max(0, Object.values(d.byMes).reduce((s,m)=>s+m.glosa,0) - d.totalPagoGlosa))}</div>
+          <div class="comp-kpi-sub" style="font-size:10px;">Glosas − Pagos de glosa</div>
         </div>
         <div class="comp-kpi">
-          <div class="comp-kpi-label">Prom. % Pagado Final</div>
+          <div class="comp-kpi-label">% Pago Final ${d.currentYear}</div>
           <div class="comp-kpi-value" style="color:${ips.color};">${p ? Math.round(p.promPctPagoFinal*100)+'%' : '—'}</div>
-          <div class="comp-kpi-sub">Meses aud. >50%</div>
+          <div class="comp-kpi-sub">Pago incl. glosa+NC / radicado</div>
         </div>
         <div class="comp-kpi">
-          <div class="comp-kpi-label">Prom. % Glosa Final</div>
+          <div class="comp-kpi-label">% Glosa Final ${d.currentYear}</div>
           <div class="comp-kpi-value" style="color:#dc2626;">${p ? Math.round(p.promPctGlosaFinal*100)+'%' : '—'}</div>
-          <div class="comp-kpi-sub">Meses aud. >50%</div>
+          <div class="comp-kpi-sub">Glosa − pago glosa / radicado</div>
         </div>
-        <div class="comp-kpi">
-          <div class="comp-kpi-label">NC Aceptadas Total</div>
-          <div class="comp-kpi-value">${fmtCOP(d.totalNc)}</div>
-          <div class="comp-kpi-sub">${Math.round(d.totalNc/d.totalRad*100)}% del radicado</div>
+        <div class="comp-kpi" style="grid-column:span 2;">
+          <div class="comp-kpi-label">Glosa Viva Total</div>
+          <div class="comp-kpi-value" style="color:#dc2626;">${fmtCOP(d.carteraTotal)}</div>
+          <div class="comp-kpi-sub" style="display:flex;justify-content:space-between;">
+            <span>${Math.round(d.carteraTotal/d.totalRad*100)}% del radicado</span>
+            <span style="font-size:10px;color:var(--text-light);">= Rad. − Pagos − Pago glosa − NC</span>
+          </div>
         </div>
         <div class="comp-kpi">
           <div class="comp-kpi-label">Total Facturas</div>
@@ -3059,6 +3231,10 @@ function renderComparativo() {
           <div class="comp-kpi-sub">${d.years[0]}–${Math.max(...d.years)}</div>
         </div>
       </div>
+    <div style="padding:8px 16px 12px;font-size:11px;color:var(--text-light);
+                border-top:1px solid var(--border);background:var(--surface);">
+      Glosa Viva = Radicado − Pagos iniciales − Pagos de glosa − NC aceptadas
+    </div>
     </div>`;
   });
   html += `</div></div>`;
@@ -3081,7 +3257,7 @@ function renderComparativo() {
       </tr>
       <tr>
         <th></th>
-        ${loaded.map(() => `<th>Radicado</th><th>% Pagado</th><th>% Glosado</th><th>% Auditado</th>`).join('')}
+        ${loaded.map(() => `<th>Radicado</th><th>% Pagado Final</th><th>% Glosa Final</th><th>% Auditado</th>`).join('')}
       </tr></thead>
       <tbody>`;
 
@@ -3092,19 +3268,22 @@ function renderComparativo() {
       const d = ipsStore[ips.id].data;
       const keys = Object.keys(d.byMes).filter(k => k.startsWith(y+''));
       if (!keys.length) { html += `<td colspan="4" style="color:var(--text-light);text-align:center;">—</td>`; return; }
-      const totRad  = keys.reduce((s,k) => s+d.byMes[k].radBruto, 0);
-      const totPago = keys.reduce((s,k) => s+d.byMes[k].pagoInicial, 0);
-      const totGlosa= keys.reduce((s,k) => s+d.byMes[k].glosa, 0);
-      const totAud  = totRad > 0 ? (keys.reduce((s,k)=>s+d.byMes[k].pagoInicial+d.byMes[k].glosa+d.byMes[k].nc,0))/totRad : 0;
-      const pctP = totRad > 0 ? Math.round(totPago/totRad*100) : 0;
-      const pctG = totRad > 0 ? Math.round(totGlosa/totRad*100) : 0;
-      const pctA = Math.min(100, Math.round(totAud*100));
-      const colorP = pctP>=85?'#15803d':pctP>=75?'#b45309':'#dc2626';
-      const colorG = pctG<=15?'#15803d':pctG<=25?'#b45309':'#dc2626';
-      html += `<td class="amount">${fmtCOP(totRad)}</td>
-               <td class="mono" style="font-weight:700;color:${colorP};">${pctP}%</td>
-               <td class="mono" style="font-weight:700;color:${colorG};">${pctG}%</td>
-               <td class="mono">${pctA}%</td>`;
+      const totRad   = keys.reduce((s,k) => s+d.byMes[k].radBruto,    0);
+      const totPI    = keys.reduce((s,k) => s+d.byMes[k].pagoInicial, 0);
+      const totPG    = keys.reduce((s,k) => s+d.byMes[k].pagoGlosa,   0);
+      const totGlosa = keys.reduce((s,k) => s+d.byMes[k].glosa,       0);
+      const totNc    = keys.reduce((s,k) => s+d.byMes[k].nc,          0);
+      const totAud   = totRad > 0 ? Math.min(1,(totPI+totGlosa+totNc)/totRad) : 0;
+      // Final percentages (after all movements)
+      const pagFin = totRad > 0 ? Math.round((totPI+totPG+totNc)/totRad*100) : 0;
+      const gloFin = totRad > 0 ? Math.round(Math.max(0,totGlosa-totPG)/totRad*100) : 0;
+      const pctA   = Math.min(100, Math.round(totAud*100));
+      const colorP = pagFin>=85?'#15803d':pagFin>=75?'#b45309':'#dc2626';
+      const colorG = gloFin<=15?'#15803d':gloFin<=25?'#b45309':'#dc2626';
+      html += '<td class="amount">' + fmtCOP(totRad) + '</td>' +
+               '<td class="mono" style="font-weight:700;color:' + colorP + ';">' + pagFin + '%</td>' +
+               '<td class="mono" style="font-weight:700;color:' + colorG + ';">' + gloFin + '%</td>' +
+               '<td class="mono">' + pctA + '%</td>';
     });
     html += `</tr>`;
   });
@@ -3275,7 +3454,27 @@ function renderAdmin() {
   ];
 
   let html = `<div style="padding:0 0 48px;">`;
-  html += `<div class="section-title">Administración de Bases de Datos</div>`;
+  html += `<div class="section-title">Configuración y Bases de Datos</div>`;
+
+  // ── Load buttons at top ──
+  html += '<div class="grid-2" style="margin-bottom:24px;">';
+  ipsList.forEach(ips => {
+    const store = ipsStore[ips.id];
+    const loaded = store.data ? true : false;
+    html += '<div class="card"><div class="card-body">' +
+      '<div style="font-weight:700;font-size:14px;color:' + ips.color + ';margin-bottom:8px;">' + ips.name + '</div>' +
+      (loaded
+        ? '<div style="font-size:12px;color:var(--text-light);margin-bottom:10px;">Cargada · Corte: <strong>' + store.cutoff + '</strong> · ' + store.loadedAt + '</div>'
+        : '<div style="font-size:12px;color:var(--text-light);margin-bottom:10px;">Sin base cargada</div>') +
+      '<button onclick="openLoadPanel(\'' + ips.id + '\')" ' +
+        'style="padding:9px 18px;background:' + ips.color + ';color:white;border:none;' +
+        'border-radius:8px;font-family:\'DM Sans\',sans-serif;font-size:13px;' +
+        'font-weight:600;cursor:pointer;width:100%;">' +
+        (loaded ? 'Actualizar base de datos' : 'Cargar base de datos') +
+      '</button>' +
+    '</div></div>';
+  });
+  html += '</div>';
 
   ipsList.forEach(ips => {
     const store = ipsStore[ips.id];
