@@ -1021,11 +1021,16 @@ function openLoadPanel(ips) {
   sbSelectedFile = null;
   const panel = document.getElementById('sb-load-panel');
   panel.style.display = 'block';
-  document.getElementById('sb-load-title').textContent = 'Cargar BD — ' + (ips==='dolormed'?'Dolormed':'Redes IMAT');
-  document.getElementById('sb-file-name').textContent = '';
-  document.getElementById('sb-load-btn').disabled = true;
-  document.getElementById('sb-cutoff-input').value = '';
-  document.getElementById('sb-drop-label').textContent = 'Seleccionar archivo Excel';
+  const nameEl = document.getElementById('sb-file-name');
+  if (nameEl) nameEl.textContent = '';
+  const btnEl = document.getElementById('sb-load-btn');
+  if (btnEl) btnEl.disabled = true;
+  const cutoffEl = document.getElementById('sb-cutoff-input');
+  if (cutoffEl) cutoffEl.value = '';
+  // Reset file input
+  const fi = document.getElementById('sb-file-input');
+  if (fi) fi.value = '';
+  sbSelectedFile = null;
 }
 function cancelLoadPanel() {
   document.getElementById('sb-load-panel').style.display = 'none';
@@ -1035,16 +1040,24 @@ function onSBFileSelect(e) {
   const file = e.target.files[0];
   if (!file) return;
   sbSelectedFile = file;
-  document.getElementById('sb-file-name').textContent = file.name;
-  document.getElementById('sb-drop-label').textContent = file.name;
-  document.getElementById('sb-load-btn').disabled = false;
+  const nameEl = document.getElementById('sb-file-name');
+  if (nameEl) nameEl.textContent = file.name;
+  const btnEl = document.getElementById('sb-load-btn');
+  if (btnEl) btnEl.disabled = false;
 }
 function loadSBFile() {
-  if (!sbSelectedFile || !sbLoadingIPS) return;
+  // Read file directly from input element as fallback
+  const fileInput = document.getElementById('sb-file-input');
+  if (!sbSelectedFile && fileInput && fileInput.files && fileInput.files[0]) {
+    sbSelectedFile = fileInput.files[0];
+  }
+  if (!sbSelectedFile || !sbLoadingIPS) {
+    alert('Seleccione un archivo antes de cargar.');
+    return;
+  }
   const ips = sbLoadingIPS;
   const cutoffVal = document.getElementById('sb-cutoff-input').value;
   window._manualCutoff = cutoffVal ? new Date(cutoffVal + 'T12:00:00') : null;
-  // Switch selected IPS for processing
   selectedIPS = ips;
   cancelLoadPanel();
 
