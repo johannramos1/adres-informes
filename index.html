@@ -3400,7 +3400,7 @@ window.renderAdmin = function renderAdmin() {
       '<button id="adm-btn-' + ips.id + '"' +
         ' style="width:100%;padding:10px;background:' + ips.color + ';color:white;border:none;' +
         'border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;"' +
-        ' onclick="window.doAdminLoad(\"' + ips.id + '\")">' +
+        ' data-ips="' + ips.id + '" onclick="window.doAdminLoad(this.dataset.ips)">' +
         (isLoaded ? 'Actualizar base de datos' : 'Cargar base de datos') +
       '</button>' +
     '</div></div>';
