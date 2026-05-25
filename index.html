@@ -2860,48 +2860,31 @@ window.renderComparativo = function renderComparativo() {
           <div class="comp-kpi-sub">Desde ${d.years[0]}</div>
         </div>
         <div class="comp-kpi">
-          <div class="comp-kpi-label">Cartera Pendiente</div>
-          <div class="comp-kpi-value">${fmtCOP(d.carteraTotal)}</div>
-          <div class="comp-kpi-sub">${Math.round(d.carteraTotal/d.totalRad*100)}% del radicado</div>
-        </div>
-        <div class="comp-kpi">
-          <div class="comp-kpi-label">Pagos Totales (Final)</div>
+          <div class="comp-kpi-label">Pagos Totales</div>
           <div class="comp-kpi-value" style="color:${ips.color};">${fmtCOP(d.totalPago + d.totalPagoGlosa + d.totalNc)}</div>
-          <div class="comp-kpi-sub">${Math.round((d.totalPago + d.totalPagoGlosa + d.totalNc)/d.totalRad*100)}% del radicado</div>
-        </div>
-        <div class="comp-kpi">
-          <div class="comp-kpi-label">Glosa Viva</div>
-          <div class="comp-kpi-value" style="color:#dc2626;">${fmtCOP(Math.max(0, Object.values(d.byMes).reduce((s,m)=>s+m.glosa,0) - d.totalPagoGlosa))}</div>
-          <div class="comp-kpi-sub" style="font-size:10px;">Glosas \u2212 Pagos de glosa</div>
-        </div>
-        <div class="comp-kpi">
-          <div class="comp-kpi-label">% Pago Final ${d.currentYear}</div>
-          <div class="comp-kpi-value" style="color:${ips.color};">${p ? Math.round(p.promPctPagoFinal*100)+'%' : '-'}</div>
-          <div class="comp-kpi-sub">Pago incl. glosa+NC / radicado</div>
-        </div>
-        <div class="comp-kpi">
-          <div class="comp-kpi-label">% Glosa Final ${d.currentYear}</div>
-          <div class="comp-kpi-value" style="color:#dc2626;">${p ? Math.round(p.promPctGlosaFinal*100)+'%' : '-'}</div>
-          <div class="comp-kpi-sub">Glosa \u2212 pago glosa / radicado</div>
+          <div class="comp-kpi-sub">${Math.round((d.totalPago + d.totalPagoGlosa + d.totalNc)/totRadBruto*100)}% del radicado \u00b7 Pagos iniciales + pagos de glosa</div>
         </div>
         <div class="comp-kpi" style="grid-column:span 2;">
-          <div class="comp-kpi-label">Glosa Viva Total</div>
+          <div class="comp-kpi-label">Cartera Pendiente <span style="font-weight:400;font-size:10px;color:var(--text-light);">(Radicaci\u00f3n pendiente auditor\u00eda + Glosas vivas)</span></div>
           <div class="comp-kpi-value" style="color:#dc2626;">${fmtCOP(d.carteraTotal)}</div>
-          <div class="comp-kpi-sub" style="display:flex;justify-content:space-between;">
-            <span>${Math.round(d.carteraTotal/d.totalRad*100)}% del radicado</span>
-            <span style="font-size:10px;color:var(--text-light);">= Rad. \u2212 Pagos \u2212 Pago glosa \u2212 NC</span>
-          </div>
+          <div class="comp-kpi-sub">${Math.round(d.carteraTotal/totRadBruto*100)}% del radicado</div>
+        </div>
+        <div class="comp-kpi">
+          <div class="comp-kpi-label">Glosa Viva <span style="font-weight:400;font-size:10px;color:var(--text-light);">(Glosas/devs \u2212 Pagos glosa \u2212 NC)</span></div>
+          <div class="comp-kpi-value" style="color:#dc2626;">${fmtCOP(Math.max(0, Object.values(d.byMes).reduce((s,m)=>s+m.glosa,0) - d.totalPagoGlosa - d.totalNc))}</div>
+          <div class="comp-kpi-sub">${Math.round(Math.max(0, Object.values(d.byMes).reduce((s,m)=>s+m.glosa,0) - d.totalPagoGlosa - d.totalNc)/totRadBruto*100)}% del radicado</div>
+        </div>
+        <div class="comp-kpi">
+          <div class="comp-kpi-label">Notas Cr\u00e9dito (NC)</div>
+          <div class="comp-kpi-value">${fmtCOP(d.totalNc)}</div>
+          <div class="comp-kpi-sub">${Math.round(d.totalNc/totRadBruto*100)}% del radicado \u00b7 Aceptaciones/p\u00e9rdida</div>
         </div>
         <div class="comp-kpi">
           <div class="comp-kpi-label">Total Facturas</div>
-          <div class="comp-kpi-value">${fmt0(d.enriched.length)}</div>
+          <div class="comp-kpi-value">${fmt0(Object.values(d.byMes).reduce((s,m)=>s+m.n,0))}</div>
           <div class="comp-kpi-sub">${d.years[0]}\u2013${Math.max(...d.years)}</div>
         </div>
       </div>
-    <div style="padding:8px 16px 12px;font-size:11px;color:var(--text-light);
-                border-top:1px solid var(--border);background:var(--surface);">
-      Glosa Viva = Radicado \u2212 Pagos iniciales \u2212 Pagos de glosa \u2212 NC aceptadas
-    </div>
     </div>`;
   });
   html += `</div></div>`;
@@ -2956,31 +2939,32 @@ window.renderComparativo = function renderComparativo() {
   });
 
   // Fila Total/Promedio
-  html += '<tr style="background:#eef2f7;font-weight:700;border-top:2px solid #cbd5e1;">';
-  html += '<td style="padding:8px 14px;font-size:12px;color:var(--text-light);">Total / Prom.</td>';
-  loaded.forEach(function(ips2) {
-    var d3 = ipsStore[ips2.id].data;
+  // == Fila Total / Promedio ==
+  html += '<tr style="background:#eef2f7;border-top:2px solid #94a3b8;">';
+  html += '<td style="padding:8px 14px;font-size:11px;font-weight:700;color:var(--text-light);">Total / Prom.</td>';
+  loaded.forEach(function(ip3) {
+    var d3 = ipsStore[ip3.id].data;
     var aK = Object.keys(d3.byMes);
     var tR = aK.reduce(function(s,k){return s+d3.byMes[k].radBruto;},0);
-    var yPF=[], yGF=[], yAF=[];
+    var yPF=[],yGF=[],yAF=[];
     allYears.forEach(function(y) {
-      var ks = Object.keys(d3.byMes).filter(function(k){return k.startsWith(String(y));});
+      var ks=Object.keys(d3.byMes).filter(function(k){return k.startsWith(String(y));});
       if (!ks.length) return;
       var r=ks.reduce(function(s,k){return s+d3.byMes[k].radBruto;},0);
       var pi=ks.reduce(function(s,k){return s+d3.byMes[k].pagoInicial;},0);
       var pg=ks.reduce(function(s,k){return s+d3.byMes[k].pagoGlosa;},0);
       var g=ks.reduce(function(s,k){return s+d3.byMes[k].glosa;},0);
       var nc=ks.reduce(function(s,k){return s+d3.byMes[k].nc;},0);
-      if (r>0) { yPF.push(Math.round((pi+pg+nc)/r*100)); yGF.push(Math.round(Math.max(0,g-pg)/r*100)); yAF.push(Math.min(100,Math.round((pi+g+nc)/r*100))); }
+      if (r>0){yPF.push(Math.round((pi+pg+nc)/r*100));yGF.push(Math.round(Math.max(0,g-pg)/r*100));yAF.push(Math.min(100,Math.round((pi+g+nc)/r*100)));}
     });
     var avg=function(a){return a.length?Math.round(a.reduce(function(x,y){return x+y;},0)/a.length):0;};
-    var pF=avg(yPF), gF=avg(yGF), aF=avg(yAF);
+    var pF=avg(yPF),gF=avg(yGF),aF=avg(yAF);
     var cP=pF>=85?'#15803d':pF>=75?'#b45309':'#dc2626';
     var cG=gF<=15?'#15803d':gF<=25?'#b45309':'#dc2626';
-    html += '<td class="amount">' + fmtCOP(tR) + '</td>' +
-      '<td class="mono" style="color:'+cP+';font-weight:700;">' + pF + '% <small style="color:var(--text-light);">prom</small></td>' +
-      '<td class="mono" style="color:'+cG+';font-weight:700;">' + gF + '% <small style="color:var(--text-light);">prom</small></td>' +
-      '<td class="mono">' + aF + '% <small style="color:var(--text-light);">prom</small></td>';
+    html += '<td class="amount" style="font-weight:700;">'+fmtCOP(tR)+'</td>'+
+      '<td class="mono" style="font-weight:700;color:'+cP+';">'+pF+'% <small style="color:var(--text-light);font-size:9px;">prom</small></td>'+
+      '<td class="mono" style="font-weight:700;color:'+cG+';">'+gF+'% <small style="color:var(--text-light);font-size:9px;">prom</small></td>'+
+      '<td class="mono">'+aF+'% <small style="color:var(--text-light);font-size:9px;">prom</small></td>';
   });
   html += '</tr>';
   html += `</tbody></table></div></div></div></div>`;
