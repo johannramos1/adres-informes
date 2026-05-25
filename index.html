@@ -1007,6 +1007,13 @@ window.switchActiveIPS = function switchActiveIPS(ips) {
     if (el) el.style.background = id === ips ? 'rgba(255,255,255,.18)' : 'rgba(255,255,255,.07)';
   });
 
+  // Navigate to individual section
+  document.querySelectorAll('.app-section').forEach(function(s){ s.classList.remove('active'); });
+  var indSec = document.getElementById('section-individual');
+  if (indSec) indSec.classList.add('active');
+  var tEl = document.getElementById('top-section-title');
+  if (tEl) tEl.textContent = 'Informe por IPS';
+
   if (ipsStore[ips].data) {
     reportData = ipsStore[ips].data;
     window._reportData = reportData;
@@ -2832,7 +2839,7 @@ window.renderComparativo = function renderComparativo() {
   </div>`;
   html += `<div class="section-title" style="margin:16px 32px;">
     Resumen Ejecutivo
-    <span>Indicadores clave por IPS</span>
+    <span>Indicadores clave por IPS &nbsp;\u00b7&nbsp; <span style="font-weight:400;font-size:11px;">Cartera Pendiente = Radicaci\u00f3n pendiente + Glosas vivas &nbsp;|&nbsp; Pagos Totales = Pagos iniciales + Pagos de glosa</span></span>
   </div>`;
   html += `<div style="padding:0 32px;"><div class="comp-grid ${loaded.length===1?'single':''}">`;
 
@@ -2947,6 +2954,35 @@ window.renderComparativo = function renderComparativo() {
     });
     html += `</tr>`;
   });
+
+  // Fila Total/Promedio
+  html += '<tr style="background:#eef2f7;font-weight:700;border-top:2px solid #cbd5e1;">';
+  html += '<td style="padding:8px 14px;font-size:12px;color:var(--text-light);">Total / Prom.</td>';
+  loaded.forEach(function(ips2) {
+    var d3 = ipsStore[ips2.id].data;
+    var aK = Object.keys(d3.byMes);
+    var tR = aK.reduce(function(s,k){return s+d3.byMes[k].radBruto;},0);
+    var yPF=[], yGF=[], yAF=[];
+    allYears.forEach(function(y) {
+      var ks = Object.keys(d3.byMes).filter(function(k){return k.startsWith(String(y));});
+      if (!ks.length) return;
+      var r=ks.reduce(function(s,k){return s+d3.byMes[k].radBruto;},0);
+      var pi=ks.reduce(function(s,k){return s+d3.byMes[k].pagoInicial;},0);
+      var pg=ks.reduce(function(s,k){return s+d3.byMes[k].pagoGlosa;},0);
+      var g=ks.reduce(function(s,k){return s+d3.byMes[k].glosa;},0);
+      var nc=ks.reduce(function(s,k){return s+d3.byMes[k].nc;},0);
+      if (r>0) { yPF.push(Math.round((pi+pg+nc)/r*100)); yGF.push(Math.round(Math.max(0,g-pg)/r*100)); yAF.push(Math.min(100,Math.round((pi+g+nc)/r*100))); }
+    });
+    var avg=function(a){return a.length?Math.round(a.reduce(function(x,y){return x+y;},0)/a.length):0;};
+    var pF=avg(yPF), gF=avg(yGF), aF=avg(yAF);
+    var cP=pF>=85?'#15803d':pF>=75?'#b45309':'#dc2626';
+    var cG=gF<=15?'#15803d':gF<=25?'#b45309':'#dc2626';
+    html += '<td class="amount">' + fmtCOP(tR) + '</td>' +
+      '<td class="mono" style="color:'+cP+';font-weight:700;">' + pF + '% <small style="color:var(--text-light);">prom</small></td>' +
+      '<td class="mono" style="color:'+cG+';font-weight:700;">' + gF + '% <small style="color:var(--text-light);">prom</small></td>' +
+      '<td class="mono">' + aF + '% <small style="color:var(--text-light);">prom</small></td>';
+  });
+  html += '</tr>';
   html += `</tbody></table></div></div></div></div>`;
 
   // == VISTA 3: Tabla macro individual por IPS ==
