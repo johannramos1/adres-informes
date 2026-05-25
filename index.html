@@ -1904,8 +1904,8 @@ window.buildMacroTable = function buildMacroTable(d) {
       pctPago: totRad > 0 ? totPago / totRad : 0,
       nc: totNc,
       pctNc: totRad > 0 ? totNc / totRad : 0,
-      glosadoFinal: totRad > 0 ? Math.max(0, totGlosa - totPG) / totRad : 0,
-      pagadoFinal:  totRad > 0 ? (totPago + totNc) / totRad : 0,
+      glosadoFinal: totRad > 0 ? Math.max(0, totGlosa - totPG - totNc) / totRad : 0,
+      pagadoFinal:  totRad > 0 ? (totPago + totPG) / totRad : 0,
       aud: totRad > 0 ? (totGlosa + totPI) / totRad : 0,
       isAudTotal: true,
     });
@@ -2034,7 +2034,7 @@ window.buildMacroTable = function buildMacroTable(d) {
           <div style="font-size:11px;color:#92400e;margin-top:3px;">Col. M \u00b7 s/radicado</div>
         </div>
         <div style="background:#f5f3ff;border-radius:8px;padding:12px 14px;border-top:3px solid #8b5cf6;">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#6d28d9;margin-bottom:6px;">Prom. Glosa Final</div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#6d28d9;margin-bottom:6px;">Prom. Glosa Viva</div>
           <div style="font-size:22px;font-weight:700;font-family:'DM Mono',monospace;color:#6d28d9;">${Math.round(pr.P*100)}%</div>
           <div style="font-size:11px;color:#6d28d9;margin-top:3px;">Col. P \u00b7 neta s/radicado</div>
         </div>
@@ -2118,8 +2118,8 @@ window.buildPromedioCard = function buildPromedioCard(p, year, ips) {
     // GLOSAS section
     '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;' +
         'color:var(--text-light);margin:12px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--border);">Glosas</div>' +
-    bar('Glosado inicial %', pctGlo,  C_GLOSA_INI, 'Glosa + devolución / Radicado') +
-    bar('Glosado final %',   pctGloF, C_GLOSA_FIN, 'Glosa - Pago glosa / Radicado') +
+    bar('Glosa Inicial %', pctGlo,  C_GLOSA_INI, 'Glosa + devolución / Radicado') +
+    bar('Glosa Viva %',   pctGloF, C_GLOSA_FIN, 'Glosas+Dev − Pagos glosa − NC / Radicado') +
 
     // Summary row
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;' +
@@ -2130,7 +2130,7 @@ window.buildPromedioCard = function buildPromedioCard(p, year, ips) {
         '<div style="font-size:9px;color:var(--text-light);">incl. glosa+NC</div>' +
       '</div>' +
       '<div style="background:#fef2f2;border-radius:8px;padding:8px 10px;text-align:center;">' +
-        '<div style="font-size:10px;color:#dc2626;font-weight:600;">PROM. GLOSA FINAL</div>' +
+        '<div style="font-size:10px;color:#dc2626;font-weight:600;">PROM. GLOSA VIVA</div>' +
         '<div style="font-size:20px;font-weight:700;color:' + C_GLOSA_FIN + ';font-family:DM Mono,monospace;">' + pctGloF + '%</div>' +
         '<div style="font-size:9px;color:var(--text-light);">glosa neta s/radicado</div>' +
       '</div>' +
@@ -2156,7 +2156,7 @@ window.exportNcExcel = function exportNcExcel(d, mes) {
   XLSX.writeFile(wb, 'NC_Aceptadas_' + mes + '.xlsx');
 };
 
-function renderCorreoSection(d, mes) {
+window.renderCorreoSection = function renderCorreoSection(d, mes) {
   const wrapper = document.getElementById('correo-section-wrapper');
   if (!wrapper) return;
 
@@ -2409,7 +2409,7 @@ window.toggleCorreoPanel = function toggleCorreoPanel() {
   if (icon) icon.textContent = open ? '' : '';
 };
 
-function renderAnalisisMes(d) {
+window.renderAnalisisMes = function renderAnalisisMes(d) {
   if (!d) return;
   const mes = document.getElementById('mes-analisis-select')?.value;
   if (!mes) return;
@@ -2902,9 +2902,9 @@ window.renderComparativo = function renderComparativo() {
           <div class="comp-kpi-sub">${Math.round(Math.max(0, Object.values(d.byMes).reduce((s,m)=>s+m.glosa,0) - d.totalPagoGlosa - d.totalNc)/totRadBruto*100)}% del radicado</div>
         </div>
         <div class="comp-kpi">
-          <div class="comp-kpi-label">Notas Cr\u00e9dito (NC)</div>
-          <div class="comp-kpi-value">${fmtCOP(d.totalNc)}</div>
-          <div class="comp-kpi-sub">${Math.round(d.totalNc/totRadBruto*100)}% del radicado \u00b7 Aceptaciones/p\u00e9rdida</div>
+          <div class="comp-kpi-label">NC Aceptadas <span style="font-weight:400;font-size:10px;color:var(--text-light);">(P\u00e9rdida real IPS)</span></div>
+          <div class="comp-kpi-value" style="color:#7c3aed;">${fmtCOP(d.totalNc)}</div>
+          <div class="comp-kpi-sub">${Math.round(d.totalNc/totRadBruto*100)}% del radicado \u00b7 Valor definitivamente perdido</div>
         </div>
         <div class="comp-kpi">
           <div class="comp-kpi-label">Total Facturas</div>
@@ -2934,7 +2934,7 @@ window.renderComparativo = function renderComparativo() {
       </tr>
       <tr>
         <th></th>
-        ${loaded.map(i => `<th>Radicado</th><th style="color:#2d6a4f;">% Pagado</th><th style="color:#b45309;">% NC</th><th style="color:#dc2626;">% Glosa Viva</th><th style="color:#6b7280;">% Sin Auditar</th>`).join('')}
+        ${loaded.map(i => `<th>Radicado</th><th style="color:#2d6a4f;">% Pagado</th><th style="color:#dc2626;">% Glosa Viva</th><th style="color:#7c3aed;">% NC (Pérdida)</th><th style="color:#6b7280;">% Sin Auditar</th>`).join('')}
       </tr></thead>
       <tbody>`;
 
@@ -2944,7 +2944,7 @@ window.renderComparativo = function renderComparativo() {
     loaded.forEach(ips => {
       const d = ipsStore[ips.id].data;
       const keys = Object.keys(d.byMes).filter(k => k.startsWith(y+''));
-      if (!keys.length) { html += `<td colspan="4" style="color:var(--text-light);text-align:center;">-</td>`; return; }
+      if (!keys.length) { html += `<td colspan="5" style="color:var(--text-light);text-align:center;">-</td>`; return; }
       const totRad   = keys.reduce((s,k) => s+d.byMes[k].radBruto,    0);
       const totPI    = keys.reduce((s,k) => s+d.byMes[k].pagoInicial, 0);
       const totPG    = keys.reduce((s,k) => s+d.byMes[k].pagoGlosa,   0);
@@ -2964,8 +2964,8 @@ window.renderComparativo = function renderComparativo() {
       const colorG = pGv<=15?'#15803d':pGv<=25?'#b45309':'#dc2626';
       html += '<td class="amount">' + fmtCOP(totRad) + '</td>' +
         '<td class="mono" style="font-weight:700;color:'+colorP+';">'+pPag+'%</td>' +
-        '<td class="mono" style="font-weight:700;color:#b45309;">'+pNc+'%</td>' +
         '<td class="mono" style="font-weight:700;color:'+colorG+';">'+pGv+'%</td>' +
+        '<td class="mono" style="font-weight:700;color:#7c3aed;">'+pNc+'%</td>' +
         '<td class="mono" style="color:#6b7280;">'+pSin+'%</td>';
     });
     html += `</tr>`;
@@ -3167,6 +3167,103 @@ window.renderCompTendencias = function renderCompTendencias() {
         x: { grid:{ display:false }, ticks:{ font:{family:'DM Mono',size:11} } },
         y: { grid:{ color:'#f3f4f6' }, ticks:{ font:{family:'DM Mono',size:11},
              callback: function(v) { return v>=1e9?(v/1e9).toFixed(1)+'B':v>=1e6?(v/1e6).toFixed(0)+'M':v.toLocaleString('es-CO'); } } }
+      }
+    }
+  });
+};
+
+
+// ═══════════════════════════════════════════════════════
+//  RENDER REZAGO
+// ═══════════════════════════════════════════════════════
+window.renderRezago = function renderRezago(d) {
+  var el = document.getElementById('rezago-body');
+  if (!el) return;
+  var allKeys = Object.keys(d.byMes).sort().reverse().slice(0,24).reverse();
+  var months = allKeys.map(function(k){ return {k:k, m:d.byMes[k], pct:Math.round(d.byMes[k].pctAuditado*100)}; });
+  var rev = months.slice().reverse();
+  var gap = 0;
+  for (var i=0;i<rev.length;i++){ if(rev[i].pct===0) gap++; else break; }
+  var incomplete = months.filter(function(x){return x.pct>0&&x.pct<95;});
+  var toShow = months.filter(function(x){return x.pct<95;});
+  var level = gap>3?'danger':gap>1?'warn':'ok';
+  var st = {danger:{bg:'#fef2f2',brd:'#fecaca',c:'#7f1d1d'},warn:{bg:'#fffbeb',brd:'#fde68a',c:'#78350f'},ok:{bg:'#f0fdf4',brd:'#bbf7d0',c:'#14532d'}};
+  var s = st[level];
+  var txt = '';
+  if (gap>0) { var gp=rev.slice(0,gap).map(function(x){return fmtPeriod(x.k);}).reverse().join(', '); txt+='Sin actividad en <strong>'+gap+' per\u00edodo(s)</strong>: '+gp+'. '; }
+  if (incomplete.length>0) { var avg=Math.round(incomplete.reduce(function(s,x){return s+x.pct;},0)/incomplete.length); txt+='<strong>'+incomplete.length+' per\u00edodo(s)</strong> con auditor\u00eda incompleta, promedio <strong>'+avg+'%</strong>.'; }
+  if (!txt) txt='Todos los per\u00edodos superan el 95%.';
+  var html='<div style="padding:14px 18px;background:'+s.bg+';border:1px solid '+s.brd+';border-radius:10px;margin-bottom:20px;font-size:13px;color:'+s.c+';line-height:1.7;"><strong>Rezago \u2014 \u00faltimos 24 per\u00edodos:</strong><br>'+txt+'</div>';
+  if (!toShow.length) { html+='<div style="font-size:13px;color:var(--text-light);">Sin rezago detectado.</div>'; el.innerHTML=html; return; }
+  var byY={};
+  toShow.forEach(function(x){var y=x.k.split('-')[0]; if(!byY[y])byY[y]=[]; byY[y].push(x);});
+  Object.keys(byY).sort().forEach(function(yr){
+    html+='<div style="margin-bottom:16px;"><div style="font-size:11px;font-weight:700;color:var(--text-light);text-transform:uppercase;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border);">'+yr+'</div>';
+    byY[yr].forEach(function(item){
+      var p=item.pct; var bc=p===0?'#dc2626':p<50?'#ef4444':p<75?'#f59e0b':'#22c55e'; var tc=p===0?'#dc2626':p<50?'#dc2626':p<75?'#b45309':'#15803d';
+      var tag=p===0?'Sin actividad':p<50?'Cr\u00edtico':p<75?'Pendiente':'Casi completo';
+      html+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">'+
+        '<div style="min-width:160px;display:flex;align-items:center;gap:6px;">'+
+          '<span style="font-size:13px;font-weight:500;color:var(--text-mid);">'+fmtPeriod(item.k)+'</span>'+
+          '<span style="font-size:10px;font-weight:700;padding:2px 6px;border-radius:8px;color:'+tc+';background:'+bc+'22;">'+tag+'</span>'+
+        '</div>'+
+        '<div style="flex:1;height:8px;background:#f3f4f6;border-radius:4px;overflow:hidden;">'+
+          '<div style="height:100%;width:'+Math.min(100,p)+'%;background:'+bc+';border-radius:4px;"></div>'+
+        '</div>'+
+        '<span style="font-family:DM Mono,monospace;font-size:13px;font-weight:700;min-width:40px;text-align:right;color:'+tc+';">'+p+'%</span>'+
+        '<span style="font-size:11px;color:var(--text-light);min-width:80px;text-align:right;">'+fmt0(item.m.n)+' fact.</span>'+
+      '</div>';
+    });
+    html+='</div>';
+  });
+  el.innerHTML=html;
+};
+
+// ═══════════════════════════════════════════════════════
+//  RENDER TENDENCIAS
+// ═══════════════════════════════════════════════════════
+window.renderTendencias = function renderTendencias(d) {
+  if (!d) return;
+  var container = document.getElementById('tend-chart-container');
+  if (!container) return;
+  var selVar  = document.getElementById('tend-var-sel');
+  var selYear = document.getElementById('tend-year-sel');
+  var varVal  = selVar  ? selVar.value  : 'rad';
+  var yearVal = selYear ? parseInt(selYear.value) : d.currentYear;
+
+  var keys = Object.keys(d.byMes).filter(function(k){ return parseInt(k)===yearVal; }).sort();
+  if (!keys.length) { container.innerHTML='<div style="padding:40px;text-align:center;color:var(--text-light);">Sin datos para el a\u00f1o seleccionado.</div>'; return; }
+
+  var labels  = keys.map(function(k){ return fmtMesNombre(k.split('-')[1]); });
+  var datasets = [];
+  var vars = {
+    rad:   {label:'Radicado',         color:'#2d6a4f', fn:function(m){return m.radBruto;}},
+    pago:  {label:'Pagos Iniciales',  color:'#059669', fn:function(m){return m.pagoInicial;}},
+    glosa: {label:'Glosas+Dev',       color:'#f59e0b', fn:function(m){return m.glosa;}},
+    nc:    {label:'NC Aceptadas',     color:'#6366f1', fn:function(m){return m.nc;}}
+  };
+  var v = vars[varVal] || vars.rad;
+  datasets.push({ label:v.label, data:keys.map(function(k){return d.byMes[k]?v.fn(d.byMes[k]):0;}), borderColor:v.color, backgroundColor:v.color+'22', borderWidth:2.5, pointRadius:4, tension:.3, fill:true });
+
+  container.innerHTML='<canvas id="tend-canvas" style="height:260px;"></canvas>';
+  var ctx = document.getElementById('tend-canvas');
+  if (!ctx) return;
+  if (window._tendChart) { window._tendChart.destroy(); window._tendChart=null; }
+  window._tendChart = new Chart(ctx, {
+    type:'line', data:{ labels:labels, datasets:datasets },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      layout:{ padding:{ top:24 } },
+      plugins:{
+        legend:{ display:false },
+        tooltip:{ callbacks:{ label:function(c){ return ' '+c.dataset.label+': '+fmtCOP(c.raw); } } },
+        datalabels:{ display:true, anchor:'end', align:'top', font:{family:'DM Mono',size:10,weight:'600'}, color:'#374151',
+          formatter:function(v){ return v>=1e9?(v/1e9).toFixed(1)+'B':v>=1e6?(v/1e6).toFixed(0)+'M':v>=1e3?(v/1e3).toFixed(0)+'K':String(v); } }
+      },
+      scales:{
+        x:{ grid:{display:false}, ticks:{font:{family:'DM Mono',size:11}} },
+        y:{ grid:{color:'#f3f4f6'}, ticks:{font:{family:'DM Mono',size:11},
+          callback:function(v){ return v>=1e9?(v/1e9).toFixed(1)+'B':v>=1e6?(v/1e6).toFixed(0)+'M':v.toLocaleString('es-CO'); } } }
       }
     }
   });
