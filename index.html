@@ -7,7 +7,6 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Informe Gerencial de Análisis Financiero ADRES</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1191,10 +1190,48 @@ let sbClient = null;
 
 function initSupabase() {
   try {
-    sbClient = window.sbClient.createClient(SB_URL, SB_KEY);
+    // Inline minimal Supabase REST client — no external CDN needed
+    const url = SB_URL + '/rest/v1/';
+    const key = SB_KEY;
+    const baseHeaders = {
+      'apikey': key,
+      'Authorization': 'Bearer ' + key,
+      'Content-Type': 'application/json',
+    };
+    sbClient = {
+      from: function(table) {
+        const endpoint = url + table;
+        return {
+          upsert: async function(data) {
+            const res = await fetch(endpoint, {
+              method: 'POST',
+              headers: Object.assign({}, baseHeaders, { 'Prefer': 'resolution=merge-duplicates,return=minimal' }),
+              body: JSON.stringify(data)
+            });
+            if (!res.ok) return { error: { message: await res.text() } };
+            return { error: null };
+          },
+          select: function(cols) {
+            const filters = [];
+            const chain = {
+              eq: function(col, val) { filters.push(col + '=eq.' + encodeURIComponent(val)); return chain; },
+              single: async function() {
+                const q = endpoint + '?' + ['select=' + (cols || '*'), ...filters].join('&');
+                const res = await fetch(q, { headers: Object.assign({}, baseHeaders, { 'Accept': 'application/json' }) });
+                if (!res.ok) return { data: null, error: { message: res.statusText } };
+                const arr = await res.json();
+                return { data: arr && arr[0] ? arr[0] : null, error: null };
+              }
+            };
+            return chain;
+          }
+        };
+      }
+    };
+    console.log('Supabase inline client ready');
     return true;
   } catch(e) {
-    console.warn('Supabase not configured:', e.message);
+    console.warn('Supabase init failed:', e.message);
     return false;
   }
 }
@@ -1322,8 +1359,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Try Supabase in background — never block UI
   try {
+    await new Promise(r => setTimeout(r, 300));
     const ok = initSupabase();
-    if (!ok) return;
+    if (!ok) { console.warn("Supabase unavailable - offline mode"); return; }
 
     const ipsIds = ['dolormed', 'redesimat'];
     let anyLoaded = false;
