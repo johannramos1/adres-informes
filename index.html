@@ -9,6 +9,7 @@
 <title>Informe Gerencial de Análisis Financiero ADRES</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -843,10 +844,6 @@ body.sb-collapsed #main-content {
 
     <!-- Navigation -->
     <div class="sb-section">Navegación</div>
-    <div class="nav-item active" onclick="showSection('individual')" id="nav-individual">
-      <span class="nav-icon">&#9783;</span>
-      <span class="nav-label">Informe por IPS</span>
-    </div>
     <div class="nav-item" onclick="showSection('comparativo')" id="nav-comparativo">
       <span class="nav-icon">&#9780;</span>
       <span class="nav-label">Comparativo Gerencial</span>
@@ -854,9 +851,9 @@ body.sb-collapsed #main-content {
 
 
     <!-- IPS Status (minimal) -->
-    <div class="sb-section">Estado</div>
+    <div class="sb-section" style="margin-top:8px;">Informe por IPS</div>
     <div style="padding:4px 8px 8px;">
-      <div id="sb-status-dolormed" onclick="switchActiveIPS('dolormed')"
+      <div id="sb-status-dolormed" onclick="switchActiveIPS('dolormed'); showSection('individual');"
            style="display:flex;align-items:center;gap:8px;padding:8px 10px;
                   border-radius:8px;cursor:pointer;margin-bottom:4px;
                   background:rgba(255,255,255,.07);transition:background .15s;"
@@ -869,7 +866,7 @@ body.sb-collapsed #main-content {
         </div>
         <span id="sb-badge-dolormed" class="sb-ips-badge empty" style="margin-left:auto;flex-shrink:0;">—</span>
       </div>
-      <div id="sb-status-redesimat" onclick="switchActiveIPS('redesimat')"
+      <div id="sb-status-redesimat" onclick="switchActiveIPS('redesimat'); showSection('individual');"
            style="display:flex;align-items:center;gap:8px;padding:8px 10px;
                   border-radius:8px;cursor:pointer;
                   background:rgba(255,255,255,.07);transition:background .15s;"
@@ -959,6 +956,11 @@ body.sb-collapsed #main-content {
 </div>
 
 <script>
+// Register ChartJS datalabels plugin
+if (typeof ChartDataLabels !== 'undefined') {
+  Chart.register(ChartDataLabels);
+}
+
 // =======================================================
 //  STATE - Multi-IPS
 // =======================================================
@@ -1770,7 +1772,7 @@ window.renderReport = function renderReport(d) {
       new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: chartKeys.map(k => fmtMes(k.split('-')[1])),
+          labels: chartKeys.map(function(k) { return fmtMes(k.split('-')[1]); }),
           datasets: [
             { label: 'Radicado', data: chartRad, backgroundColor: 'rgba(45,106,79,.2)', borderColor: '#2d6a4f', borderWidth: 2, borderRadius: 4, type: 'bar' },
             { label: 'Glosado', data: chartGlosa, backgroundColor: 'rgba(245,158,11,.15)', borderColor: '#f59e0b', borderWidth: 2, borderRadius: 4, type: 'bar' },
@@ -1779,10 +1781,26 @@ window.renderReport = function renderReport(d) {
         },
         options: {
           responsive: true, maintainAspectRatio: false,
-          plugins: { legend: { position: 'bottom', labels: { font: { family: 'DM Sans', size: 12 }, padding: 16 } } },
+          layout: { padding: { top: 24 } },
+          plugins: {
+            legend: { position: 'bottom', labels: { font: { family: 'DM Sans', size: 12 }, padding: 16 } },
+            tooltip: { callbacks: { label: function(ctx) { return ' ' + ctx.dataset.label + ': ' + fmtCOP(ctx.raw); } } },
+            datalabels: {
+              display: true, anchor: 'end', align: 'top',
+              font: { family: 'DM Mono', size: 10, weight: '600' },
+              color: '#374151',
+              formatter: function(v) {
+                if (v >= 1e9) return (v/1e9).toFixed(1)+'B';
+                if (v >= 1e6) return (v/1e6).toFixed(0)+'M';
+                if (v >= 1e3) return (v/1e3).toFixed(0)+'K';
+                return String(v);
+              }
+            }
+          },
           scales: {
             x: { grid: { display: false }, ticks: { font: { family: 'DM Mono', size: 11 } } },
-            y: { grid: { color: '#f3f4f6' }, ticks: { font: { family: 'DM Mono', size: 11 }, callback: v => '$' + v.toFixed(0) + 'M' } }
+            y: { grid: { color: '#f3f4f6' }, ticks: { font: { family: 'DM Mono', size: 11 },
+                 callback: function(v) { return v>=1e9?(v/1e9).toFixed(1)+'B':v>=1e6?(v/1e6).toFixed(0)+'M':v>=1e3?(v/1e3).toFixed(0)+'K':v.toLocaleString('es-CO'); } } }
           }
         }
       });
@@ -2005,11 +2023,11 @@ function buildMacroTable(d) {
   // Inject summary cards (filtered by active year tab)
   tableHtml += `<div id="macro-summary" style="padding:16px 24px 0;">${summaryCards}</div>`;
 
-  tableHtml += `<div style="padding:4px 24px 0;display:flex;gap:20px;flex-wrap:wrap;font-size:12px;color:var(--text-light);">
-    <span> Pago \u226585% \u00b7 Glosa \u226415%</span>
-    <span> Pago 75\u201384% \u00b7 Glosa 16\u201325%</span>
-    <span> Pago &lt;75% \u00b7 Glosa &gt;25%</span>
-  </div>`;
+  tableHtml += '<div style="padding:4px 24px 8px;display:flex;gap:20px;flex-wrap:wrap;font-size:12px;">' +
+    '<span style="display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:50%;background:#15803d;display:inline-block;"></span><span style="color:var(--text-mid);">Pago \u226585% \u00b7 Glosa \u226415%</span></span>' +
+    '<span style="display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:50%;background:#b45309;display:inline-block;"></span><span style="color:var(--text-mid);">Pago 75\u201384% \u00b7 Glosa 16\u201325%</span></span>' +
+    '<span style="display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:50%;background:#dc2626;display:inline-block;"></span><span style="color:var(--text-mid);">Pago &lt;75% \u00b7 Glosa &gt;25%</span></span>' +
+  '</div>';
 
   return `
   <div class="section-title">Indicador General IPS - Cliente ADRES <span>Por mes de radicaci\u00f3n</span></div>
@@ -2023,290 +2041,69 @@ function buildMacroTable(d) {
 }
 
 function buildPromedioCard(p, year, ips) {
-  if (!p) return `<div class="card"><div class="card-body"><div class="no-data">Sin datos para ${year}</div></div></div>`;
-  const fillColor = ips === 'dolormed' ? 'fill-green' : 'fill-blue';
-  return `
-  <div class="card">
-    <div class="card-header"><div class="card-title card-title-accent">A\u00f1o ${year}</div></div>
-    <div class="card-body">
-      <div class="trend-pair">
-        <div class="trend-item">
-          <div class="trend-year">Pagos</div>
-          <div class="trend-row"><span class="trend-key">% s/ radicado</span><span class="trend-val ${ips==='dolormed'?'green':'blue'}">${(p.pctPago*100).toFixed(1)}%</span></div>
-          <div class="trend-row"><span class="trend-key">Promedio mensual</span><span class="trend-val">${fmtCOP(p.promPago)}</span></div>
-          <div class="trend-row"><span class="trend-key">Total pagado</span><span class="trend-val">${fmtCOP(p.totalPagos)}</span></div>
-        </div>
-        <div class="trend-item">
-          <div class="trend-year">Glosas</div>
-          <div class="trend-row"><span class="trend-key">% s/ radicado</span><span class="trend-val red">${(p.pctGlosa*100).toFixed(1)}%</span></div>
-          <div class="trend-row"><span class="trend-key">Promedio mensual</span><span class="trend-val">${fmtCOP(p.promGlosa)}</span></div>
-          <div class="trend-row"><span class="trend-key">Total glosado</span><span class="trend-val">${fmtCOP(p.totalGlosas)}</span></div>
-        </div>
-      </div>
-      <div style="margin-top:14px;">
-        <div class="compare-item">
-          <div class="compare-header"><span class="compare-label">% Pagado s/ radicado</span><span class="compare-value">${(p.pctPago*100).toFixed(1)}%</span></div>
-          <div class="compare-track"><div class="compare-fill ${fillColor}" style="width:${Math.min(100,p.pctPago*100)}%"></div></div>
-        </div>
-        <div class="compare-item">
-          <div class="compare-header"><span class="compare-label">% Glosado s/ radicado</span><span class="compare-value">${(p.pctGlosa*100).toFixed(1)}%</span></div>
-          <div class="compare-track"><div class="compare-fill fill-amber" style="width:${Math.min(100,p.pctGlosa*100)}%"></div></div>
-        </div>
-        <div style="margin-top:14px; padding:12px; background:var(--pale); border-radius:8px; font-size:12px;">
-          <div style="font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--text-light); margin-bottom:8px;">Promedios mensuales (meses activos)</div>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
-            <span style="color:var(--text-mid);">Prom. % Glosado:</span><span style="font-family:'DM Mono',monospace; color:#dc2626; font-weight:700;">${(p.promPctGlosadoMes*100).toFixed(1)}%</span>
-            <span style="color:var(--text-mid);">Prom. % Pagado:</span><span style="font-family:'DM Mono',monospace; color:#15803d; font-weight:700;">${(p.promPctPagadoMes*100).toFixed(1)}%</span>
-            <span style="color:var(--text-mid);">Prom. Pago Final:</span><span style="font-family:'DM Mono',monospace; color:#15803d; font-weight:700;">${(p.promPctPagoFinal*100).toFixed(1)}%</span>
-            <span style="color:var(--text-mid);">Prom. Glosa Final:</span><span style="font-family:'DM Mono',monospace; color:#dc2626; font-weight:700;">${(p.promPctGlosaFinal*100).toFixed(1)}%</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>`;
+  if (!p) return '';
+  var color = ips === 'redesimat' ? '#1d3557' : '#2d6a4f';
+
+  // Consistent colors regardless of IPS
+  var C_PAGO_INI  = '#2d9e6b';  // green - pagado inicial
+  var C_GLOSA_INI = '#e5a800';  // amber - glosado inicial
+  var C_PAGO_FIN  = '#1d6ca8';  // blue  - pagado final
+  var C_GLOSA_FIN = '#c0392b';  // red   - glosado final
+
+  var pctGlo  = Math.round((p.promPctGlosadoMes  || 0) * 100);
+  var pctPag  = Math.round((p.promPctPagadoMes   || 0) * 100);
+  var pctPagF = Math.round((p.promPctPagoFinal   || 0) * 100);
+  var pctGloF = Math.round((p.promPctGlosaFinal  || 0) * 100);
+
+  function bar(label, pct, color, sub) {
+    return '<div style="margin-bottom:10px;">' +
+      '<div style="display:flex;justify-content:space-between;margin-bottom:3px;">' +
+        '<span style="font-size:12px;font-weight:500;color:var(--text-mid);">' + label + '</span>' +
+        '<span style="font-family:DM Mono,monospace;font-size:12px;font-weight:700;color:' + color + ';">' + pct + '%</span>' +
+      '</div>' +
+      '<div style="height:7px;background:#f3f4f6;border-radius:4px;overflow:hidden;">' +
+        '<div style="height:100%;width:' + Math.min(100,pct) + '%;background:' + color + ';border-radius:4px;transition:width .6s;"></div>' +
+      '</div>' +
+      (sub ? '<div style="font-size:10px;color:var(--text-light);margin-top:2px;">' + sub + '</div>' : '') +
+    '</div>';
+  }
+
+  return '<div class="card">' +
+    '<div class="card-header">' +
+      '<div class="card-title">' + year + '</div>' +
+      '<span style="font-size:11px;color:var(--text-light);">' + (p.nMesesActivos || 0) + ' meses activos</span>' +
+    '</div>' +
+    '<div class="card-body">' +
+
+    // PAGOS section
+    '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;' +
+        'color:var(--text-light);margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border);">Pagos</div>' +
+    bar('Pagado inicial %',  pctPag,  C_PAGO_INI,  'Pago inicial / Radicado') +
+    bar('Pagado final %',    pctPagF, C_PAGO_FIN,  'Pago inicial + glosa + NC / Radicado') +
+
+    // GLOSAS section
+    '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;' +
+        'color:var(--text-light);margin:12px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--border);">Glosas</div>' +
+    bar('Glosado inicial %', pctGlo,  C_GLOSA_INI, 'Glosa + devolución / Radicado') +
+    bar('Glosado final %',   pctGloF, C_GLOSA_FIN, 'Glosa - Pago glosa / Radicado') +
+
+    // Summary row
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;' +
+        'padding-top:12px;border-top:1px solid var(--border);">' +
+      '<div style="background:#f0fdf4;border-radius:8px;padding:8px 10px;text-align:center;">' +
+        '<div style="font-size:10px;color:#15803d;font-weight:600;">PROM. PAGO FINAL</div>' +
+        '<div style="font-size:20px;font-weight:700;color:' + C_PAGO_FIN + ';font-family:DM Mono,monospace;">' + pctPagF + '%</div>' +
+        '<div style="font-size:9px;color:var(--text-light);">incl. glosa+NC</div>' +
+      '</div>' +
+      '<div style="background:#fef2f2;border-radius:8px;padding:8px 10px;text-align:center;">' +
+        '<div style="font-size:10px;color:#dc2626;font-weight:600;">PROM. GLOSA FINAL</div>' +
+        '<div style="font-size:20px;font-weight:700;color:' + C_GLOSA_FIN + ';font-family:DM Mono,monospace;">' + pctGloF + '%</div>' +
+        '<div style="font-size:9px;color:var(--text-light);">glosa neta s/radicado</div>' +
+      '</div>' +
+    '</div>' +
+    '</div></div>';
 }
 
-function buildAnalisisMensual(d) {
-  // Collect all months that have any event
-  const allEventMonths = new Set([
-    ...Object.keys(d.pagoEventsByMes),
-    ...Object.keys(d.glosaEventsByMes),
-    ...Object.keys(d.pagoGlosaEventsByMes),
-    ...Object.keys(d.ncEventsByMes),
-  ]);
-  const sortedMonths = [...allEventMonths].sort().reverse(); // most recent first
-  if (!sortedMonths.length) return '';
-
-  const defaultMes = sortedMonths[0];
-
-  // Build month selector options
-  const opts = sortedMonths.map(m =>
-    `<option value="${m}" ${m===defaultMes?'selected':''}>${fmtPeriod(m)}</option>`
-  ).join('');
-
-  return `
-  <div class="section-title" style="margin-top:8px;">
-    An\u00e1lisis Mensual - Registros vs Radicaci\u00f3n
-    <span>Seleccione el mes de registro para ver qu\u00e9 radicaciones afect\u00f3</span>
-  </div>
-  <div class="card grid-1" id="analisis-card">
-    <div class="card-header" style="padding-bottom:0;">
-      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-bottom:16px;border-bottom:1px solid var(--border);">
-        <div>
-          <select id="mes-analisis-select" onchange="renderAnalisisMes(window._reportData)"
-            style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
-                   padding:9px 14px;border-radius:8px;border:1.5px solid var(--border);
-                   background:white;color:var(--text-dark);cursor:pointer;min-width:180px;">
-            ${opts}
-          </select>
-        </div>
-        <div id="analisis-resumen" style="display:flex;gap:12px;flex-wrap:wrap;"></div>
-      </div>
-    </div>
-    <div class="card-body" id="analisis-body" style="padding-top:20px;"></div>
-  </div>`;
-}
-
-
-
-// =======================================================
-//  CORREO SECTION - driven by mes-analisis-select
-// =======================================================
-
-function renderRezago(d) {
-  const rezagoEl = document.getElementById('rezago-body');
-  if (!rezagoEl) return;
-
-  // Last 24 periods
-  const allKeys = Object.keys(d.byMes).sort().reverse().slice(0, 24).reverse();
-
-  // Classify each month
-  const months = allKeys.map(k => ({
-    k,
-    m: d.byMes[k],
-    pct: Math.round(d.byMes[k].pctAuditado * 100),
-  }));
-
-  // Months with 0% - no activity at all
-  const zeroMonths = months.filter(x => x.pct === 0);
-
-  // Months below 95% but above 0%
-  const incomplete = months.filter(x => x.pct > 0 && x.pct < 95);
-
-  // Gap calculation: consecutive months from most recent with 0%
-  const reversed = [...months].reverse();
-  let gapCount = 0;
-  for (const x of reversed) {
-    if (x.pct === 0) gapCount++;
-    else break;
-  }
-
-  // Build analysis text
-  let analysisHtml = '';
-
-  // Main alert box
-  const alertLevel = gapCount > 3 ? 'danger' : gapCount > 1 ? 'warn' : 'ok';
-  const alertStyles = {
-    danger: { bg:'#fef2f2', border:'#fecaca', color:'#7f1d1d' },
-    warn:   { bg:'#fffbeb', border:'#fde68a', color:'#78350f' },
-    ok:     { bg:'#f0fdf4', border:'#bbf7d0', color:'#14532d' },
-  };
-  const s = alertStyles[alertLevel];
-
-  let analysisText = '';
-  if (gapCount > 0) {
-    const gapPeriods = reversed.slice(0, gapCount).map(x => fmtPeriod(x.k)).reverse().join(', ');
-    analysisText += `Sin actividad de auditor\u00eda en los \u00faltimos <strong>${gapCount} ${gapCount===1?'per\u00edodo':'per\u00edodos'}</strong>: ${gapPeriods}. `;
-  }
-  if (incomplete.length > 0) {
-    const avgPct = Math.round(incomplete.reduce((s,x)=>s+x.pct,0)/incomplete.length);
-    analysisText += `Adicionalmente, <strong>${incomplete.length} ${incomplete.length===1?'per\u00edodo':'per\u00edodos'}</strong> tienen auditor\u00eda incompleta con un promedio de <strong>${avgPct}%</strong> de revisi\u00f3n. `;
-  }
-  if (gapCount === 0 && incomplete.length === 0) {
-    analysisText = 'Todos los per\u00edodos analizados superan el 95% de auditor\u00eda.';
-  }
-
-  analysisHtml += `
-  <div style="padding:16px 18px;background:${s.bg};border:1px solid ${s.border};
-               border-radius:10px;margin-bottom:20px;font-size:13px;color:${s.color};line-height:1.7;">
-    <strong>An\u00e1lisis de rezago - \u00faltimos 24 per\u00edodos:</strong><br>
-    ${analysisText}
-    ${gapCount > 1 ? `La norma establece m\u00e1ximo 30 d\u00edas para respuesta de auditor\u00eda.` : ''}
-  </div>`;
-
-  // Table: only months below 95%
-  const toShow = months.filter(x => x.pct < 95);
-
-  if (toShow.length === 0) {
-    analysisHtml += `<div style="font-size:13px;color:var(--text-light);">
-      No se detectan per\u00edodos por debajo del 95% en los \u00faltimos 24 meses.
-    </div>`;
-  } else {
-    // Group by year
-    const byYear = {};
-    toShow.forEach(x => {
-      const y = x.k.split('-')[0];
-      if (!byYear[y]) byYear[y] = [];
-      byYear[y].push(x);
-    });
-
-    analysisHtml += `<div style="font-size:12px;font-weight:700;text-transform:uppercase;
-                                  letter-spacing:.5px;color:var(--text-light);margin-bottom:12px;">
-      Per\u00edodos por debajo del 95% - \u00faltimos 24 meses (${toShow.length} per\u00edodos)
-    </div>`;
-
-    Object.entries(byYear).sort().forEach(([year, items]) => {
-      analysisHtml += `<div style="margin-bottom:18px;">
-        <div style="font-size:11px;font-weight:700;color:var(--text-light);text-transform:uppercase;
-                    letter-spacing:.5px;margin-bottom:10px;padding-bottom:4px;
-                    border-bottom:1px solid var(--border);">${year}</div>`;
-      items.forEach(({k, m, pct}) => {
-        const barColor  = pct === 0 ? '#dc2626' : pct < 50 ? '#ef4444' : pct < 75 ? '#f59e0b' : '#22c55e';
-        const textColor = pct === 0 ? '#dc2626' : pct < 50 ? '#dc2626' : pct < 75 ? '#b45309' : '#15803d';
-        const tag = pct === 0
-          ? `<span style="font-size:10px;font-weight:700;background:#fef2f2;color:#dc2626;
-                          padding:2px 8px;border-radius:10px;margin-left:8px;">Sin actividad</span>`
-          : pct < 50
-          ? `<span style="font-size:10px;font-weight:700;background:#fff7ed;color:#c2410c;
-                          padding:2px 8px;border-radius:10px;margin-left:8px;">Cr\u00edtico</span>`
-          : pct < 75
-          ? `<span style="font-size:10px;font-weight:700;background:#fffbeb;color:#b45309;
-                          padding:2px 8px;border-radius:10px;margin-left:8px;">Pendiente</span>`
-          : `<span style="font-size:10px;font-weight:700;background:#f0fdf4;color:#15803d;
-                          padding:2px 8px;border-radius:10px;margin-left:8px;">Casi completo</span>`;
-
-        analysisHtml += `
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-          <div style="min-width:160px;display:flex;align-items:center;">
-            <span style="font-size:13px;font-weight:500;color:var(--text-mid);">${fmtPeriod(k)}</span>
-            ${tag}
-          </div>
-          <div style="flex:1;height:10px;background:#f3f4f6;border-radius:5px;overflow:hidden;">
-            <div style="height:100%;width:${pct}%;border-radius:5px;background:${barColor};
-                        transition:width .6s ease;"></div>
-          </div>
-          <span style="font-family:'DM Mono',monospace;font-size:13px;font-weight:700;
-                       min-width:44px;text-align:right;color:${textColor};">${pct}%</span>
-          <span style="font-size:11px;color:var(--text-light);min-width:90px;text-align:right;">
-            ${fmt0(m.n)} facturas</span>
-        </div>`;
-      });
-      analysisHtml += '</div>';
-    });
-  }
-
-  rezagoEl.innerHTML = analysisHtml;
-}
-
-
-function renderTendencias(d) {
-  const container = document.getElementById('tendencias-body');
-  if (!container) return;
-
-  // Get selected options
-  const yearSel = document.getElementById('tend-year-sel')?.value || 'all';
-  const vars = [...document.querySelectorAll('.tend-var-check:checked')].map(c => c.value);
-  if (!vars.length) { container.innerHTML = '<div style="color:var(--text-light);padding:16px;">Seleccione al menos una variable.</div>'; return; }
-
-  // Build datasets
-  let labels = [], datasets = [];
-  const allYears = [...new Set(Object.keys(d.byMes).map(k=>parseInt(k)))].sort();
-
-  if (yearSel === 'all') {
-    // Annual totals
-    labels = allYears.map(String);
-    const varDef = {
-      rad:   { label:'Radicaci\u00f3n',    color:'#2d6a4f', fn: y => Object.keys(d.byMes).filter(k=>k.startsWith(y+'')).reduce((s,k)=>s+d.byMes[k].rad,0) },
-      pago:  { label:'Pagos',         color:'#22c55e', fn: y => Object.keys(d.byMes).filter(k=>k.startsWith(y+'')).reduce((s,k)=>s+d.byMes[k].pagoInicial,0) },
-      pagoG: { label:'Pagos de Glosa',color:'#3b82f6', fn: y => Object.keys(d.byMes).filter(k=>k.startsWith(y+'')).reduce((s,k)=>s+d.byMes[k].pagoGlosa,0) },
-      glosa: { label:'Glosas',        color:'#f59e0b', fn: y => Object.keys(d.byMes).filter(k=>k.startsWith(y+'')).reduce((s,k)=>s+d.byMes[k].glosa,0) },
-      nc:    { label:'NC Aceptadas',  color:'#8b5cf6', fn: y => Object.keys(d.byMes).filter(k=>k.startsWith(y+'')).reduce((s,k)=>s+d.byMes[k].nc,0) },
-    };
-    vars.forEach(v => {
-      if (!varDef[v]) return;
-      datasets.push({ label: varDef[v].label, data: allYears.map(varDef[v].fn), borderColor: varDef[v].color,
-        backgroundColor: varDef[v].color + '22', borderWidth: 2.5, pointRadius: 5, tension: .3, fill: false });
-    });
-  } else {
-    // Monthly for selected year
-    const monthKeys = Object.keys(d.byMes).filter(k=>k.startsWith(yearSel)).sort();
-    labels = monthKeys.map(k => fmtMes(k.split('-')[1]));
-    const varDef = {
-      rad:   { label:'Radicaci\u00f3n',    color:'#2d6a4f', fn: k => d.byMes[k].rad },
-      pago:  { label:'Pagos',         color:'#22c55e', fn: k => d.byMes[k].pagoInicial },
-      pagoG: { label:'Pagos de Glosa',color:'#3b82f6', fn: k => d.byMes[k].pagoGlosa },
-      glosa: { label:'Glosas',        color:'#f59e0b', fn: k => d.byMes[k].glosa },
-      nc:    { label:'NC Aceptadas',  color:'#8b5cf6', fn: k => d.byMes[k].nc },
-    };
-    vars.forEach(v => {
-      if (!varDef[v]) return;
-      datasets.push({ label: varDef[v].label, data: monthKeys.map(varDef[v].fn), borderColor: varDef[v].color,
-        backgroundColor: varDef[v].color + '22', borderWidth: 2.5, pointRadius: 4, tension: .3, fill: false });
-    });
-  }
-
-  // Destroy previous chart
-  if (window._tendChart) { window._tendChart.destroy(); window._tendChart = null; }
-
-  container.innerHTML = '<canvas id="tend-canvas" style="max-height:360px;"></canvas>';
-  const ctx = document.getElementById('tend-canvas');
-  window._tendChart = new Chart(ctx, {
-    type: 'line',
-    data: { labels, datasets },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { position:'bottom', labels:{ font:{family:'DM Sans',size:12}, padding:16 } },
-        tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + fmtCOP(ctx.raw) } }
-      },
-      scales: {
-        x: { grid:{ display:false }, ticks:{ font:{family:'DM Mono',size:11} } },
-        y: { grid:{ color:'#f3f4f6' }, ticks:{ font:{family:'DM Mono',size:11},
-             callback: v => '$ ' + (v>=1e9?(v/1e9).toFixed(1)+'B':v>=1e6?(v/1e6).toFixed(0)+'M':v.toLocaleString('es-CO')) } }
-      }
-    }
-  });
-}
 
 window.exportNcExcel = function exportNcExcel(d, mes) {
   const nc = d.ncEventsByMes[mes] || { detalle:[] };
@@ -3291,14 +3088,26 @@ window.renderCompTendencias = function renderCompTendencias() {
     type: 'line', data: { labels, datasets },
     options: {
       responsive: true, maintainAspectRatio: false,
+      layout: { padding: { top: 24 } },
       plugins: {
         legend: { position:'bottom', labels:{ font:{family:'DM Sans',size:12}, padding:12 } },
-        tooltip: { callbacks: { label: c => ' ' + c.dataset.label + ': ' + fmtCOP(c.raw) } }
+        tooltip: { callbacks: { label: function(c) { return ' ' + c.dataset.label + ': ' + fmtCOP(c.raw); } } },
+        datalabels: {
+          display: true, anchor: 'end', align: 'top',
+          font: { family: 'DM Mono', size: 10, weight: '600' },
+          color: '#374151',
+          formatter: function(v) {
+            if (v >= 1e9) return (v/1e9).toFixed(1)+'B';
+            if (v >= 1e6) return (v/1e6).toFixed(0)+'M';
+            if (v >= 1e3) return (v/1e3).toFixed(0)+'K';
+            return String(v);
+          }
+        }
       },
       scales: {
         x: { grid:{ display:false }, ticks:{ font:{family:'DM Mono',size:11} } },
         y: { grid:{ color:'#f3f4f6' }, ticks:{ font:{family:'DM Mono',size:11},
-             callback: v => v>=1e9?(v/1e9).toFixed(1)+'B':v>=1e6?(v/1e6).toFixed(0)+'M':v.toLocaleString('es-CO') } }
+             callback: function(v) { return v>=1e9?(v/1e9).toFixed(1)+'B':v>=1e6?(v/1e6).toFixed(0)+'M':v.toLocaleString('es-CO'); } } }
       }
     }
   });
