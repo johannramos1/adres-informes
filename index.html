@@ -853,7 +853,7 @@ body.sb-collapsed #main-content {
     <!-- IPS Status (minimal) -->
     <div class="sb-section" style="margin-top:8px;">Informe por IPS</div>
     <div style="padding:4px 8px 8px;">
-      <div id="sb-status-dolormed" onclick="switchActiveIPS('dolormed'); showSection('individual');"
+      <div id="sb-status-dolormed" onclick="switchActiveIPS('dolormed', true);"
            style="display:flex;align-items:center;gap:8px;padding:8px 10px;
                   border-radius:8px;cursor:pointer;margin-bottom:4px;
                   background:rgba(255,255,255,.07);transition:background .15s;"
@@ -866,7 +866,7 @@ body.sb-collapsed #main-content {
         </div>
         <span id="sb-badge-dolormed" class="sb-ips-badge empty" style="margin-left:auto;flex-shrink:0;">—</span>
       </div>
-      <div id="sb-status-redesimat" onclick="switchActiveIPS('redesimat'); showSection('individual');"
+      <div id="sb-status-redesimat" onclick="switchActiveIPS('redesimat', true);"
            style="display:flex;align-items:center;gap:8px;padding:8px 10px;
                   border-radius:8px;cursor:pointer;
                   background:rgba(255,255,255,.07);transition:background .15s;"
@@ -999,20 +999,20 @@ window.showSection = function showSection(name) {
   if (name === 'admin') renderAdmin();
 };
 
-window.switchActiveIPS = function switchActiveIPS(ips) {
+window.switchActiveIPS = function switchActiveIPS(ips, navigate) {
   selectedIPS = ips;
-  // Highlight active IPS in sidebar
   ['dolormed','redesimat'].forEach(id => {
     const el = document.getElementById('sb-status-' + id);
     if (el) el.style.background = id === ips ? 'rgba(255,255,255,.18)' : 'rgba(255,255,255,.07)';
   });
-
-  // Navigate to individual section
-  document.querySelectorAll('.app-section').forEach(function(s){ s.classList.remove('active'); });
-  var indSec = document.getElementById('section-individual');
-  if (indSec) indSec.classList.add('active');
-  var tEl = document.getElementById('top-section-title');
-  if (tEl) tEl.textContent = 'Informe por IPS';
+  // Only navigate to individual if explicitly requested (user clicked IPS card)
+  if (navigate) {
+    document.querySelectorAll('.app-section').forEach(s => s.classList.remove('active'));
+    const indSec = document.getElementById('section-individual');
+    if (indSec) indSec.classList.add('active');
+    const tEl = document.getElementById('top-section-title');
+    if (tEl) tEl.textContent = 'Informe por IPS';
+  }
 
   if (ipsStore[ips].data) {
     reportData = ipsStore[ips].data;
@@ -1275,16 +1275,14 @@ window.loadAllFromSupabase = function loadAllFromSupabase() {
         updateSBCard(ipsId, snap);
         loaded++;
         if (loaded === 1) {
-          // Auto-show first loaded IPS
+          // Auto-load first IPS without forcing navigation
           selectedIPS = ipsId;
           reportData = snap;
           window._reportData = snap;
           document.body.className = ipsId === 'redesimat' ? 'theme-redesimat' : '';
           updateTopBar(snap);
           renderReport(snap);
-          document.querySelectorAll('.sb-ips-card').forEach(function(c) { c.classList.remove('active-ips'); });
-          var card = document.getElementById('sb-card-' + ipsId);
-          if (card) card.classList.add('active-ips');
+          switchActiveIPS(ipsId, false); // no navigation forced
         }
       } catch(e) { console.warn('Error restoring ' + ipsId + ':', e.message); }
     }).catch(function(e) { console.warn('Supabase load ' + ipsId + ':', e.message); });
