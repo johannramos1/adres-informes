@@ -64,7 +64,7 @@ body {
   min-height: 100vh;
 }
 
-/* ── UPLOAD SCREEN ── */
+/* == UPLOAD SCREEN == */
 #upload-screen {
   min-height: 100vh;
   display: flex;
@@ -199,7 +199,7 @@ body {
   align-items: center; gap: 8px;
 }
 
-/* ── LOADING ── */
+/* == LOADING == */
 #loading-screen {
   display: none;
   min-height: 100vh;
@@ -218,7 +218,7 @@ body {
 @keyframes spin { to { transform: rotate(360deg); } }
 #loading-screen p { color: var(--text-light); font-size: 15px; }
 
-/* ── MAIN REPORT ── */
+/* == MAIN REPORT == */
 #report-screen { display: none; }
 
 .top-bar {
@@ -270,14 +270,14 @@ body {
   padding: 5px 12px; border-radius: 20px;
 }
 
-/* ── LAYOUT ── */
+/* == LAYOUT == */
 .report-body {
   max-width: 1400px;
   margin: 0 auto;
   padding: 32px 32px 64px;
 }
 
-/* ── HEADER SECTION ── */
+/* == HEADER SECTION == */
 .report-header {
   background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
   border-radius: 16px;
@@ -329,12 +329,12 @@ body {
 .rh-kpi-value { font-size: 24px; font-weight: 700; font-family: 'DM Mono', monospace; }
 .rh-kpi-sub { font-size: 12px; opacity: .65; margin-top: 4px; }
 
-/* ── GRID ── */
+/* == GRID == */
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
 .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-bottom: 24px; }
 .grid-1 { margin-bottom: 24px; }
 
-/* ── CARD ── */
+/* == CARD == */
 .card {
   background: white;
   border-radius: var(--radius);
@@ -354,7 +354,7 @@ body {
 .card-body { padding: 20px 24px 24px; }
 .card-body-flush { padding: 0; }
 
-/* ── STAT BOXES ── */
+/* == STAT BOXES == */
 .stat-row { display: flex; gap: 16px; flex-wrap: wrap; }
 .stat-box {
   flex: 1; min-width: 180px;
@@ -374,7 +374,7 @@ body {
 .stat-delta.up { color: #059669; }
 .stat-delta.down { color: #dc2626; }
 
-/* ── COMPARISON BARS ── */
+/* == COMPARISON BARS == */
 .compare-item { margin-bottom: 16px; }
 .compare-item:last-child { margin-bottom: 0; }
 .compare-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
@@ -387,7 +387,7 @@ body {
 .fill-amber { background: #f59e0b; }
 .fill-red { background: #ef4444; }
 
-/* ── AUDITORIA TABLE ── */
+/* == AUDITORIA TABLE == */
 .audit-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -407,7 +407,7 @@ body {
 .audit-low { background: #fef2f2; }
 .audit-low .pct { color: #dc2626; }
 
-/* ── NC TABLE ── */
+/* == NC TABLE == */
 .nc-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .nc-table thead tr { border-bottom: 2px solid var(--border); }
 .nc-table thead th {
@@ -427,7 +427,7 @@ body {
 .table-scroll::-webkit-scrollbar-track { background: var(--surface); }
 .table-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-/* ── CARTERA TOTAL ── */
+/* == CARTERA TOTAL == */
 .cartera-flow {
   display: flex; align-items: center; gap: 12px;
   flex-wrap: wrap;
@@ -452,7 +452,7 @@ body {
 .cf-pct { font-size: 11px; font-weight: 600; color: var(--text-light); margin-top: 4px; }
 .cf-operator { font-size: 22px; font-weight: 300; color: var(--text-light); flex-shrink: 0; }
 
-/* ── TREND COMPARISON ── */
+/* == TREND COMPARISON == */
 .trend-pair {
   display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
 }
@@ -468,7 +468,7 @@ body {
 .trend-val.red { color: #dc2626; }
 .trend-val.blue { color: var(--primary); }
 
-/* ── GLOSAS MES ── */
+/* == GLOSAS MES == */
 .glosa-months {
   display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;
 }
@@ -481,7 +481,7 @@ body {
   color: var(--primary);
 }
 
-/* ── EMAIL COPY BOX ── */
+/* == EMAIL COPY BOX == */
 .email-box {
   background: #f8fafc;
   border: 1px solid var(--border);
@@ -497,7 +497,7 @@ body {
 }
 .email-box strong { color: var(--text-dark); }
 
-/* ── HISTORICO TABS ── */
+/* == HISTORICO TABS == */
 .hist-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
 .hist-tab {
   padding: 7px 16px;
@@ -512,7 +512,7 @@ body {
 .hist-content { display: none; }
 .hist-content.active { display: block; }
 
-/* ── SECTION TITLE ── */
+/* == SECTION TITLE == */
 .section-title {
   font-family: 'Playfair Display', serif;
   font-size: 20px; font-weight: 700;
@@ -523,7 +523,7 @@ body {
 }
 .section-title span { font-size: 14px; font-weight: 400; color: var(--text-light); font-family: 'DM Sans', sans-serif; }
 
-/* ── ALERT STRIP ── */
+/* == ALERT STRIP == */
 .alert-strip {
   border-radius: 10px; padding: 14px 20px;
   display: flex; align-items: center; gap: 12px;
@@ -533,10 +533,10 @@ body {
 .alert-strip.info { background: var(--pale); border: 1px solid var(--soft); color: var(--accent); }
 .alert-strip.success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #14532d; }
 
-/* ── CHART WRAPPER ── */
+/* == CHART WRAPPER == */
 .chart-wrap { position: relative; height: 220px; }
 
-/* ── FOOTER ── */
+/* == FOOTER == */
 .report-footer {
   text-align: center; padding: 32px;
   color: var(--text-light); font-size: 12px;
@@ -544,7 +544,7 @@ body {
   margin-top: 48px;
 }
 
-/* ── MODAL ── */
+/* == MODAL == */
 .modal-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(0,0,0,.5); z-index: 1000;
@@ -566,7 +566,7 @@ body {
 .modal-close:hover { color: var(--text-dark); }
 
 
-/* ── MACRO TABLE ── */
+/* == MACRO TABLE == */
 .macro-table tbody tr:nth-child(even):not([style*='background:var(--pale)']) td {
   background: #f6fbf8 !important;
 }
@@ -610,9 +610,9 @@ body {
 }
 
 
-/* ══════════════════════════════════════════
+/* ==========================================
    SIDEBAR + APP SHELL
-══════════════════════════════════════════ */
+========================================== */
 #app-shell {
   display: flex;
   min-height: 100vh;
@@ -827,11 +827,11 @@ body.sb-collapsed #main-content {
 </head>
 <body>
 
-<!-- ═══════════════════════════════ REPORT SCREEN ═══════════════════════════════ -->
+<!-- =============================== REPORT SCREEN =============================== -->
 <div id="report-screen" style="display:block;">
 <div id="app-shell">
 
-  <!-- ════════ SIDEBAR ════════ -->
+  <!-- ======== SIDEBAR ======== -->
   <div id="sidebar">
     <div id="sidebar-toggle" onclick="toggleSidebar()">&#8249;</div>
 
@@ -910,7 +910,7 @@ body.sb-collapsed #main-content {
     </div>
   </div>
 
-  <!-- ════════ MAIN CONTENT ════════ -->
+  <!-- ======== MAIN CONTENT ======== -->
   <div id="main-content">
 
     <!-- Top bar -->
@@ -946,7 +946,7 @@ body.sb-collapsed #main-content {
 </div><!-- /app-shell -->
 </div><!-- /report-screen -->
 
-<!-- ═══════════════════════════════ EMAIL MODAL ═══════════════════════════════ -->
+<!-- =============================== EMAIL MODAL =============================== -->
 <div class="modal-overlay" id="email-modal">
   <div class="modal">
     <button class="modal-close" onclick="closeEmailModal()">×</button>
@@ -959,9 +959,9 @@ body.sb-collapsed #main-content {
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════
-//  STATE — Multi-IPS
-// ═══════════════════════════════════════════════════════
+// =======================================================
+//  STATE - Multi-IPS
+// =======================================================
 let selectedIPS    = 'dolormed';   // active IPS in individual view
 let selectedFile   = null;
 let reportData     = null;         // active IPS data
@@ -977,7 +977,7 @@ const ipsStore = {
 let sbLoadingIPS  = null;
 let sbSelectedFile = null;
 
-// ── SIDEBAR FUNCTIONS ──
+// == SIDEBAR FUNCTIONS ==
 window.toggleSidebar = function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('collapsed');
   document.body.classList.toggle('sb-collapsed');
@@ -990,7 +990,7 @@ window.showSection = function showSection(name) {
   const navEl   = document.getElementById('nav-' + name);
   if (section) section.classList.add('active');
   if (navEl)   navEl.classList.add('active');
-  const titles = { individual:'Informe por IPS', comparativo:'Comparativo Gerencial', admin:'Configuración' };
+  const titles = { individual:'Informe por IPS', comparativo:'Comparativo Gerencial', admin:'Configuraci\u00f3n' };
   const titleEl = document.getElementById('top-section-title');
   if (titleEl) titleEl.textContent = titles[name] || '';
   if (name === 'comparativo') renderComparativo();
@@ -1017,7 +1017,7 @@ window.switchActiveIPS = function switchActiveIPS(ips) {
     document.getElementById('report-body').innerHTML =
       '<div style="padding:80px 32px;text-align:center;color:var(--text-light);">' +
       '<div style="font-size:14px;font-weight:500;color:var(--text-mid);margin-bottom:8px;">Base de datos de ' + ipsName + ' no cargada</div>' +
-      '<div style="font-size:13px;">Use el botón "Cargar base de datos" en el panel lateral.</div></div>';
+      '<div style="font-size:13px;">Use el bot\u00f3n "Cargar base de datos" en el panel lateral.</div></div>';
   }
 };
 
@@ -1029,7 +1029,7 @@ function renderSection() {
   if (active.id === 'section-admin') renderAdmin();
 }
 
-// ── SIDEBAR LOAD PANEL ──
+// == SIDEBAR LOAD PANEL ==
 function onSBFileSelect(e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -1044,7 +1044,7 @@ function updateSBCard(ips, data) {
   const meta = document.getElementById('sb-meta-' + ips);
   if (meta) meta.textContent = 'Corte: ' + data.cutoffStr;
   const badge = document.getElementById('sb-badge-' + ips);
-  if (badge) { badge.textContent = '✓'; badge.className = 'sb-ips-badge loaded'; }
+  if (badge) { badge.textContent = 'OK'; badge.className = 'sb-ips-badge loaded'; }
 }
 
 const IPS_LOGOS = {
@@ -1066,9 +1066,9 @@ function updateTopBar(data) {
   if (footer) footer.textContent = new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'long',year:'numeric'});
 }
 
-// ═══════════════════════════════════════════════════════
+// =======================================================
 //  SUPABASE CONFIG
-// ═══════════════════════════════════════════════════════
+// =======================================================
 const SB_URL = 'https://qzpgqmcnluperbivnpku.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF6cGdxbWNubHVwZXJiaXZucGt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5MjQ4NDUsImV4cCI6MjA5NDUwMDg0NX0.V0KnX_v2n2VcDWdNYmowo4Xmg_fGNQ1xL5u6tYGl9Tc';
 let sbClient = null;
@@ -1122,7 +1122,7 @@ function initSupabase() {
   }
 }
 
-// ── Save processed snapshot to Supabase ──
+// == Save processed snapshot to Supabase ==
 function saveToSupabase(ips, data) {
   if (!sbClient) return Promise.resolve(false);
   try {
@@ -1141,7 +1141,7 @@ function saveToSupabase(ips, data) {
   }
 }
 
-// ── Load snapshot from Supabase ──
+// == Load snapshot from Supabase ==
 function loadFromSupabase(ips) {
   if (!sbClient) return Promise.resolve(null);
   return sbClient.from('adres_snapshots')
@@ -1158,7 +1158,7 @@ function loadFromSupabase(ips) {
     });
 }
 
-// ── Build full serializable snapshot (all byMes data for display) ──
+// == Build full serializable snapshot (all byMes data for display) ==
 function buildSnapshotFull(ips, data) {
   return {
     ips,
@@ -1211,7 +1211,7 @@ function buildSnapshotFull(ips, data) {
   };
 }
 
-// ── Restore data from Supabase snapshot (no Excel needed) ──
+// == Restore data from Supabase snapshot (no Excel needed) ==
 function restoreFromSnapshot(snap) {
   // Re-parse dates in ncEventsByMes
   if (snap.ncEventsByMes) {
@@ -1232,9 +1232,9 @@ function restoreFromSnapshot(snap) {
   return snap;
 }
 
-// ══════════════════════════════════════════════════════════
+// ==========================================================
 //  APP STARTUP
-// ═══════════════════════════════════════════════════════
+// =======================================================
 document.addEventListener('DOMContentLoaded', function() {
   // Show welcome screen immediately
   const rb = document.getElementById('report-body');
@@ -1242,7 +1242,7 @@ document.addEventListener('DOMContentLoaded', function() {
     '<div style="padding:80px 32px;text-align:center;color:var(--text-light);">' +
     '<div style="font-size:48px;margin-bottom:16px;opacity:.3;">&#9783;</div>' +
     '<div style="font-size:18px;font-weight:600;color:var(--text-mid);margin-bottom:8px;">Bienvenido al Sistema de Informes ADRES</div>' +
-    '<div style="font-size:14px;max-width:400px;margin:0 auto;line-height:1.7;">Vaya a <strong>Configuración</strong> para cargar las bases de datos.</div>' +
+    '<div style="font-size:14px;max-width:400px;margin:0 auto;line-height:1.7;">Vaya a <strong>Configuraci\u00f3n</strong> para cargar las bases de datos.</div>' +
     '</div>';
 
   // Load from Supabase in background after a short delay
@@ -1282,18 +1282,18 @@ function loadAllFromSupabase() {
   });
 }
 
-// ═══════════════════════════════════════════════════════
+// =======================================================
 //  IPS SELECTION
-// ═══════════════════════════════════════════════════════
+// =======================================================
 function selectIPS(ips) {
   selectedIPS = ips;
   document.getElementById('btn-dolormed').className = 'ips-btn' + (ips === 'dolormed' ? ' active-dolormed' : '');
   document.getElementById('btn-redesimat').className = 'ips-btn' + (ips === 'redesimat' ? ' active-redesimat' : '');
 }
 
-// ═══════════════════════════════════════════════════════
+// =======================================================
 //  FILE HANDLING
-// ═══════════════════════════════════════════════════════
+// =======================================================
 function onDragOver(e) { e.preventDefault(); document.getElementById('drop-zone').classList.add('dragging'); }
 function onDragLeave() { document.getElementById('drop-zone').classList.remove('dragging'); }
 function onDrop(e) {
@@ -1311,11 +1311,11 @@ function handleFile(file) {
   document.getElementById('btn-generate').disabled = false;
 }
 
-// ═══════════════════════════════════════════════════════
+// =======================================================
 //  GENERATE REPORT
-// ═══════════════════════════════════════════════════════
+// =======================================================
 function generateReport() {
-  // Legacy function — main flow now uses loadSBFile via sidebar
+  // Legacy function - main flow now uses loadSBFile via sidebar
   return;
   if (!selectedFile) return;
   
@@ -1336,7 +1336,7 @@ function generateReport() {
         
         
         document.getElementById('btn-generate').disabled = false;
-        const msg = 'BD incorrecta\n\nSeleccionó: ' + crossCheck.selected + '\nLa base parece ser: ' + crossCheck.detectedName + '\nPrefijos: ' + crossCheck.prefixes.join(', ') + '\n\n¿Continuar de todas formas?';
+        const msg = 'BD incorrecta\n\nSeleccion\u00f3: ' + crossCheck.selected + '\nLa base parece ser: ' + crossCheck.detectedName + '\nPrefijos: ' + crossCheck.prefixes.join(', ') + '\n\n\u00bfContinuar de todas formas?';
         if (!confirm(msg)) return;
       }
 
@@ -1368,15 +1368,15 @@ function generateReport() {
   reader.readAsArrayBuffer(selectedFile);
 }
 
-// ═══════════════════════════════════════════════════════
+// =======================================================
 //  DATA PROCESSING ENGINE
-// ═══════════════════════════════════════════════════════
+// =======================================================
 function processData(rows) {
   // Auto-detect IPS from column names
   const sampleKeys = Object.keys(rows[0] || {});
   const autoRedesimat = sampleKeys.some(k => k.toUpperCase().includes('NOTIFICACION GL'));
   const ips     = autoRedesimat ? 'redesimat' : selectedIPS;
-  const ipsName = ips === 'redesimat' ? 'Clínica Redes IMAT S.A.S' : 'Clínica Dolormed S.A.S';
+  const ipsName = ips === 'redesimat' ? 'Cl\u00ednica Redes IMAT S.A.S' : 'Cl\u00ednica Dolormed S.A.S';
 
   const colMap = detectColumns(rows[0] || {});
 
@@ -1389,13 +1389,13 @@ function processData(rows) {
   const toNum  = v => parseFloat(v) || 0;
   const period = d => d ? `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}` : null;
 
-  // ── Enrich every row ──
+  // == Enrich every row ==
   const enriched = rows.map(r => ({
     prefijo:        r[colMap.prefijo]  || '',
     factura:        r[colMap.factura]  || '',
     fechaRad:       pd2(r[colMap.fechaRad]),
-    vrFacturaBruto: toNum(r[colMap.vrFacturaBruto]), // V/R FACTURA BRUTO — base de todos los %
-    vrFactura:      toNum(r[colMap.vrFactura]),       // V/R FACTURA NETO EPS — para cartera
+    vrFacturaBruto: toNum(r[colMap.vrFacturaBruto]), // V/R FACTURA BRUTO - base de todos los %
+    vrFactura:      toNum(r[colMap.vrFactura]),       // V/R FACTURA NETO EPS - para cartera
     vrGlosa:        toNum(r[colMap.vrGlosa]) + toNum(r[colMap.vrDevolucion]), // glosa + devolucion
     fechaGlosa:     pd2(r[colMap.fechaGlosa]),
     pagoInicial:    toNum(r[colMap.pagoBruto]),       // PAGO EPS BRUTO
@@ -1409,17 +1409,17 @@ function processData(rows) {
     noNc:           r[colMap.noNc] || '',
   }));
 
-  // ── Date range & cutoff ──
+  // == Date range & cutoff ==
   const allRad    = enriched.map(r => r.fechaRad).filter(Boolean);
   const cutoffDate = window._manualCutoff || (allRad.length ? new Date(Math.max(...allRad)) : new Date());
   const cutoffStr  = fmtDate(cutoffDate);
 
-  // ══════════════════════════════════════════════════════
-  //  CORE AGGREGATION — everything by FECHA DE RADICACION
+  // ======================================================
+  //  CORE AGGREGATION - everything by FECHA DE RADICACION
   //  (each row's month is the radicacion month; glosas,
   //   pagos, pagoGlosa, NC follow the same row regardless
   //   of when the event occurred)
-  // ══════════════════════════════════════════════════════
+  // ======================================================
   const byMes = {};   // key = 'YYYY-MM'
 
   enriched.forEach(r => {
@@ -1429,8 +1429,8 @@ function processData(rows) {
       year: r.fechaRad.getFullYear(),
       month: r.fechaRad.getMonth() + 1,
       n: 0,
-      radBruto: 0,   // V/R FACTURA BRUTO — base para todos los porcentajes
-      rad: 0,         // V/R FACTURA NETO EPS — para cartera total
+      radBruto: 0,   // V/R FACTURA BRUTO - base para todos los porcentajes
+      rad: 0,         // V/R FACTURA NETO EPS - para cartera total
       glosa: 0,
       pagoInicial: 0, pagoInicialNeto: 0,
       pagoGlosa: 0,   pagoGlosaNeto: 0,
@@ -1450,7 +1450,7 @@ function processData(rows) {
     if (r.pagoInicial > 0 || r.vrGlosa > 0 || r.vrNc > 0) m.auditados++;
   });
 
-  // ── Derived % per month — all % use BRUTO as denominator ──
+  // == Derived % per month - all % use BRUTO as denominator ==
   const isRedes = ips === 'redesimat';
   Object.values(byMes).forEach(m => {
     const base = m.radBruto > 0 ? m.radBruto : 1; // V/R FACTURA BRUTO = base de todos los %
@@ -1467,7 +1467,7 @@ function processData(rows) {
       : (m.n > 0 ? m.auditados / m.n : 0);                              // Dolormed: row-based
   });
 
-  // ── NC detail list (for table) ──
+  // == NC detail list (for table) ==
   const ncByMes = {};
   enriched.filter(r => r.vrNc > 0 && r.fechaNc).forEach(r => {
     // NC table shown by fecha de aceptacion (NC date) for the detail table
@@ -1480,8 +1480,8 @@ function processData(rows) {
     });
   });
 
-  // ── Last active periods (for correo analysis) ──
-  // "Last month" = most recent month where glosa OR pago ingresó
+  // == Last active periods (for correo analysis) ==
+  // "Last month" = most recent month where glosa OR pago ingres\u00f3
   // We detect this by looking at actual event dates
   const pagoEventsByMes  = {};
   const glosaEventsByMes = {};
@@ -1509,7 +1509,7 @@ function processData(rows) {
   const lastPagoMes  = pagoKeys[pagoKeys.length-1]  || null;
   const lastGlosaMes = glosaKeys[glosaKeys.length-1] || null;
 
-  // ── Totals ──
+  // == Totals ==
   // Cartera total uses NETO values (real cash flow)
   const totalRad       = enriched.reduce((s,r) => s + r.vrFactura,        0);
   const totalPago      = enriched.reduce((s,r) => s + r.pagoInicialNeto,  0);
@@ -1518,18 +1518,18 @@ function processData(rows) {
   const totalRadBruto  = enriched.reduce((s,r) => s + r.vrFacturaBruto,   0);
   const carteraTotal   = totalRad - totalPago - totalPagoGlosa - totalNc;
 
-  // ── Years list ──
+  // == Years list ==
   const years = [...new Set(Object.keys(byMes).map(k => parseInt(k)))].sort();
   const currentYear = cutoffDate.getFullYear();
   const prevYear    = currentYear - 1;
 
-  // ── Promedios anuales (M-N-O-P) ──
+  // == Promedios anuales (M-N-O-P) ==
   // Average only over months that have pago > 0 (meses auditados con movimiento)
   const calcPromedios = (year) => {
     const keys = Object.keys(byMes).filter(k => parseInt(k) === year).sort();
     if (!keys.length) return null;
     const all  = keys.map(k => byMes[k]);
-    // Regla universal: solo meses con auditoría > 50% para promedios confiables
+    // Regla universal: solo meses con auditor\u00eda > 50% para promedios confiables
     const activos = all.filter(m => m.pctAuditado > 0.5);
     const base = activos.length ? activos : all;
     const avg  = arr => arr.length ? arr.reduce((s,v) => s+v, 0) / arr.length : 0;
@@ -1553,14 +1553,14 @@ function processData(rows) {
       // M = prom % glosado inicial, N = prom % pagado inicial
       // O = prom % pagado final,    P = prom % glosado final
       promPctGlosadoMes:  avg(base.map(m => m.pctGlosa)),        // M
-      promPctPagadoMes:   avg(base.map(m => m.pctPagoInicial)),  // N ← era pctPago (total), ahora solo inicial
+      promPctPagadoMes:   avg(base.map(m => m.pctPagoInicial)),  // N \u2190 era pctPago (total), ahora solo inicial
       promPctPagoFinal:   avg(base.map(m => m.pagadoFinal)),     // O
       promPctGlosaFinal:  avg(base.map(m => m.glosadoFinal)),    // P
       nMesesActivos: activos.length,
     };
   };
 
-  // ── Build event indexes for análisis mensual ──
+  // == Build event indexes for an\u00e1lisis mensual ==
   // pagoGlosaEventsByMes: pago de glosa by fecha de pago glosa
   const pagoGlosaEventsByMes = {};
   enriched.forEach(r => {
@@ -1593,7 +1593,7 @@ function processData(rows) {
     pagoEventsByMes, glosaEventsByMes,
     pagoGlosaEventsByMes, ncEventsByMes,
     lastPagoMes, lastGlosaMes,
-    prom: Object.fromEntries(years.map(y => [y, calcPromedios(y)])), // todos los años disponibles
+    prom: Object.fromEntries(years.map(y => [y, calcPromedios(y)])), // todos los a\u00f1os disponibles
     years, currentYear, prevYear,
     enriched,
   };
@@ -1602,7 +1602,7 @@ function processData(rows) {
 function detectColumns(sampleRow) {
   const keys = Object.keys(sampleRow);
 
-  // Exact match first, then partial — avoids 'FECHA GLOSA ACEPTADA' matching vrNc
+  // Exact match first, then partial - avoids 'FECHA GLOSA ACEPTADA' matching vrNc
   const find = (...terms) => {
     for (const t of terms) {
       const exact = keys.find(k => k.toUpperCase().trim() === t.toUpperCase().trim());
@@ -1665,9 +1665,9 @@ function detectColumns(sampleRow) {
   };
 }
 
-// ═══════════════════════════════════════════════════════
+// =======================================================
 //  RENDER REPORT
-// ═══════════════════════════════════════════════════════
+// =======================================================
 function renderReport(d) {
   
   
@@ -1688,7 +1688,7 @@ function renderReport(d) {
   // Build HTML
   let html = '';
 
-  // ── HEADER ──
+  // == HEADER ==
     html += `
   <div class="report-header">
     <div class="rh-top">
@@ -1697,34 +1697,34 @@ function renderReport(d) {
              style="height:52px;object-fit:contain;background:rgba(255,255,255,.18);
                     border-radius:8px;padding:6px 14px;margin-bottom:12px;display:block;">
         <h2>Informe de Seguimiento ADRES</h2>
-        <p>${d.ipsName} · Corte al ${d.cutoffStr}</p>
+        <p>${d.ipsName} \u00b7 Corte al ${d.cutoffStr}</p>
       </div>
       <div class="rh-meta">
         Elaborado: ${new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'long',year:'numeric'})}<br>
-        Período: ${d.years[0]}–${Math.max(...d.years)}<br>
+        Per\u00edodo: ${d.years[0]}\u2013${Math.max(...d.years)}<br>
         Total facturas: ${fmt0(d.enriched.length)}
       </div>
     </div>
   </div>`;
 
-  // ── INTEGRITY BANNER (shown if issues detected) ──
+  // == INTEGRITY BANNER (shown if issues detected) ==
   html += `<div id="integrity-banner" style="display:none;"></div>`;
 
-  // ── TABLA MACRO ──
+  // == TABLA MACRO ==
   html += buildMacroTable(d);
 
-  // ── PROMEDIOS ──
+  // == PROMEDIOS ==
   const allPromYears = d.years.filter(y => d.prom[y]);
-  // Multi-select dropdown — default last 2 years
+  // Multi-select dropdown - default last 2 years
   const defaultYears = allPromYears.filter(y => y >= d.currentYear - 1);
   const promOpts = allPromYears.map(y =>
     `<option value="${y}" ${defaultYears.includes(y) ? 'selected' : ''}>${y}</option>`
   ).join('');
 
   html += `<div class="section-title">Promedios Anuales
-    <span>Comportamiento de recaudo y glosa por año</span>
+    <span>Comportamiento de recaudo y glosa por a\u00f1o</span>
     <div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
-      <span style="font-size:12px;color:var(--text-light);font-weight:400;">Años:</span>
+      <span style="font-size:12px;color:var(--text-light);font-weight:400;">A\u00f1os:</span>
       <select id="prom-year-select" multiple
         onchange="renderPromCards(window._reportData)"
         style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
@@ -1741,24 +1741,24 @@ function renderReport(d) {
 
 
 
-  // ── ANÁLISIS MENSUAL ──
+  // == AN\u00c1LISIS MENSUAL ==
   html += buildAnalisisMensual(d);
 
-  // ── REZAGO ──
+  // == REZAGO ==
   html += `
   <div class="section-title" style="margin-top:8px;">
-    Rezago de Auditoría
-    <span>Análisis de completitud por mes de radicación</span>
+    Rezago de Auditor\u00eda
+    <span>An\u00e1lisis de completitud por mes de radicaci\u00f3n</span>
   </div>
   <div class="card grid-1"><div class="card-body" id="rezago-body">
     <div style="color:var(--text-light);font-size:13px;">Cargando...</div>
   </div></div>`;
 
-  // ── TENDENCIAS ──
-  const tendYearOpts = ['<option value="all">Todos los años (anual)</option>',
+  // == TENDENCIAS ==
+  const tendYearOpts = ['<option value="all">Todos los a\u00f1os (anual)</option>',
     ...d.years.map(y => `<option value="${y}">${y}</option>`)].join('');
   const tendVars = [
-    {v:'rad',   l:'Radicación'},
+    {v:'rad',   l:'Radicaci\u00f3n'},
     {v:'pago',  l:'Pagos iniciales'},
     {v:'pagoG', l:'Pagos de glosa'},
     {v:'glosa', l:'Glosas'},
@@ -1777,7 +1777,7 @@ function renderReport(d) {
   html += `
   <div class="section-title" style="margin-top:8px;">
     Tendencias
-    <span>Flujo de variables por período</span>
+    <span>Flujo de variables por per\u00edodo</span>
   </div>
   <div class="card grid-1">
     <div class="card-header" style="padding-bottom:14px;">
@@ -1793,12 +1793,12 @@ function renderReport(d) {
   </div>`;
 
 
-  // ── RESÚMENES PARA CORREO (al final de todo) ──
+  // == RES\u00daMENES PARA CORREO (al final de todo) ==
   html += `<div id="correo-section-wrapper" style="margin-bottom:24px;"></div>`;
 
   document.getElementById('report-body').innerHTML = html;
 
-  // Store data globally for análisis selector
+  // Store data globally for an\u00e1lisis selector
   window._reportData = d;
   setTimeout(() => {
     renderPromCards(d);
@@ -1857,7 +1857,7 @@ function renderPromCards(d) {
     const p = d.prom[y];
     if (p) html += buildPromedioCard(p, y, d.ips);
   });
-  if (!html) html = '<div style="color:var(--text-light);font-size:14px;padding:16px;">Seleccione al menos un año.</div>';
+  if (!html) html = '<div style="color:var(--text-light);font-size:14px;padding:16px;">Seleccione al menos un a\u00f1o.</div>';
   container.innerHTML = html;
 }
 
@@ -1911,7 +1911,7 @@ function buildMacroTable(d) {
     });
   });
 
-  // ── Promedios M-N-O-P per year (shown at right of table) ──
+  // == Promedios M-N-O-P per year (shown at right of table) ==
   const promByYear = {};
   years.forEach(y => {
     const keys = Object.keys(d.byMes).filter(k => k.startsWith(y+'')).sort();
@@ -1926,13 +1926,13 @@ function buildMacroTable(d) {
     };
   });
 
-  // ── Filter tabs ──
+  // == Filter tabs ==
   let tabsHtml = `<div class="hist-tabs" id="macro-tabs">`;
-  tabsHtml += `<button class="hist-tab active" onclick="filterMacroYear('all',this)">Todos los años</button>`;
+  tabsHtml += `<button class="hist-tab active" onclick="filterMacroYear('all',this)">Todos los a\u00f1os</button>`;
   years.forEach(y => tabsHtml += `<button class="hist-tab" onclick="filterMacroYear(${y},this)">${y}</button>`);
   tabsHtml += `</div>`;
 
-  // ── Color helpers ──
+  // == Color helpers ==
   const pctColor = (v, inverted) => {
     if (v === null || v === undefined) return '';
     const pct = v * 100;
@@ -1955,21 +1955,21 @@ function buildMacroTable(d) {
     if (p >= 50) return 'color:#b45309;font-weight:600';
     return 'color:#dc2626;font-weight:600';
   };
-  const fp = v => (v !== null && v !== undefined) ? Math.round(v*100)+'%' : '—';
+  const fp = v => (v !== null && v !== undefined) ? Math.round(v*100)+'%' : '-';
 
-  // ── Build table ──
+  // == Build table ==
   let tableHtml = `
   <div class="table-scroll" style="max-height:560px;">
     <table class="nc-table macro-table" id="macro-table">
       <thead>
         <tr>
-          <th rowspan="2" style="min-width:110px;position:sticky;left:0;background:white;z-index:2;">Año / Mes</th>
-          <th rowspan="2" style="min-width:60px;">N° Fact.</th>
+          <th rowspan="2" style="min-width:110px;position:sticky;left:0;background:white;z-index:2;">A\u00f1o / Mes</th>
+          <th rowspan="2" style="min-width:60px;">N\u00b0 Fact.</th>
           <th rowspan="2" style="min-width:150px;">Valor Radicado</th>
           <th colspan="2" style="text-align:center;background:#fff7ed;">Glosas y Devoluciones</th>
           <th colspan="2" style="text-align:center;background:#f0fdf4;">Pagos Iniciales</th>
           <th colspan="2" style="text-align:center;background:#e0f2fe;">Pagos de Glosa</th>
-          <th colspan="2" style="text-align:center;background:#f5f3ff;">Notas Crédito (NC)</th>
+          <th colspan="2" style="text-align:center;background:#f5f3ff;">Notas Cr\u00e9dito (NC)</th>
           <th colspan="2" style="text-align:center;background:#eff6ff;">Resultado Final</th>
           <th rowspan="2" style="min-width:76px;">% Auditado</th>
         </tr>
@@ -1998,24 +1998,24 @@ function buildMacroTable(d) {
       <td style="position:sticky;left:0;background:${bg};font-weight:${fw};">${r.mes}</td>
       <td class="mono">${fmt0(r.n)}</td>
       <td class="amount">${fmtCOP(r.rad)}</td>
-      <td class="amount">${r.glosa>0?fmtCOP(r.glosa):'—'}</td>
-      <td class="mono" style="${pctColor(r.pctGlosa, true)}">${r.glosa>0?fp(r.pctGlosa):'—'}</td>
-      <td class="amount">${r.pagoInicial>0?fmtCOP(r.pagoInicial):'—'}</td>
-      <td class="mono" style="${pctColor(r.pctPagoInicial, false)}">${r.pagoInicial>0?fp(r.pctPagoInicial):'—'}</td>
-      <td class="amount">${r.pagoGlosa>0?fmtCOP(r.pagoGlosa):'—'}</td>
-      <td class="mono" style="${pctColor(r.pctPagoGlosa, false)}">${r.pagoGlosa>0?fp(r.pctPagoGlosa):'—'}</td>
-      <td class="amount">${r.nc>0?fmtCOP(r.nc):'—'}</td>
-      <td class="mono">${r.nc>0?fp(r.pctNc):'—'}</td>
+      <td class="amount">${r.glosa>0?fmtCOP(r.glosa):'-'}</td>
+      <td class="mono" style="${pctColor(r.pctGlosa, true)}">${r.glosa>0?fp(r.pctGlosa):'-'}</td>
+      <td class="amount">${r.pagoInicial>0?fmtCOP(r.pagoInicial):'-'}</td>
+      <td class="mono" style="${pctColor(r.pctPagoInicial, false)}">${r.pagoInicial>0?fp(r.pctPagoInicial):'-'}</td>
+      <td class="amount">${r.pagoGlosa>0?fmtCOP(r.pagoGlosa):'-'}</td>
+      <td class="mono" style="${pctColor(r.pctPagoGlosa, false)}">${r.pagoGlosa>0?fp(r.pctPagoGlosa):'-'}</td>
+      <td class="amount">${r.nc>0?fmtCOP(r.nc):'-'}</td>
+      <td class="mono">${r.nc>0?fp(r.pctNc):'-'}</td>
       <td class="mono" style="${pctColor(r.glosadoFinal, true)}">${fp(r.glosadoFinal)}</td>
       <td class="mono" style="${pctColor(r.pagadoFinal, false)}">${fp(r.pagadoFinal)}</td>
       <td class="mono" style="${r.isAudTotal
         ? 'font-weight:800;font-size:14px;background:var(--pale);border-left:3px solid var(--secondary);color:var(--primary);'
-        : audColor(r.aud)}">${r.aud!==null?Math.round(r.aud*100)+'%':'—'}</td>
+        : audColor(r.aud)}">${r.aud!==null?Math.round(r.aud*100)+'%':'-'}</td>
 
     </tr>`;
   });
 
-  // ── Summary cards per year (below table, inside scroll) ──
+  // == Summary cards per year (below table, inside scroll) ==
   let summaryCards = '';
   years.forEach(y => {
     const pr = promByYear[y] || {};
@@ -2031,22 +2031,22 @@ function buildMacroTable(d) {
         <div style="background:#fff7ed;border-radius:8px;padding:12px 14px;border-top:3px solid #f59e0b;">
           <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#92400e;margin-bottom:6px;">Prom. % Glosado</div>
           <div style="font-size:22px;font-weight:700;font-family:'DM Mono',monospace;color:#dc2626;">${Math.round(pr.M*100)}%</div>
-          <div style="font-size:11px;color:#92400e;margin-top:3px;">Col. M · s/radicado</div>
+          <div style="font-size:11px;color:#92400e;margin-top:3px;">Col. M \u00b7 s/radicado</div>
         </div>
         <div style="background:#f5f3ff;border-radius:8px;padding:12px 14px;border-top:3px solid #8b5cf6;">
           <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#6d28d9;margin-bottom:6px;">Prom. Glosa Final</div>
           <div style="font-size:22px;font-weight:700;font-family:'DM Mono',monospace;color:#6d28d9;">${Math.round(pr.P*100)}%</div>
-          <div style="font-size:11px;color:#6d28d9;margin-top:3px;">Col. P · neta s/radicado</div>
+          <div style="font-size:11px;color:#6d28d9;margin-top:3px;">Col. P \u00b7 neta s/radicado</div>
         </div>
         <div style="background:#f0fdf4;border-radius:8px;padding:12px 14px;border-top:3px solid #22c55e;">
           <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#15803d;margin-bottom:6px;">Prom. % Pagado</div>
           <div style="font-size:22px;font-weight:700;font-family:'DM Mono',monospace;color:#15803d;">${Math.round(pr.N*100)}%</div>
-          <div style="font-size:11px;color:#15803d;margin-top:3px;">Col. N · s/radicado</div>
+          <div style="font-size:11px;color:#15803d;margin-top:3px;">Col. N \u00b7 s/radicado</div>
         </div>
         <div style="background:#eff6ff;border-radius:8px;padding:12px 14px;border-top:3px solid #3b82f6;">
           <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#1d4ed8;margin-bottom:6px;">Prom. Pago Final</div>
           <div style="font-size:22px;font-weight:700;font-family:'DM Mono',monospace;color:#1d4ed8;">${Math.round(pr.O*100)}%</div>
-          <div style="font-size:11px;color:#1d4ed8;margin-top:3px;">Col. O · incl. glosa+NC</div>
+          <div style="font-size:11px;color:#1d4ed8;margin-top:3px;">Col. O \u00b7 incl. glosa+NC</div>
         </div>
       </div>
     </div>`;
@@ -2058,16 +2058,16 @@ function buildMacroTable(d) {
   tableHtml += `<div id="macro-summary" style="padding:16px 24px 0;">${summaryCards}</div>`;
 
   tableHtml += `<div style="padding:4px 24px 0;display:flex;gap:20px;flex-wrap:wrap;font-size:12px;color:var(--text-light);">
-    <span> Pago ≥85% · Glosa ≤15%</span>
-    <span> Pago 75–84% · Glosa 16–25%</span>
-    <span> Pago &lt;75% · Glosa &gt;25%</span>
+    <span> Pago \u226585% \u00b7 Glosa \u226415%</span>
+    <span> Pago 75\u201384% \u00b7 Glosa 16\u201325%</span>
+    <span> Pago &lt;75% \u00b7 Glosa &gt;25%</span>
   </div>`;
 
   return `
-  <div class="section-title">Indicador General IPS — Cliente ADRES <span>Por mes de radicación</span></div>
+  <div class="section-title">Indicador General IPS - Cliente ADRES <span>Por mes de radicaci\u00f3n</span></div>
   <div class="card grid-1">
     <div class="card-header" style="padding-bottom:16px;">
-      <div class="card-title card-title-accent">Radicación · Glosas · Pagos · NC · Resultados</div>
+      <div class="card-title card-title-accent">Radicaci\u00f3n \u00b7 Glosas \u00b7 Pagos \u00b7 NC \u00b7 Resultados</div>
     </div>
     <div style="padding:0 24px 8px;">${tabsHtml}</div>
     <div class="card-body-flush" style="padding:0 0 24px;">${tableHtml}</div>
@@ -2079,7 +2079,7 @@ function buildPromedioCard(p, year, ips) {
   const fillColor = ips === 'dolormed' ? 'fill-green' : 'fill-blue';
   return `
   <div class="card">
-    <div class="card-header"><div class="card-title card-title-accent">Año ${year}</div></div>
+    <div class="card-header"><div class="card-title card-title-accent">A\u00f1o ${year}</div></div>
     <div class="card-body">
       <div class="trend-pair">
         <div class="trend-item">
@@ -2138,8 +2138,8 @@ function buildAnalisisMensual(d) {
 
   return `
   <div class="section-title" style="margin-top:8px;">
-    Análisis Mensual — Registros vs Radicación
-    <span>Seleccione el mes de registro para ver qué radicaciones afectó</span>
+    An\u00e1lisis Mensual - Registros vs Radicaci\u00f3n
+    <span>Seleccione el mes de registro para ver qu\u00e9 radicaciones afect\u00f3</span>
   </div>
   <div class="card grid-1" id="analisis-card">
     <div class="card-header" style="padding-bottom:0;">
@@ -2161,9 +2161,9 @@ function buildAnalisisMensual(d) {
 
 
 
-// ═══════════════════════════════════════════════════════
-//  CORREO SECTION — driven by mes-analisis-select
-// ═══════════════════════════════════════════════════════
+// =======================================================
+//  CORREO SECTION - driven by mes-analisis-select
+// =======================================================
 
 function renderRezago(d) {
   const rezagoEl = document.getElementById('rezago-body');
@@ -2179,7 +2179,7 @@ function renderRezago(d) {
     pct: Math.round(d.byMes[k].pctAuditado * 100),
   }));
 
-  // Months with 0% — no activity at all
+  // Months with 0% - no activity at all
   const zeroMonths = months.filter(x => x.pct === 0);
 
   // Months below 95% but above 0%
@@ -2208,22 +2208,22 @@ function renderRezago(d) {
   let analysisText = '';
   if (gapCount > 0) {
     const gapPeriods = reversed.slice(0, gapCount).map(x => fmtPeriod(x.k)).reverse().join(', ');
-    analysisText += `Sin actividad de auditoría en los últimos <strong>${gapCount} ${gapCount===1?'período':'períodos'}</strong>: ${gapPeriods}. `;
+    analysisText += `Sin actividad de auditor\u00eda en los \u00faltimos <strong>${gapCount} ${gapCount===1?'per\u00edodo':'per\u00edodos'}</strong>: ${gapPeriods}. `;
   }
   if (incomplete.length > 0) {
     const avgPct = Math.round(incomplete.reduce((s,x)=>s+x.pct,0)/incomplete.length);
-    analysisText += `Adicionalmente, <strong>${incomplete.length} ${incomplete.length===1?'período':'períodos'}</strong> tienen auditoría incompleta con un promedio de <strong>${avgPct}%</strong> de revisión. `;
+    analysisText += `Adicionalmente, <strong>${incomplete.length} ${incomplete.length===1?'per\u00edodo':'per\u00edodos'}</strong> tienen auditor\u00eda incompleta con un promedio de <strong>${avgPct}%</strong> de revisi\u00f3n. `;
   }
   if (gapCount === 0 && incomplete.length === 0) {
-    analysisText = 'Todos los períodos analizados superan el 95% de auditoría.';
+    analysisText = 'Todos los per\u00edodos analizados superan el 95% de auditor\u00eda.';
   }
 
   analysisHtml += `
   <div style="padding:16px 18px;background:${s.bg};border:1px solid ${s.border};
                border-radius:10px;margin-bottom:20px;font-size:13px;color:${s.color};line-height:1.7;">
-    <strong>Análisis de rezago — últimos 24 períodos:</strong><br>
+    <strong>An\u00e1lisis de rezago - \u00faltimos 24 per\u00edodos:</strong><br>
     ${analysisText}
-    ${gapCount > 1 ? `La norma establece máximo 30 días para respuesta de auditoría.` : ''}
+    ${gapCount > 1 ? `La norma establece m\u00e1ximo 30 d\u00edas para respuesta de auditor\u00eda.` : ''}
   </div>`;
 
   // Table: only months below 95%
@@ -2231,7 +2231,7 @@ function renderRezago(d) {
 
   if (toShow.length === 0) {
     analysisHtml += `<div style="font-size:13px;color:var(--text-light);">
-      No se detectan períodos por debajo del 95% en los últimos 24 meses.
+      No se detectan per\u00edodos por debajo del 95% en los \u00faltimos 24 meses.
     </div>`;
   } else {
     // Group by year
@@ -2244,7 +2244,7 @@ function renderRezago(d) {
 
     analysisHtml += `<div style="font-size:12px;font-weight:700;text-transform:uppercase;
                                   letter-spacing:.5px;color:var(--text-light);margin-bottom:12px;">
-      Períodos por debajo del 95% — últimos 24 meses (${toShow.length} períodos)
+      Per\u00edodos por debajo del 95% - \u00faltimos 24 meses (${toShow.length} per\u00edodos)
     </div>`;
 
     Object.entries(byYear).sort().forEach(([year, items]) => {
@@ -2260,7 +2260,7 @@ function renderRezago(d) {
                           padding:2px 8px;border-radius:10px;margin-left:8px;">Sin actividad</span>`
           : pct < 50
           ? `<span style="font-size:10px;font-weight:700;background:#fff7ed;color:#c2410c;
-                          padding:2px 8px;border-radius:10px;margin-left:8px;">Crítico</span>`
+                          padding:2px 8px;border-radius:10px;margin-left:8px;">Cr\u00edtico</span>`
           : pct < 75
           ? `<span style="font-size:10px;font-weight:700;background:#fffbeb;color:#b45309;
                           padding:2px 8px;border-radius:10px;margin-left:8px;">Pendiente</span>`
@@ -2308,7 +2308,7 @@ function renderTendencias(d) {
     // Annual totals
     labels = allYears.map(String);
     const varDef = {
-      rad:   { label:'Radicación',    color:'#2d6a4f', fn: y => Object.keys(d.byMes).filter(k=>k.startsWith(y+'')).reduce((s,k)=>s+d.byMes[k].rad,0) },
+      rad:   { label:'Radicaci\u00f3n',    color:'#2d6a4f', fn: y => Object.keys(d.byMes).filter(k=>k.startsWith(y+'')).reduce((s,k)=>s+d.byMes[k].rad,0) },
       pago:  { label:'Pagos',         color:'#22c55e', fn: y => Object.keys(d.byMes).filter(k=>k.startsWith(y+'')).reduce((s,k)=>s+d.byMes[k].pagoInicial,0) },
       pagoG: { label:'Pagos de Glosa',color:'#3b82f6', fn: y => Object.keys(d.byMes).filter(k=>k.startsWith(y+'')).reduce((s,k)=>s+d.byMes[k].pagoGlosa,0) },
       glosa: { label:'Glosas',        color:'#f59e0b', fn: y => Object.keys(d.byMes).filter(k=>k.startsWith(y+'')).reduce((s,k)=>s+d.byMes[k].glosa,0) },
@@ -2324,7 +2324,7 @@ function renderTendencias(d) {
     const monthKeys = Object.keys(d.byMes).filter(k=>k.startsWith(yearSel)).sort();
     labels = monthKeys.map(k => fmtMes(k.split('-')[1]));
     const varDef = {
-      rad:   { label:'Radicación',    color:'#2d6a4f', fn: k => d.byMes[k].rad },
+      rad:   { label:'Radicaci\u00f3n',    color:'#2d6a4f', fn: k => d.byMes[k].rad },
       pago:  { label:'Pagos',         color:'#22c55e', fn: k => d.byMes[k].pagoInicial },
       pagoG: { label:'Pagos de Glosa',color:'#3b82f6', fn: k => d.byMes[k].pagoGlosa },
       glosa: { label:'Glosas',        color:'#f59e0b', fn: k => d.byMes[k].glosa },
@@ -2364,7 +2364,7 @@ window.exportNcExcel = function exportNcExcel(d, mes) {
   const nc = d.ncEventsByMes[mes] || { detalle:[] };
   if (!nc.detalle.length) return;
   const wb = XLSX.utils.book_new();
-  const rows = [['Prefijo','Factura','Fecha NC','Valor NC','N° Nota Crédito','Mes Radicación']];
+  const rows = [['Prefijo','Factura','Fecha NC','Valor NC','N\u00b0 Nota Cr\u00e9dito','Mes Radicaci\u00f3n']];
   nc.detalle.forEach(r => rows.push([
     r.prefijo, r.factura,
     r.fecha ? r.fecha.toLocaleDateString('es-CO') : '',
@@ -2390,7 +2390,7 @@ function renderCorreoSection(d, mes) {
   const lastRadKey = mes;
   const lastRad    = d.byMes[mes] || { n:0, rad:0 };
 
-  // Auditoria del año en curso
+  // Auditoria del a\u00f1o en curso
   const auditYear = Object.keys(d.byMes)
     .filter(k => k.startsWith(d.currentYear+''))
     .sort()
@@ -2413,7 +2413,7 @@ function renderCorreoSection(d, mes) {
                 border-radius:10px;cursor:pointer;user-select:none;"
          onclick="toggleCorreoPanel()">
       <span style="font-weight:700;font-size:14px;color:var(--primary);">
-        Resúmenes para Informe de Correo — ${mesLabel}
+        Res\u00famenes para Informe de Correo - ${mesLabel}
       </span>
       <span id="correo-toggle-icon" style="font-size:18px;color:var(--primary);">&#9660;</span>
     </div>
@@ -2422,7 +2422,7 @@ function renderCorreoSection(d, mes) {
 
       <!-- Auditoria -->
       <div class="section-title" style="font-size:16px;margin-bottom:12px;">
-        Auditoría de Cuentas ${d.currentYear}
+        Auditor\u00eda de Cuentas ${d.currentYear}
         <span>Promedio general: ${Math.round(avgAud*100)}%</span>
       </div>
       <div class="card" style="margin-bottom:20px;"><div class="card-body">
@@ -2441,22 +2441,22 @@ function renderCorreoSection(d, mes) {
         ${pPrev ? `<div class="card"><div class="card-body">
           <div class="trend-year">${d.prevYear}</div>
           <div class="trend-row"><span class="trend-key">Promedio pagos mensuales</span>
-            <span class="trend-val green">${Math.round(pPrev.pctPago*100)}% · ${fmtCOP(pPrev.promPago)}</span></div>
+            <span class="trend-val green">${Math.round(pPrev.pctPago*100)}% \u00b7 ${fmtCOP(pPrev.promPago)}</span></div>
           <div class="trend-row"><span class="trend-key">Promedio glosas mensuales</span>
-            <span class="trend-val red">${Math.round(pPrev.pctGlosa*100)}% · ${fmtCOP(pPrev.promGlosa)}</span></div>
+            <span class="trend-val red">${Math.round(pPrev.pctGlosa*100)}% \u00b7 ${fmtCOP(pPrev.promGlosa)}</span></div>
         </div></div>` : ''}
         ${pCurr ? `<div class="card"><div class="card-body">
           <div class="trend-year">${d.currentYear} a la fecha</div>
           <div class="trend-row"><span class="trend-key">Promedio pagos mensuales</span>
-            <span class="trend-val green">${Math.round(pCurr.pctPago*100)}% · ${fmtCOP(pCurr.promPago)}</span></div>
+            <span class="trend-val green">${Math.round(pCurr.pctPago*100)}% \u00b7 ${fmtCOP(pCurr.promPago)}</span></div>
           <div class="trend-row"><span class="trend-key">Promedio glosas mensuales</span>
-            <span class="trend-val red">${Math.round(pCurr.pctGlosa*100)}% · ${fmtCOP(pCurr.promGlosa)}</span></div>
+            <span class="trend-val red">${Math.round(pCurr.pctGlosa*100)}% \u00b7 ${fmtCOP(pCurr.promGlosa)}</span></div>
         </div></div>` : ''}
       </div>` : ''}
 
       <!-- Pagos del mes -->
       <div class="section-title" style="font-size:16px;margin-bottom:12px;">
-        Pagos — ${mesLabel}
+        Pagos - ${mesLabel}
       </div>
       <div class="card" style="margin-bottom:20px;"><div class="card-body">
         ${pago.total > 0 ? `
@@ -2471,7 +2471,7 @@ function renderCorreoSection(d, mes) {
 
       <!-- Glosas del mes -->
       <div class="section-title" style="font-size:16px;margin-bottom:12px;">
-        Glosas — ${mesLabel}
+        Glosas - ${mesLabel}
       </div>
       <div class="card" style="margin-bottom:20px;"><div class="card-body">
         ${glosa.total > 0 ? `
@@ -2479,7 +2479,7 @@ function renderCorreoSection(d, mes) {
           <div class="stat-box warning">
             <div class="stat-label">Valor Glosado</div>
             <div class="stat-value">${fmtCOP(glosa.total)}</div>
-            <div class="stat-sub">${fmt0(glosa.n)} cuentas · Motivos: Pdte. Área Glosas</div>
+            <div class="stat-sub">${fmt0(glosa.n)} cuentas \u00b7 Motivos: Pdte. \u00c1rea Glosas</div>
           </div>
         </div>
         <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
@@ -2492,7 +2492,7 @@ function renderCorreoSection(d, mes) {
 
       <!-- Pagos de glosa -->
       <div class="section-title" style="font-size:16px;margin-bottom:12px;">
-        Pagos de Glosa — ${mesLabel}
+        Pagos de Glosa - ${mesLabel}
       </div>
       <div class="card" style="margin-bottom:20px;"><div class="card-body">
         ${pagoG.total > 0 ? `
@@ -2500,26 +2500,26 @@ function renderCorreoSection(d, mes) {
           <div class="stat-label">Valor Pagado de Glosa</div>
           <div class="stat-value">${fmtCOP(pagoG.total)}</div>
           <div class="stat-sub">${fmt0(pagoG.n)} cuentas</div>
-        </div>` : `<div class="alert-strip info">Sin pagos de glosa en ${mesLabel} — Motivos: Pdte. Área Glosas</div>`}
+        </div>` : `<div class="alert-strip info">Sin pagos de glosa en ${mesLabel} - Motivos: Pdte. \u00c1rea Glosas</div>`}
       </div></div>
 
       <!-- NC -->
       <div class="section-title" style="font-size:16px;margin-bottom:12px;">
-        NC Aceptadas — ${mesLabel}
+        NC Aceptadas - ${mesLabel}
       </div>
       <div class="card" style="margin-bottom:20px;"><div class="card-body">
         <div class="stat-row" style="margin-bottom:14px;">
           <div class="stat-box">
             <div class="stat-label">NC Aceptadas</div>
             <div class="stat-value">${fmtCOP(nc.total)}</div>
-            <div class="stat-sub">${fmt0(nc.n)} cuentas · Motivos: Pdte. Área Glosas</div>
+            <div class="stat-sub">${fmt0(nc.n)} cuentas \u00b7 Motivos: Pdte. \u00c1rea Glosas</div>
           </div>
         </div>
       </div></div>
 
       <!-- Radicacion nueva -->
       <div class="section-title" style="font-size:16px;margin-bottom:12px;">
-        Radicación — ${fmtPeriod(lastRadKey)}
+        Radicaci\u00f3n - ${fmtPeriod(lastRadKey)}
       </div>
       <div class="card" style="margin-bottom:20px;"><div class="card-body">
         <div class="stat-row">
@@ -2535,7 +2535,7 @@ function renderCorreoSection(d, mes) {
       </div></div>
 
       <!-- Rezago -->
-      <div class="section-title" style="font-size:16px;margin-bottom:12px;">Rezago de Auditoría</div>
+      <div class="section-title" style="font-size:16px;margin-bottom:12px;">Rezago de Auditor\u00eda</div>
       <div class="card" style="margin-bottom:20px;"><div class="card-body" id="correo-rezago-body">
         <div style="color:var(--text-light);font-size:13px;">Cargando...</div>
       </div></div>
@@ -2549,19 +2549,19 @@ function renderCorreoSection(d, mes) {
             <div class="cf-val">${fmtCOP(d.totalRad)}</div>
             <div class="cf-pct">100%</div>
           </div>
-          <div class="cf-operator">−</div>
+          <div class="cf-operator">\u2212</div>
           <div class="cf-box pago">
             <div class="cf-label pago">Pagos Iniciales</div>
             <div class="cf-val">${fmtCOP(d.totalPago)}</div>
             <div class="cf-pct">${Math.round(d.totalPago/d.totalRad*100)}% del radicado</div>
           </div>
-          <div class="cf-operator">−</div>
+          <div class="cf-operator">\u2212</div>
           <div class="cf-box glosa">
             <div class="cf-label glosa">Pagos de Glosa</div>
             <div class="cf-val">${fmtCOP(d.totalPagoGlosa)}</div>
             <div class="cf-pct">${Math.round(d.totalPagoGlosa/d.totalRad*100)}% del radicado</div>
           </div>
-          <div class="cf-operator">−</div>
+          <div class="cf-operator">\u2212</div>
           <div class="cf-box nc">
             <div class="cf-label nc">NC Aceptadas</div>
             <div class="cf-val">${fmtCOP(d.totalNc)}</div>
@@ -2595,15 +2595,15 @@ function renderCorreoSection(d, mes) {
     let txt = '';
     if (gapCount > 0) {
       const gp = reversed24.slice(0,gapCount).map(x=>fmtPeriod(x.k)).reverse().join(', ');
-      txt += `Sin actividad en <strong>${gapCount} período(s)</strong>: ${gp}. `;
+      txt += `Sin actividad en <strong>${gapCount} per\u00edodo(s)</strong>: ${gp}. `;
     }
     if (incomplete24.length > 0) {
       const avg = Math.round(incomplete24.reduce((s,x)=>s+x.pct,0)/incomplete24.length);
-      txt += `<strong>${incomplete24.length} período(s)</strong> con auditoría incompleta, promedio <strong>${avg}%</strong>.`;
+      txt += `<strong>${incomplete24.length} per\u00edodo(s)</strong> con auditor\u00eda incompleta, promedio <strong>${avg}%</strong>.`;
     }
-    if (!txt) txt = 'Todos los períodos analizados superan el 95%.';
+    if (!txt) txt = 'Todos los per\u00edodos analizados superan el 95%.';
     let rows = below95.map(x => {
-      const tag = x.pct===0?'Sin actividad':x.pct<50?'Crítico':x.pct<75?'Pendiente':'Casi completo';
+      const tag = x.pct===0?'Sin actividad':x.pct<50?'Cr\u00edtico':x.pct<75?'Pendiente':'Casi completo';
       const tc  = x.pct===0||x.pct<50?'#dc2626':x.pct<75?'#b45309':'#15803d';
       return `<div style="display:flex;justify-content:space-between;align-items:center;
                           padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;">
@@ -2616,7 +2616,7 @@ function renderCorreoSection(d, mes) {
     crezago.innerHTML = `
       <div style="padding:12px 16px;background:${s.bg};border:1px solid ${s.border};
                   border-radius:8px;margin-bottom:14px;font-size:13px;color:${s.color};">${txt}</div>
-      ${rows || '<div style="font-size:13px;color:var(--text-light);">Sin períodos por debajo del 95%.</div>'}`;
+      ${rows || '<div style="font-size:13px;color:var(--text-light);">Sin per\u00edodos por debajo del 95%.</div>'}`;
   }, 50);
 
 }
@@ -2640,7 +2640,7 @@ function renderAnalisisMes(d) {
   const pagoG = d.pagoGlosaEventsByMes[mes] || { total:0, n:0, mesesRad:{} };
   const nc    = d.ncEventsByMes[mes]        || { total:0, n:0, mesesRad:{}, detalle:[] };
 
-  // ── Resumen badges ──
+  // == Resumen badges ==
   const resumen = document.getElementById('analisis-resumen');
   if (resumen) {
     const badge = (bg, border, color, label, val, n) =>
@@ -2656,7 +2656,7 @@ function renderAnalisisMes(d) {
       badge('#eff6ff','#bfdbfe','#1d4ed8','Pagos de Glosa', pagoG.total, pagoG.n);
   }
 
-  // ── Helper: group mesesRad by year ──
+  // == Helper: group mesesRad by year ==
   function groupByYear(mesesRad) {
     const byY = {};
     Object.entries(mesesRad).sort((a,b)=>a[0].localeCompare(b[0])).forEach(([k,v]) => {
@@ -2667,9 +2667,9 @@ function renderAnalisisMes(d) {
     return byY;
   }
 
-  // ── Helper: render grouped bars ──
+  // == Helper: render grouped bars ==
   function renderGrouped(mesesRad, total, barColor) {
-    if (!total) return '<div style="color:var(--text-light);font-size:13px;padding:8px 0;">Sin registros en este período</div>';
+    if (!total) return '<div style="color:var(--text-light);font-size:13px;padding:8px 0;">Sin registros en este per\u00edodo</div>';
     const byY = groupByYear(mesesRad);
     let html = '';
     Object.entries(byY).forEach(([year, items]) => {
@@ -2730,7 +2730,7 @@ function renderAnalisisMes(d) {
     ${renderGrouped(pagoG.mesesRad, pagoG.total, '#3b82f6')}
   </div>`;
 
-  // NC — resumen + export button
+  // NC - resumen + export button
   const ncDetalle = nc.detalle || [];
   const ncByYear  = groupByYear(nc.mesesRad);
   let ncRows = '';
@@ -2763,13 +2763,13 @@ function renderAnalisisMes(d) {
     </div>
     <div style="font-size:24px;font-weight:700;font-family:'DM Mono',monospace;margin-bottom:2px;">${fmtCOP(nc.total)}</div>
     <div style="font-size:12px;color:var(--text-light);margin-bottom:14px;">${fmt0(nc.n)} cuentas radicadas en:</div>
-    ${nc.total ? ncRows : '<div style="color:var(--text-light);font-size:13px;">Sin NC en este período</div>'}
+    ${nc.total ? ncRows : '<div style="color:var(--text-light);font-size:13px;">Sin NC en este per\u00edodo</div>'}
   </div>`;
 
   html += `</div>`;
   body.innerHTML = html;
 
-  // ── PUNTO 12: Rezago inteligente ──
+  // == PUNTO 12: Rezago inteligente ==
   renderRezago(d);
 
   // Update correo section
@@ -2779,13 +2779,13 @@ function renderAnalisisMes(d) {
 
 
 
-// ═══════════════════════════════════════════════════════
+// =======================================================
 //  HISTORY & RESET
-// ═══════════════════════════════════════════════════════
+// =======================================================
 
-// ═══════════════════════════════════════════════════════
+// =======================================================
 //  IPS VALIDATION & INTEGRITY LOG
-// ═══════════════════════════════════════════════════════
+// =======================================================
 
 function validateIPSMatch(rows, selectedIPS) {
   // Detect IPS from column names
@@ -2807,14 +2807,14 @@ function validateIPSMatch(rows, selectedIPS) {
     (!looksLikeDolormed && prefixes.length > 0);
 
   const detected = looksLikeDolormed ? 'dolormed' : 'redesimat';
-  const detectedName = looksLikeDolormed ? 'Clínica Dolormed' : 'Clínica Redes IMAT';
-  const selectedName = selectedIPS === 'dolormed' ? 'Clínica Dolormed' : 'Clínica Redes IMAT';
+  const detectedName = looksLikeDolormed ? 'Cl\u00ednica Dolormed' : 'Cl\u00ednica Redes IMAT';
+  const selectedName = selectedIPS === 'dolormed' ? 'Cl\u00ednica Dolormed' : 'Cl\u00ednica Redes IMAT';
 
   const mismatch = detected !== selectedIPS;
   return { mismatch, detected, detectedName, selected: selectedName, prefixes };
 }
 
-// ── SNAPSHOT: fingerprint per month (for integrity validation) ──
+// == SNAPSHOT: fingerprint per month (for integrity validation) ==
 function buildSnapshot(data) {
   const snap = {
     ips:       data.ips,
@@ -2852,7 +2852,7 @@ function buildSnapshot(data) {
   return snap;
 }
 
-// ── INTEGRITY CHECK: STRICT — nothing ever decreases ──
+// == INTEGRITY CHECK: STRICT - nothing ever decreases ==
 function checkIntegrity(newSnap, oldSnap) {
   const issues = []; // { nivel, periodo, campo, anterior, nuevo, diff }
 
@@ -2866,7 +2866,7 @@ function checkIntegrity(newSnap, oldSnap) {
     }
   };
 
-  // ── Por mes ──
+  // == Por mes ==
   Object.keys(oldSnap.byMes).forEach(k => {
     const o = oldSnap.byMes[k];
     const n = newSnap.byMes[k];
@@ -2875,7 +2875,7 @@ function checkIntegrity(newSnap, oldSnap) {
                     anterior: o.n, nuevo: 0, diff: -o.n });
       return;
     }
-    check('MES', k, 'N° Facturas radicadas',    o.n,     n.n);
+    check('MES', k, 'N\u00b0 Facturas radicadas',    o.n,     n.n);
     check('MES', k, 'Valor radicado',            o.rad,   n.rad);
     check('MES', k, 'Pagos iniciales',           o.pago,  n.pago);
     check('MES', k, 'Pagos de glosa',            o.pagoG, n.pagoG);
@@ -2883,27 +2883,27 @@ function checkIntegrity(newSnap, oldSnap) {
     check('MES', k, 'NC aceptadas',              o.nc,    n.nc);
   });
 
-  // ── Por año (resumen) ──
+  // == Por a\u00f1o (resumen) ==
   Object.keys(oldSnap.byYear).forEach(y => {
     const o = oldSnap.byYear[y];
     const n = newSnap.byYear[y];
     if (!n) return;
-    check('AÑO', y, 'N° Facturas radicadas',    o.n,     n.n);
-    check('AÑO', y, 'Valor radicado',            o.rad,   n.rad);
-    check('AÑO', y, 'Pagos iniciales',           o.pago,  n.pago);
-    check('AÑO', y, 'Pagos de glosa',            o.pagoG, n.pagoG);
-    check('AÑO', y, 'Glosas y devoluciones',     o.glosa, n.glosa);
-    check('AÑO', y, 'NC aceptadas',              o.nc,    n.nc);
+    check('A\u00d1O', y, 'N\u00b0 Facturas radicadas',    o.n,     n.n);
+    check('A\u00d1O', y, 'Valor radicado',            o.rad,   n.rad);
+    check('A\u00d1O', y, 'Pagos iniciales',           o.pago,  n.pago);
+    check('A\u00d1O', y, 'Pagos de glosa',            o.pagoG, n.pagoG);
+    check('A\u00d1O', y, 'Glosas y devoluciones',     o.glosa, n.glosa);
+    check('A\u00d1O', y, 'NC aceptadas',              o.nc,    n.nc);
   });
 
-  // Deduplicate — if year alert already covered by month alerts, keep both for detail
+  // Deduplicate - if year alert already covered by month alerts, keep both for detail
   const hasIssues = issues.length > 0;
   const mesIssues  = issues.filter(i => i.nivel === 'MES');
-  const yearIssues = issues.filter(i => i.nivel === 'AÑO');
+  const yearIssues = issues.filter(i => i.nivel === 'A\u00d1O');
   return { issues, mesIssues, yearIssues, hasIssues };
 }
 
-// ── SAVE SNAPSHOT to localStorage ──
+// == SAVE SNAPSHOT to localStorage ==
 function saveSnapshot(data) {
   try {
     const key     = `adres_snap_${data.ips}`;
@@ -2915,7 +2915,7 @@ function saveSnapshot(data) {
   } catch(e) { console.warn('Snapshot save failed:', e); }
 }
 
-// ── LOAD LAST SNAPSHOT ──
+// == LOAD LAST SNAPSHOT ==
 function loadLastSnapshot(ips) {
   try {
     const key = `adres_snap_${ips}`;
@@ -2924,7 +2924,7 @@ function loadLastSnapshot(ips) {
   } catch(e) { return null; }
 }
 
-// ── SHOW INTEGRITY REPORT in UI ──
+// == SHOW INTEGRITY REPORT in UI ==
 function showIntegrityReport(result, oldSnap, newSnap) {
   const el = document.getElementById('integrity-banner');
   if (!el) return;
@@ -2932,7 +2932,7 @@ function showIntegrityReport(result, oldSnap, newSnap) {
   if (!result.hasIssues) {
     el.innerHTML = `<div style="padding:12px 18px;background:#f0fdf4;border:1px solid #bbf7d0;
       border-radius:10px;font-size:13px;color:#14532d;margin-bottom:20px;">
-      <strong>Validación de integridad OK</strong> — Sin alteraciones detectadas vs cargue anterior (${oldSnap.cutoffStr}).
+      <strong>Validaci\u00f3n de integridad OK</strong> - Sin alteraciones detectadas vs cargue anterior (${oldSnap.cutoffStr}).
     </div>`;
     el.style.display = 'block';
     return;
@@ -2944,10 +2944,10 @@ function showIntegrityReport(result, oldSnap, newSnap) {
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
       <div>
         <div style="font-weight:700;font-size:15px;color:#7f1d1d;">
-          Alerta de integridad — ${n} alteración(es) detectada(s)
+          Alerta de integridad - ${n} alteraci\u00f3n(es) detectada(s)
         </div>
         <div style="font-size:12px;color:#b91c1c;margin-top:2px;">
-          Comparando vs cargue del ${oldSnap.cutoffStr} · Ningún valor financiero debería disminuir
+          Comparando vs cargue del ${oldSnap.cutoffStr} \u00b7 Ning\u00fan valor financiero deber\u00eda disminuir
         </div>
       </div>
       <div style="display:flex;gap:8px;flex-shrink:0;">
@@ -2963,7 +2963,7 @@ function showIntegrityReport(result, oldSnap, newSnap) {
     <table style="width:100%;border-collapse:collapse;font-size:12px;">
       <thead>
         <tr style="background:#fecaca;">
-          <th style="padding:7px 10px;text-align:left;">Período</th>
+          <th style="padding:7px 10px;text-align:left;">Per\u00edodo</th>
           <th style="padding:7px 10px;text-align:left;">Campo</th>
           <th style="padding:7px 10px;text-align:right;">Valor anterior</th>
           <th style="padding:7px 10px;text-align:right;">Valor nuevo</th>
@@ -2974,7 +2974,7 @@ function showIntegrityReport(result, oldSnap, newSnap) {
 
   result.mesIssues.forEach((iss, i) => {
     const bg = i % 2 === 0 ? '#fff5f5' : 'white';
-    const isVal = iss.campo !== 'N° Facturas radicadas';
+    const isVal = iss.campo !== 'N\u00b0 Facturas radicadas';
     html += `<tr style="background:${bg};border-bottom:1px solid #fecaca;">
       <td style="padding:6px 10px;font-weight:600;color:#7f1d1d;">${fmtPeriod(iss.periodo)}</td>
       <td style="padding:6px 10px;color:#7f1d1d;">${iss.campo}</td>
@@ -3003,7 +3003,7 @@ window.exportIntegrityReport = function exportIntegrityReport(d) {
 
   // Sheet 1: Resumen ejecutivo
   const resumen = [
-    ['REPORTE DE INTEGRIDAD — BASE DE DATOS ADRES'],
+    ['REPORTE DE INTEGRIDAD - BASE DE DATOS ADRES'],
     [''],
     ['IPS',             d.ipsName],
     ['Cargue anterior', oldSnap.cutoffStr],
@@ -3012,15 +3012,15 @@ window.exportIntegrityReport = function exportIntegrityReport(d) {
     ['Total alteraciones detectadas', result.issues.length],
     [''],
     ['INSTRUCCIONES'],
-    ['Este reporte debe ser enviado al área de Cartera para validación y justificación de las variaciones.'],
-    ['Ningún valor financiero (radicación, pagos, glosas, NC) debería disminuir entre actualizaciones.'],
+    ['Este reporte debe ser enviado al \u00e1rea de Cartera para validaci\u00f3n y justificaci\u00f3n de las variaciones.'],
+    ['Ning\u00fan valor financiero (radicaci\u00f3n, pagos, glosas, NC) deber\u00eda disminuir entre actualizaciones.'],
   ];
   const ws1 = XLSX.utils.aoa_to_sheet(resumen);
   ws1['!cols'] = [{wch:30},{wch:50}];
   XLSX.utils.book_append_sheet(wb, ws1, 'Resumen');
 
   // Sheet 2: Detalle por mes
-  const header = ['Período','Mes','Año','Campo','Valor Anterior','Valor Nuevo','Diferencia','% Variación'];
+  const header = ['Per\u00edodo','Mes','A\u00f1o','Campo','Valor Anterior','Valor Nuevo','Diferencia','% Variaci\u00f3n'];
   const detalle = result.mesIssues.map(iss => {
     const pct = iss.anterior > 0 ? ((iss.diff / iss.anterior) * 100).toFixed(2) + '%' : 'N/A';
     return [
@@ -3038,8 +3038,8 @@ window.exportIntegrityReport = function exportIntegrityReport(d) {
   ws2['!cols'] = [{wch:18},{wch:6},{wch:6},{wch:28},{wch:18},{wch:18},{wch:18},{wch:12}];
   XLSX.utils.book_append_sheet(wb, ws2, 'Detalle por Mes');
 
-  // Sheet 3: Comparativo por año
-  const hdrY = ['Año','Fact.Anterior','Fact.Nuevo','Rad.Anterior','Rad.Nuevo',
+  // Sheet 3: Comparativo por a\u00f1o
+  const hdrY = ['A\u00f1o','Fact.Anterior','Fact.Nuevo','Rad.Anterior','Rad.Nuevo',
                  'Pago.Anterior','Pago.Nuevo','PagoG.Anterior','PagoG.Nuevo',
                  'Glosa.Anterior','Glosa.Nuevo','NC.Anterior','NC.Nuevo'];
   const yearRows = Object.keys(oldSnap.byYear).sort().map(y => {
@@ -3056,16 +3056,16 @@ window.exportIntegrityReport = function exportIntegrityReport(d) {
 };
 
 
-// ═══════════════════════════════════════════════════════
+// =======================================================
 //  COMPARATIVO GERENCIAL
-// ═══════════════════════════════════════════════════════
+// =======================================================
 window.renderComparativo = function renderComparativo() {
   const body = document.getElementById('comparativo-body');
   if (!body) return;
 
   const ipsList = [
-    { id:'dolormed',  name:'Clínica Dolormed',   color:'#2d6a4f', light:'#d8f3dc' },
-    { id:'redesimat', name:'Clínica Redes IMAT',  color:'#1d3557', light:'#cce5f5' },
+    { id:'dolormed',  name:'Cl\u00ednica Dolormed',   color:'#2d6a4f', light:'#d8f3dc' },
+    { id:'redesimat', name:'Cl\u00ednica Redes IMAT',  color:'#1d3557', light:'#cce5f5' },
   ];
   const loaded = ipsList.filter(i => ipsStore[i.id].data);
 
@@ -3078,7 +3078,7 @@ window.renderComparativo = function renderComparativo() {
 
   let html = '';
 
-  // ── VISTA 1: KPIs comparativos ──
+  // == VISTA 1: KPIs comparativos ==
   html += `<div style="padding:20px 32px 0;display:flex;align-items:center;gap:16px;">
     <img src="data:image/webp;base64,UklGRiANAABXRUJQVlA4IBQNAAAQOACdASq0AGMAPrVOoUunJCMhqNhckOAWiUAaXMkoDeTlee2c1v5T/Pnkk9SO2q8znmuel7evqAt7Gf8f+Snnb5PfXCSL7x/tv7l6K/7X7APRX42/2/qBexN3l2X9svUC9j/oH+18JT+w9FPrT/s/cA/k/9C/0frD/jP8R4xfjv+v9wD+Uf1j/Y/4D8vPpk/rP2d9Cv5//n/YK/mv9v34BsBwLPKVyCNbpZn7aSOFfgmaZtSFjkNgM4E9NzhrqlGSPqnDoVpmrNcPKPZKE67k3amZsaXy+HNr21fKWMyAYzRpRp+ja69aWzyPDuyfe+q3L8EoslQ+u4z8XpJytBiGCsbd24TO7UnwSFMcLXxjLwk8eYq9cSl/ruDXg4erp8fOAjTYHBN1yz1GB3qemjdd4/rABi3WkMLOo5oT8+bvVGH+/BZovTJNbPL8c7jZp7KdcUx7X6NfEOgEmpAzwrRTFybH1TqPMN82zNp4u28xW+D0zkXDiqXu8NZIFaKFVRraaWdkguEX8m+8LrFVZseMDNreRnf8sul0VBOlByWTqfBRdoXVsU76JNeMa3W8FKN7P1/bMjNIdlVa3+xYfkZXdMKqWcBFS84AAP78PLkGnb5wQjsm2zr1WPduCookwAuvpTvRtv3xs58b3PyX//DVrCsHe3Bzpw/Zrcij525AAA5UkSxblW1SF3iO7qiGZp6vqY0MjQsTmwF1pIhOR1k/d0DXfZz4K1uFPrwx59glp5I3C3zaKpzS5W/sSalDEvVY9U3f0i+PT4x4hUK1xEgVv3EtrzIF+/dV5uaF94IczaWJqII/aJguW1Z3bj2kBzHqc4Xkb98GPZG5jHw4fgs+V095DyaNSWq8AfiSerhMpVOIOE2dteeVulFrUCa2MNuetCGheRvUuCsdyMnEO7CrVkx8/TZ0CY0cC0YEzke7rgVKDAPsygzAtPd+tJGpVRSiEd9wr9TMAL8iOCpeKyQR8XnGCIdnCalN8rZlyFUuriIoWeYZYURe9Ll/cq0buEN05rVEaCex9ZZTgOtHuVi1g0y9T/KN9X0OtUg47jN6OOKavXlxq159NO2lRBsu/9e+dUFDKTrFC03IJOVVz1qyZLouCLziJu2gqwv7LXzgCsFjY3gllz5GQ1biBWYVMgThcBBrL3c3i0wvnknSuSwVigF4Hrp/4hXjoECkmnHQRaqHaQWRXjSKwPrZmTxbBzz10tGgXdSK8F4jaOSISzy0QmS/Zeys6WnDfbah666+XrAVDq/3jYeMxQbbyT2FRdQhD4SNRKJEvtWnY+feERkXFXmedV+MbG+mNOeJB2brrQuGPDNmp6UMVZ5Qz6UYHzjvYpxeoDSGwD1+4bZ5J9P/CtWLuxnaXfmVqQt9RBgCIJxQw/ax4tLL/PuMPHGlJpd7jLXKoywlRDL4hFqJLuXQkWMWp0Dbe6TxFxDXceNCCYhDMDDgB19wPICBO9d3v1XEJ1++lYivl6r8HpDs/5PRDygjjtfArwcWIY5DQtCJL1oGsuuGvB9tJMuOzF6GllYsD7HSnnr8Hf05H19F4Pc1bp8PlfiTeeYK/VfqX/kzGTKiVPyzDeyfmYEM6sJprZW1m6t0WRrzvFuhA4Tx4Fg+v9xVTif2sAKE64cHIGPswpr8cTziz+MXcYdDUv8psVruFQuFyZu9wnugSQBqZPa3zKgJIYcZKHdAMY9Z1Oe9kaVPDTot61yvmYiDwiwp8zpfkvQCv7AhhN+WPdEc6gMtvjYIJ23thHlYgsO0Lqnap1t2B6g6DOrmVaP/ze/2Udboi8yo3xhHh0uHvF+V0xoCu/8MSrSUjjwWBOMwvcD03afk44U3vvsc8I8Kz14CWo24wpuIT/NxiaQrf+DammHMZq4ne93XjIbEM2Z1YFycIJ6iBi1X1phHj7DJj6j/t//v5AXx4QQqPFFs8mH4VvlGmt/aCzoPet54gb/lkDUXeLopuYiPPRqrYqCGr6tP/y45+8VLnLD582RFdXDZu/U9wFl3585oOc7a9lpuHDaC+HncSEA48eoB0kTjMegbPpi3s5AZwkIH2wAJfESAXNuOit3NaGd5QAtQE46mYQGP2tTAU7nI9bxYePP5WymEiyN9Xd7qFlvfjtHrO6XHCF5H0iFtORUOA9K9LIQ8uhxKE+GAbVo3fAt2Un24sL6NOnGS/S/4czjs5gcUBgl6uN1DjteAvROTgdOB3K0BhkBLJi8t/HaCoDDy2aqxWJrA6NxcZy9BdfGJrUgtdHdaTHcrcO5qI+Rop5byNyre1noc+IWmyX6JmpQ0m0qui3CrCf9sr0E/vJkYvUdWrClYjWbKRJsipUhAoysRp39cGTSvBfWn+r8DfY7mqbDEz/Ie9q1kqTujtPm8p3ZczIieHtYCsLr+tY4QchzMOWtN5pRuZzmycIEFCa1rdGo48weixuI06e6BnjItNgjBmH0lqOic36tictHH5oCCzqV+x7eLwvpGxxnpseXFRStARbMObUFLa3msfegddgiGFZQE5Mxygv137sexNBbVuKycbmYeIXEdGJAhw8LQTIPT1pnPBeXDLsN32bGp1OhsiT9mk6e2koVZMokCcsVNt2y459DLmHmDSTKv0RrXYcUiFgl1l37RyZs9UU/XeavpCZkh4kt9MW/yFwfyz1jIDCnd4vwbHrdzWQcwUoBYGhvDMX+pnKq2Jb4AFx724kMLEAfpDXKFwMV8f3nXcnuTfy/hnnlvJuezDGP9zfIimvxOFKeyDK2NKSEmZSyD8LaYWc9EnOS97juLfy56MbD6Bw5EPqvu2V/OppDp+YzWbzXTtDHQZGUEc5bjnzvkrrzxCorfsuoc1RnHMbV0mM7zJReIe5wUmKEJMRswvSge6rQT19XE2xMWDg8E8sOaBrD17IYB8M/TjcZ5ex8k8T+KeUb3PBKPTznATx5lSkF+YZ7+hnRiTX3NQrC693MtHu3e7dczFVJ3obWlz2rNw9cyq21lytdNo5uv8b8wj9iq6ku04/Tb/ejoVp7QyZ7lzg6ESrAoSYy9RhiPqqPl6A+XSLIUWrCY7tedFH/VgE9llVS3E3cYAkxdhEXWt2v0Su94Qw7iWwlqpD+1feCRh4tU0U8rv0FK/XyQiiElWgPaXZsB39Wkd31uFuQ2NLe0kCTdRjEikmg2ctu/Yxto/4gZoT/VlD4rMv/nzHMAZ0gHge4N+iFjsvxxTlM582/VwUyzFh59Nf7woCbXlL22D94RquBwa7nWJgXqld7wqTopOMDo9+sNQQA+1D1MYAeXSovj6W3lU7S6Ry4Zs8BSh+SFuKi55C3Us9UHNuqek6cZfIYIJCUlMploeUcJxtew4Hu09t9jptPV3EG2TZ6OzpuE8NEWj+CY6kC3PO73uvLKANO2wOz2yLfVaUYtXLiPnf4kjpCKU30IkVGtfJsAx+kK9Pflm0RQMZvqlT4D4IZx7tII/mdzWdoU4NsjR8nZoDPRCIAv/ZQHHtlM6q+204ZB0VTAIpHdkWK6JfdyQfuqV8prRqEJ4il2N7H4thg62O8EceLVvg4GOf2MI/x5SMIbetYib4TRrRoHsnU1/F673y363hcxrjLFYPkIYeToNGjwT+omRJhB4w+eNdL4sDZ8IoQyDDCLmRP0pD+T5L3US9xbnmSzoBmNpO7Nrtk5vvej54kidlbCZMc6aFtf7lXTT5ydDTMNZm5bhrFKP2+PNzUzWkyaZo+As4H6rVtsQ7hKJsIo/98nbMjWLTF5zvYx9Ddrn9jvuiaV39m8Vi54eTP24eov/MRwqjyOoy61NcWoRXsN2UsjVpGrdqx0X2H5GVg/6cD5HiB6d+/mtDVgUxt/8auK0zcfYUDzbBXHzErLCaKq6wx91r30J/wi44TibwKT83UAgpLsJJPzjlHU2AsOQWRZ1dR8TJX6OH1NRthc886nsYaeOmsZtgrWPRR8b01n4HjnQ0V60LJ/V7+Dgt6HdRH4xmOslL185nS7WoMKm8WyUKVVDTN8gJ7BxY5rC7inPgywXhzJvqO1MJleU4ggwdmfqoDrtAgjvmiAPxpRPkX9CYLkge5zoNdKDoECCYzf5Vr8NoUyzuQzwmXeTKy0Wd+Gv38Wfyb9dB/WBIToVvthMN9TptnWGwAKki1uPEhwzr164IwxxKxn0G7vkcYj1XEi8m8WQ8lrtz+yZf0BNvMbV12tpHRJf5tthpV7NG7nC1uYQ0po3TNm4dq23CAoNQJqc6rumSLsMkGqN2npRGFbg/x/7d0ZEmW7YytZCQ8A0GRc/msVhXL+XXnLXiN3lPRlGUkcTpcD7a2ze0kh6hoTC3MMq2wh51ggamXOqe4/N2C24rh31McUajAq2MWWZjmnKPfNdjuhfTVjBN5nOxwU9nRNFl2p5i/4C7DYELSN+kwvhza/aEp9ofaTPES2RbLxT59aht5hzjo5oyvtuYWXeLYcSwKJbO7In6Aj2KmQAADCNtAAAAA=" alt="ADRES" style="height:40px;object-fit:contain;">
     <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--text-dark);">
@@ -3120,44 +3120,44 @@ window.renderComparativo = function renderComparativo() {
         <div class="comp-kpi">
           <div class="comp-kpi-label">Glosa Viva</div>
           <div class="comp-kpi-value" style="color:#dc2626;">${fmtCOP(Math.max(0, Object.values(d.byMes).reduce((s,m)=>s+m.glosa,0) - d.totalPagoGlosa))}</div>
-          <div class="comp-kpi-sub" style="font-size:10px;">Glosas − Pagos de glosa</div>
+          <div class="comp-kpi-sub" style="font-size:10px;">Glosas \u2212 Pagos de glosa</div>
         </div>
         <div class="comp-kpi">
           <div class="comp-kpi-label">% Pago Final ${d.currentYear}</div>
-          <div class="comp-kpi-value" style="color:${ips.color};">${p ? Math.round(p.promPctPagoFinal*100)+'%' : '—'}</div>
+          <div class="comp-kpi-value" style="color:${ips.color};">${p ? Math.round(p.promPctPagoFinal*100)+'%' : '-'}</div>
           <div class="comp-kpi-sub">Pago incl. glosa+NC / radicado</div>
         </div>
         <div class="comp-kpi">
           <div class="comp-kpi-label">% Glosa Final ${d.currentYear}</div>
-          <div class="comp-kpi-value" style="color:#dc2626;">${p ? Math.round(p.promPctGlosaFinal*100)+'%' : '—'}</div>
-          <div class="comp-kpi-sub">Glosa − pago glosa / radicado</div>
+          <div class="comp-kpi-value" style="color:#dc2626;">${p ? Math.round(p.promPctGlosaFinal*100)+'%' : '-'}</div>
+          <div class="comp-kpi-sub">Glosa \u2212 pago glosa / radicado</div>
         </div>
         <div class="comp-kpi" style="grid-column:span 2;">
           <div class="comp-kpi-label">Glosa Viva Total</div>
           <div class="comp-kpi-value" style="color:#dc2626;">${fmtCOP(d.carteraTotal)}</div>
           <div class="comp-kpi-sub" style="display:flex;justify-content:space-between;">
             <span>${Math.round(d.carteraTotal/d.totalRad*100)}% del radicado</span>
-            <span style="font-size:10px;color:var(--text-light);">= Rad. − Pagos − Pago glosa − NC</span>
+            <span style="font-size:10px;color:var(--text-light);">= Rad. \u2212 Pagos \u2212 Pago glosa \u2212 NC</span>
           </div>
         </div>
         <div class="comp-kpi">
           <div class="comp-kpi-label">Total Facturas</div>
           <div class="comp-kpi-value">${fmt0(d.enriched.length)}</div>
-          <div class="comp-kpi-sub">${d.years[0]}–${Math.max(...d.years)}</div>
+          <div class="comp-kpi-sub">${d.years[0]}\u2013${Math.max(...d.years)}</div>
         </div>
       </div>
     <div style="padding:8px 16px 12px;font-size:11px;color:var(--text-light);
                 border-top:1px solid var(--border);background:var(--surface);">
-      Glosa Viva = Radicado − Pagos iniciales − Pagos de glosa − NC aceptadas
+      Glosa Viva = Radicado \u2212 Pagos iniciales \u2212 Pagos de glosa \u2212 NC aceptadas
     </div>
     </div>`;
   });
   html += `</div></div>`;
 
-  // ── VISTA 2: Tabla comparativa por año ──
+  // == VISTA 2: Tabla comparativa por a\u00f1o ==
   html += `<div class="section-title" style="margin:32px 32px 16px;">
     Comparativo Anual
-    <span>Indicadores por año — todas las IPS cargadas</span>
+    <span>Indicadores por a\u00f1o - todas las IPS cargadas</span>
   </div>`;
   html += `<div style="padding:0 32px 24px;">`;
 
@@ -3167,7 +3167,7 @@ window.renderComparativo = function renderComparativo() {
   html += `<div class="card"><div class="card-body-flush"><div class="table-scroll">
     <table class="nc-table">
       <thead><tr>
-        <th>Año</th>
+        <th>A\u00f1o</th>
         ${loaded.map(i => `<th colspan="4" style="text-align:center;background:${i.light};">${i.name}</th>`).join('')}
       </tr>
       <tr>
@@ -3182,7 +3182,7 @@ window.renderComparativo = function renderComparativo() {
     loaded.forEach(ips => {
       const d = ipsStore[ips.id].data;
       const keys = Object.keys(d.byMes).filter(k => k.startsWith(y+''));
-      if (!keys.length) { html += `<td colspan="4" style="color:var(--text-light);text-align:center;">—</td>`; return; }
+      if (!keys.length) { html += `<td colspan="4" style="color:var(--text-light);text-align:center;">-</td>`; return; }
       const totRad   = keys.reduce((s,k) => s+d.byMes[k].radBruto,    0);
       const totPI    = keys.reduce((s,k) => s+d.byMes[k].pagoInicial, 0);
       const totPG    = keys.reduce((s,k) => s+d.byMes[k].pagoGlosa,   0);
@@ -3204,10 +3204,10 @@ window.renderComparativo = function renderComparativo() {
   });
   html += `</tbody></table></div></div></div></div>`;
 
-  // ── VISTA 3: Tabla macro individual por IPS ──
+  // == VISTA 3: Tabla macro individual por IPS ==
   html += `<div class="section-title" style="margin:32px 32px 16px;">
     Indicador General por IPS
-    <span>Detalle mes a mes — seleccione IPS</span>
+    <span>Detalle mes a mes - seleccione IPS</span>
   </div>`;
   html += `<div style="padding:0 32px 24px;">`;
   html += `<div class="hist-tabs" id="comp-ips-tabs">`;
@@ -3223,10 +3223,10 @@ window.renderComparativo = function renderComparativo() {
   });
   html += `</div>`;
 
-  // ── VISTA 4: Tendencias comparativas ──
+  // == VISTA 4: Tendencias comparativas ==
   html += `<div class="section-title" style="margin:32px 32px 16px;">
     Tendencias Comparativas
-    <span>Evolución de variables por IPS</span>
+    <span>Evoluci\u00f3n de variables por IPS</span>
   </div>`;
   html += `<div style="padding:0 32px 48px;">`;
   html += `<div class="card"><div class="card-header" style="padding-bottom:14px;">
@@ -3235,11 +3235,11 @@ window.renderComparativo = function renderComparativo() {
         style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;
                padding:8px 12px;border-radius:8px;border:1.5px solid var(--border);
                background:white;cursor:pointer;">
-        <option value="all">Todos los años (anual)</option>
+        <option value="all">Todos los a\u00f1os (anual)</option>
         ${allYears.map(y=>`<option value="${y}">${y}</option>`).join('')}
       </select>
       <div style="display:flex;gap:14px;flex-wrap:wrap;">
-        ${[{v:'rad',l:'Radicación'},{v:'pago',l:'Pagos'},{v:'glosa',l:'Glosas'},{v:'nc',l:'NC'}].map(t=>
+        ${[{v:'rad',l:'Radicaci\u00f3n'},{v:'pago',l:'Pagos'},{v:'glosa',l:'Glosas'},{v:'nc',l:'NC'}].map(t=>
           `<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-mid);">
             <input type="checkbox" value="${t.v}" class="comp-var-check" ${t.v==='rad'||t.v==='pago'?'checked':''}
               onchange="renderCompTendencias()"
@@ -3356,9 +3356,9 @@ window.renderCompTendencias = function renderCompTendencias() {
   });
 };
 
-// ═══════════════════════════════════════════════════════
+// =======================================================
 //  ADMIN SECTION
-// ═══════════════════════════════════════════════════════
+// =======================================================
 window.renderAdmin = function renderAdmin() {
   var body = document.getElementById('admin-body');
   if (!body) return;
@@ -3381,7 +3381,7 @@ window.renderAdmin = function renderAdmin() {
         '<div style="font-weight:700;font-size:15px;color:' + ips.color + ';">' + ips.name + '</div>' +
       '</div>' +
       (isLoaded
-        ? '<div style="font-size:12px;color:var(--text-light);margin-bottom:12px;">Cargada · Corte: <strong>' + store.cutoff + '</strong><br>' + store.loadedAt + '</div>'
+        ? '<div style="font-size:12px;color:var(--text-light);margin-bottom:12px;">Cargada \u00b7 Corte: <strong>' + store.cutoff + '</strong><br>' + store.loadedAt + '</div>'
         : '<div style="font-size:12px;color:var(--text-light);margin-bottom:12px;">Sin base de datos cargada.</div>'
       ) +
       '<div style="margin-bottom:8px;">' +
@@ -3426,7 +3426,7 @@ window.renderAdmin = function renderAdmin() {
       snaps.slice(0,8).forEach(function(s) {
         var totRad = s.byYear ? Object.values(s.byYear).reduce(function(a,y){return a+(y.rad||0);},0) : 0;
         html += '<tr><td>' + new Date(s.loadedAt).toLocaleString('es-CO') + '</td>' +
-          '<td>' + (s.cutoffStr||'—') + '</td>' +
+          '<td>' + (s.cutoffStr||'-') + '</td>' +
           '<td class="mono">' + fmt0(s.totalFact||0) + '</td>' +
           '<td class="amount">' + fmtCOP(totRad) + '</td></tr>';
       });
@@ -3541,7 +3541,7 @@ window.openEmailModal = function openEmailModal() {
   const mesesPagoRad  = Object.keys(pago.mesesRad||{}).sort().map(k=>fmtPeriod(k)).join(', ');
   const mesesGlosaRad = Object.keys(glosa.mesesRad||{}).sort().map(k=>fmtPeriod(k)).join(', ');
 
-  let texto = `Buenos días.
+  let texto = `Buenos d\u00edas.
 Cordial Saludo.
 
 Adjunto informe actualizado con corte al ${d.cutoffStr}
@@ -3549,10 +3549,10 @@ Adjunto informe actualizado con corte al ${d.cutoffStr}
 Observaciones generales:
 
 `;
-  texto += `-Auditoría de cuentas nuevas: Se mantiene a ${Math.max(1, auditYear.filter(a=>a.pct<50).length+1)} meses en promedio.
+  texto += `-Auditor\u00eda de cuentas nuevas: Se mantiene a ${Math.max(1, auditYear.filter(a=>a.pct<50).length+1)} meses en promedio.
 
 `;
-  texto += `Auditoría de cuentas año ${d.currentYear}:
+  texto += `Auditor\u00eda de cuentas a\u00f1o ${d.currentYear}:
 `;
   auditYear.forEach(a => { texto += `${a.pct}%	${a.mes}
 `; });
@@ -3578,18 +3578,18 @@ ${mesesPagoRad}
 -Se reportan glosas: $ ${fmtCOPraw(glosa.total)} en ${fmt0(glosa.n)} cuentas de los meses RADICADOS:
 ${mesesGlosaRad}
 
-MOTIVOS: PDTE ÁREA GLOSAS.
+MOTIVOS: PDTE \u00c1REA GLOSAS.
 `;
   texto += `
--Pagos de glosa: $ ${fmtCOPraw(pagoG.total)} de ${fmt0(pagoG.n)} cuentas  MOTIVOS SUBSANADOS: PDTE ÁREA GLOSAS.
+-Pagos de glosa: $ ${fmtCOPraw(pagoG.total)} de ${fmt0(pagoG.n)} cuentas  MOTIVOS SUBSANADOS: PDTE \u00c1REA GLOSAS.
 `;
   texto += `
--Aceptación de cuentas: ${fmt0(nc.n)} Cuentas por valor de $ ${fmtCOPraw(nc.total)}
+-Aceptaci\u00f3n de cuentas: ${fmt0(nc.n)} Cuentas por valor de $ ${fmtCOPraw(nc.total)}
 
-MOTIVOS NC: PDTE ÁREA GLOSAS.
+MOTIVOS NC: PDTE \u00c1REA GLOSAS.
 `;
   texto += `
--Radicación de cuentas nuevas: ${fmt0(lastRad.n)} cuentas por valor de $ ${fmtCOPraw(lastRad.rad)}
+-Radicaci\u00f3n de cuentas nuevas: ${fmt0(lastRad.n)} cuentas por valor de $ ${fmtCOPraw(lastRad.rad)}
 `;
   texto += `
 -Cartera total ADRES desde ${d.years[0]} (Radicado - pagos iniciales - pagos de glosa - aceptado por NC): corte actual ${d.cutoffStr}  $${fmtCOPraw(d.carteraTotal)}
@@ -3603,24 +3603,24 @@ MOTIVOS NC: PDTE ÁREA GLOSAS.
   for (const x of rev24e) { if (x.pct === 0) gapE++; else break; }
   const incompleteE = months24e.filter(x => x.pct > 0 && x.pct < 95);
   const below95e    = months24e.filter(x => x.pct < 95);
-  texto += `\n\nANÁLISIS DE REZAGO DE AUDITORÍA (últimos 24 períodos):\n`;
+  texto += `\n\nAN\u00c1LISIS DE REZAGO DE AUDITOR\u00cdA (\u00faltimos 24 per\u00edodos):\n`;
   if (gapE > 0) {
     const gapPer = rev24e.slice(0,gapE).map(x=>fmtPeriod(x.k)).reverse().join(', ');
-    texto += `-Sin actividad en ${gapE} período(s): ${gapPer}\n`;
+    texto += `-Sin actividad en ${gapE} per\u00edodo(s): ${gapPer}\n`;
   }
   if (incompleteE.length > 0) {
     const avgE = Math.round(incompleteE.reduce((s,x)=>s+x.pct,0)/incompleteE.length);
-    texto += `-${incompleteE.length} período(s) con auditoría incompleta, promedio: ${avgE}%\n`;
+    texto += `-${incompleteE.length} per\u00edodo(s) con auditor\u00eda incompleta, promedio: ${avgE}%\n`;
   }
   if (below95e.length > 0) {
-    texto += `\nDetalle períodos por debajo del 95%:\n`;
+    texto += `\nDetalle per\u00edodos por debajo del 95%:\n`;
     below95e.forEach(x => {
-      const tag = x.pct===0?'Sin actividad':x.pct<50?'Crítico':x.pct<75?'Pendiente':'Casi completo';
-      texto += `  ${fmtPeriod(x.k)}: ${x.pct}% (${fmt0(x.n)} facturas) — ${tag}\n`;
+      const tag = x.pct===0?'Sin actividad':x.pct<50?'Cr\u00edtico':x.pct<75?'Pendiente':'Casi completo';
+      texto += `  ${fmtPeriod(x.k)}: ${x.pct}% (${fmt0(x.n)} facturas) - ${tag}\n`;
     });
   }
   if (gapE === 0 && incompleteE.length === 0) {
-    texto += `-Todos los períodos analizados superan el 95% de auditoría.\n`;
+    texto += `-Todos los per\u00edodos analizados superan el 95% de auditor\u00eda.\n`;
   }
 
   document.getElementById('email-content').textContent = texto;
@@ -3636,26 +3636,26 @@ function copyEmail() {
   });
 }
 
-// ═══════════════════════════════════════════════════════
+// =======================================================
 //  FORMAT HELPERS
-// ═══════════════════════════════════════════════════════
+// =======================================================
 const MESES       = ['','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const MESES_SHORT = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 
 function fmtDate(d) {
-  if (!d) return '—';
+  if (!d) return '-';
   const dt = d instanceof Date ? d : new Date(d);
-  return isNaN(dt) ? '—' : dt.toLocaleDateString('es-CO', { day:'2-digit', month:'2-digit', year:'numeric' });
+  return isNaN(dt) ? '-' : dt.toLocaleDateString('es-CO', { day:'2-digit', month:'2-digit', year:'numeric' });
 }
 function fmtMes(m)        { return MESES_SHORT[parseInt(m)] || m; }
 function fmtMesNombre(m)  { return MESES[parseInt(m)] || m; }
 function fmtPeriod(k) {
-  if (!k) return '—';
+  if (!k) return '-';
   const [y, m] = k.split('-');
   return fmtMesNombre(m) + ' ' + y;
 }
 function fmtCOP(v) {
-  if (!v && v !== 0) return '—';
+  if (!v && v !== 0) return '-';
   return '$ ' + Math.round(v).toLocaleString('es-CO');
 }
 function fmtCOPraw(v) {
