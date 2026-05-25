@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Informe Gerencial de Análisis Financiero ADRES</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -983,10 +983,13 @@ window.toggleSidebar = function toggleSidebar() {
 window.showSection = function showSection(name) {
   document.querySelectorAll('.app-section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('section-' + name).classList.add('active');
-  document.getElementById('nav-' + name).classList.add('active');
+  const section = document.getElementById('section-' + name);
+  const navEl   = document.getElementById('nav-' + name);
+  if (section) section.classList.add('active');
+  if (navEl)   navEl.classList.add('active');
   const titles = { individual:'Informe por IPS', comparativo:'Comparativo Gerencial', admin:'Configuración' };
-  document.getElementById('top-section-title').textContent = titles[name] || '';
+  const titleEl = document.getElementById('top-section-title');
+  if (titleEl) titleEl.textContent = titles[name] || '';
   if (name === 'comparativo') renderComparativo();
   if (name === 'admin') renderAdmin();
 };
