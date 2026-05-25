@@ -2997,7 +2997,7 @@ window.renderComparativo = function renderComparativo() {
       }
     });
     var avg=function(a){return a.length?Math.round(a.reduce(function(x,y){return x+y;},0)/a.length):0;};
-    var pF=avg(yPF),gF=avg(yGF),aF=avg(yAF);
+    var pF=avg(yPF),nF=avg(yNC),gF=avg(yGF),sF=avg(ySA);
     var cP=pF>=85?'#15803d':pF>=75?'#b45309':'#dc2626';
     var cG=gF<=15?'#15803d':gF<=25?'#b45309':'#dc2626';
     html += '<td class="amount" style="font-weight:700;">'+fmtCOP(tR)+'</td>'+
