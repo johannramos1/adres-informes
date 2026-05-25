@@ -2917,6 +2917,7 @@ window.renderComparativo = function renderComparativo() {
   html += `</div></div>`;
 
     // == VISTA 2: Tabla comparativa por año ==
+  const allYears = [...new Set(loaded.flatMap(i => i.id && ipsStore[i.id].data ? ipsStore[i.id].data.years : []))].sort();
   html += `<div class="section-title" style="margin:32px 32px 16px;">
     Comparativo Anual
     <span>Indicadores por año - todas las IPS cargadas</span>
