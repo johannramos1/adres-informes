@@ -2903,11 +2903,11 @@ window.renderComparativo = function renderComparativo() {
     <table class="nc-table">
       <thead><tr>
         <th>A\u00f1o</th>
-        ${loaded.map(i => `<th colspan="4" style="text-align:center;background:${i.light};">${i.name}</th>`).join('')}
+        ${loaded.map(i => `<th colspan="5" style="text-align:center;background:${i.light};">${i.name}</th>`).join('')}
       </tr>
       <tr>
         <th></th>
-        ${loaded.map(() => `<th>Radicado</th><th>% Pagado Final</th><th>% Glosa Final</th><th>% Auditado</th>`).join('')}
+        ${loaded.map(i => `<th>Radicado</th><th style="color:#2d6a4f;">% Pagado</th><th style="color:#b45309;">% NC</th><th style="color:#dc2626;">% Glosa Viva</th><th style="color:#6b7280;">% Sin Auditar</th>`).join('')}
       </tr></thead>
       <tbody>`;
 
@@ -2923,17 +2923,23 @@ window.renderComparativo = function renderComparativo() {
       const totPG    = keys.reduce((s,k) => s+d.byMes[k].pagoGlosa,   0);
       const totGlosa = keys.reduce((s,k) => s+d.byMes[k].glosa,       0);
       const totNc    = keys.reduce((s,k) => s+d.byMes[k].nc,          0);
-      const totAud   = totRad > 0 ? Math.min(1,(totPI+totGlosa+totNc)/totRad) : 0;
-      // Final percentages (after all movements)
-      const pagFin = totRad > 0 ? Math.round((totPI+totPG+totNc)/totRad*100) : 0;
-      const gloFin = totRad > 0 ? Math.round(Math.max(0,totGlosa-totPG)/totRad*100) : 0;
-      const pctA   = Math.min(100, Math.round(totAud*100));
-      const colorP = pagFin>=85?'#15803d':pagFin>=75?'#b45309':'#dc2626';
-      const colorG = gloFin<=15?'#15803d':gloFin<=25?'#b45309':'#dc2626';
+      // Partition: Pagado + NC + GlosaViva + SinAuditar = 100%
+      const netGlosa  = Math.max(0, totGlosa - totPG);
+      const ncCap     = Math.min(totNc, netGlosa);
+      const glosaViva = Math.max(0, netGlosa - ncCap);
+      const sinAud    = Math.max(0, totRad - totPI - totPG - netGlosa);
+      const pagado    = totPI + totPG;
+      const pPag  = totRad>0 ? Math.round(pagado/totRad*100)   : 0;
+      const pNc   = totRad>0 ? Math.round(ncCap/totRad*100)    : 0;
+      const pGv   = totRad>0 ? Math.round(glosaViva/totRad*100): 0;
+      const pSin  = totRad>0 ? Math.round(sinAud/totRad*100)   : 0;
+      const colorP = pPag>=85?'#15803d':pPag>=75?'#b45309':'#dc2626';
+      const colorG = pGv<=15?'#15803d':pGv<=25?'#b45309':'#dc2626';
       html += '<td class="amount">' + fmtCOP(totRad) + '</td>' +
-               '<td class="mono" style="font-weight:700;color:' + colorP + ';">' + pagFin + '%</td>' +
-               '<td class="mono" style="font-weight:700;color:' + colorG + ';">' + gloFin + '%</td>' +
-               '<td class="mono">' + pctA + '%</td>';
+        '<td class="mono" style="font-weight:700;color:'+colorP+';">'+pPag+'%</td>' +
+        '<td class="mono" style="font-weight:700;color:#b45309;">'+pNc+'%</td>' +
+        '<td class="mono" style="font-weight:700;color:'+colorG+';">'+pGv+'%</td>' +
+        '<td class="mono" style="color:#6b7280;">'+pSin+'%</td>';
     });
     html += `</tr>`;
   });
@@ -2946,7 +2952,7 @@ window.renderComparativo = function renderComparativo() {
     var d3 = ipsStore[ip3.id].data;
     var aK = Object.keys(d3.byMes);
     var tR = aK.reduce(function(s,k){return s+d3.byMes[k].radBruto;},0);
-    var yPF=[],yGF=[],yAF=[];
+    var yPF=[],yNC=[],yGF=[],ySA=[];
     allYears.forEach(function(y) {
       var ks=Object.keys(d3.byMes).filter(function(k){return k.startsWith(String(y));});
       if (!ks.length) return;
@@ -2955,7 +2961,13 @@ window.renderComparativo = function renderComparativo() {
       var pg=ks.reduce(function(s,k){return s+d3.byMes[k].pagoGlosa;},0);
       var g=ks.reduce(function(s,k){return s+d3.byMes[k].glosa;},0);
       var nc=ks.reduce(function(s,k){return s+d3.byMes[k].nc;},0);
-      if (r>0){yPF.push(Math.round((pi+pg+nc)/r*100));yGF.push(Math.round(Math.max(0,g-pg)/r*100));yAF.push(Math.min(100,Math.round((pi+g+nc)/r*100)));}
+      if (r>0){
+        var ng=Math.max(0,g-pg); var ncc=Math.min(nc,ng); var gv=Math.max(0,ng-ncc); var sa=Math.max(0,r-pi-pg-ng);
+        yPF.push(Math.round((pi+pg)/r*100));
+        yNC.push(Math.round(ncc/r*100));
+        yGF.push(Math.round(gv/r*100));
+        ySA.push(Math.round(sa/r*100));
+      }
     });
     var avg=function(a){return a.length?Math.round(a.reduce(function(x,y){return x+y;},0)/a.length):0;};
     var pF=avg(yPF),gF=avg(yGF),aF=avg(yAF);
