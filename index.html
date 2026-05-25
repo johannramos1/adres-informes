@@ -1075,37 +1075,38 @@ let sbClient = null;
 
 function initSupabase() {
   try {
-    // Inline minimal Supabase REST client — no external CDN needed
-    const url = SB_URL + '/rest/v1/';
-    const key = SB_KEY;
-    const baseHeaders = {
-      'apikey': key,
-      'Authorization': 'Bearer ' + key,
+    var restUrl = SB_URL + '/rest/v1/';
+    var headers = {
+      'apikey': SB_KEY,
+      'Authorization': 'Bearer ' + SB_KEY,
       'Content-Type': 'application/json',
     };
     sbClient = {
       from: function(table) {
-        const endpoint = url + table;
+        var endpoint = restUrl + table;
         return {
-          upsert: async function(data) {
-            const res = await fetch(endpoint, {
-              method: 'POST',
-              headers: Object.assign({}, baseHeaders, { 'Prefer': 'resolution=merge-duplicates,return=minimal' }),
-              body: JSON.stringify(data)
-            });
-            if (!res.ok) return { error: { message: await res.text() } };
-            return { error: null };
+          upsert: function(data) {
+            var h = Object.assign({}, headers, {'Prefer':'resolution=merge-duplicates,return=minimal'});
+            return fetch(endpoint, { method:'POST', headers:h, body:JSON.stringify(data) })
+              .then(function(res) {
+                if (!res.ok) return res.text().then(function(t){ return {error:{message:t}}; });
+                return {error:null};
+              });
           },
           select: function(cols) {
-            const filters = [];
-            const chain = {
+            var filters = [];
+            var chain = {
               eq: function(col, val) { filters.push(col + '=eq.' + encodeURIComponent(val)); return chain; },
-              single: async function() {
-                const q = endpoint + '?' + ['select=' + (cols || '*'), ...filters].join('&');
-                const res = await fetch(q, { headers: Object.assign({}, baseHeaders, { 'Accept': 'application/json' }) });
-                if (!res.ok) return { data: null, error: { message: res.statusText } };
-                const arr = await res.json();
-                return { data: arr && arr[0] ? arr[0] : null, error: null };
+              single: function() {
+                var q = endpoint + '?' + ['select='+(cols||'*')].concat(filters).join('&');
+                var h = Object.assign({}, headers, {'Accept':'application/json'});
+                return fetch(q, {headers:h})
+                  .then(function(res) {
+                    if (!res.ok) return {data:null, error:{message:res.statusText}};
+                    return res.json().then(function(arr) {
+                      return {data: arr&&arr[0]?arr[0]:null, error:null};
+                    });
+                  });
               }
             };
             return chain;
@@ -1113,7 +1114,7 @@ function initSupabase() {
         };
       }
     };
-    console.log('Supabase inline client ready');
+    console.log('Supabase client ready');
     return true;
   } catch(e) {
     console.warn('Supabase init failed:', e.message);
@@ -1122,37 +1123,39 @@ function initSupabase() {
 }
 
 // ── Save processed snapshot to Supabase ──
-async function saveToSupabase(ips, data) {
-  if (!sbClient) return false;
+function saveToSupabase(ips, data) {
+  if (!sbClient) return Promise.resolve(false);
   try {
-    const snapshot = buildSnapshotFull(ips, data);
-    const { error } = await sbClient
-      .from('adres_snapshots')
-      .upsert({ ips_id: ips, data: snapshot, updated_at: new Date().toISOString() });
-    if (error) { console.warn('Supabase upsert error:', error.message); return false; }
-    console.log('Guardado en Supabase:', ips);
-    return true;
+    var snapshot = buildSnapshotFull(ips, data);
+    return sbClient.from('adres_snapshots')
+      .upsert({ ips_id: ips, data: snapshot, updated_at: new Date().toISOString() })
+      .then(function(res) {
+        if (res.error) { console.warn('Supabase save error:', res.error.message); return false; }
+        console.log('Guardado en Supabase:', ips);
+        return true;
+      })
+      .catch(function(e) { console.warn('Supabase save offline:', e.message); return false; });
   } catch(e) {
-    console.warn('Supabase save failed (red/offline):', e.message);
-    return false;
+    console.warn('Supabase save failed:', e.message);
+    return Promise.resolve(false);
   }
 }
 
 // ── Load snapshot from Supabase ──
-async function loadFromSupabase(ips) {
-  if (!sbClient) return null;
-  try {
-    const { data, error } = await sbClient
-      .from('adres_snapshots')
-      .select('data,updated_at')
-      .eq('ips_id', ips)
-      .single();
-    if (error || !data) return null;
-    return { snap: data.data, updatedAt: data.updated_at };
-  } catch(e) {
-    console.warn('Supabase load failed (red/offline):', e.message);
-    return null;
-  }
+function loadFromSupabase(ips) {
+  if (!sbClient) return Promise.resolve(null);
+  return sbClient.from('adres_snapshots')
+    .select('data,updated_at')
+    .eq('ips_id', ips)
+    .single()
+    .then(function(res) {
+      if (res.error || !res.data) return null;
+      return { snap: res.data.data, updatedAt: res.data.updated_at };
+    })
+    .catch(function(e) {
+      console.warn('Supabase load offline:', e.message);
+      return null;
+    });
 }
 
 // ── Build full serializable snapshot (all byMes data for display) ──
