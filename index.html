@@ -853,34 +853,38 @@ body.sb-collapsed #main-content {
     </div>
 
 
-    <!-- IPS Cards -->
-    <div class="sb-section">Bases de datos</div>
-
-    <!-- Dolormed -->
-    <div class="sb-ips-card active-ips" id="sb-card-dolormed" onclick="switchActiveIPS('dolormed')">
-      <div class="sb-ips-header">
-        <img src="data:image/webp;base64,UklGRsgFAABXRUJQVlA4ILwFAAAwHQCdASq0ACcAPrVUoUunJSMhpzYNaOAWiWIA0HWuvz7NcUYegB0n/7jZUexD/F+Dvkh9lSPKQf9t5Xf5nwX2vf83vgYAPy/+s98d/Lejv1d5XTxJe+P8d7gH8v/xHqq/2Hj9+mP2S+Ab9YOuCbrW4W4a13uNktes4/smqt70oBbLQR4qD1dAvkPiSjc3BiH6inOZcpUhqTpOXhtp6XPIbF7pvFd6NjvQOxzyjHry6Cw57YyoLl4zuMQBvDYeS/AEv1KCXWD+gPfUXUTDK6ki/iUs7BuU+45lyFnUf5RzOxBqDlB4VKSchtSuZ0t2p3jBAAD+/uHBeBXJVH92/VP29/JyYjD/THcm2dBG0kX+lXhBITSLld4tZe3sIRp1cDFH/pDj/H25cIXWigfxquDZHFVMd3cz7bc6i2F+tl3WZVWMmWsXQxR2TwOfVVqUnRy5pCOWaWxa7KjQYkM/UHGtpMSDyWRfzZx7LpBA1rfB8WBT71x1Pkb0JEOxEOAFRGN3EG1dKjmN9LMUjQdbsp1w1NMqqNNPeUHA+CACHpzX0vr8QsSc546aH/TdDywe/iLxCdx7YX/Ij2WjG+rL4DJiI3BBefsYXKf9COkH93WjZ6ua1XiXFnq5lr9RtnxAg5HueWYO5rZgDnmrzEdU0GgLWYzLWxUibAG6BP8yNMdEKKlx5IV9lnPwpW4YP5yaJVp08V3v/FxRvox6d2HaPzlTyfeS9chGUXb36MiCMYq+gxsXG3fXn2v9v+V1koN1xCOj/fyb1UiPx9EC3rv/ePQqohuxt8RH1wHnkzX13l4mGPHevbPESwEWJKUnoon+s/8/mIJERpD/1+5Z29WzEHoBf6LK1xH928uz24AhWNWXZUn8YH4xTjqLBpkF3orMMbfDyOOo/2W/ijUBEbsiuF/HhpkdfxvcG+xZI4/n/W219Xru5EqZ8JDVKaS4PaUyaIljL7MN4hAV3xjxf3JtUGvxZQ1JVxNaX6oqSpFDI1lJQC/q8d33lCpAFmLYxufXIWgv+AQpQu8UzdgUCyK0e8GTD/+jEXOALTPb5s5snvrPvb9TAjkIfEfcZ9z3t63TtGDba1MdjRnK4ERJbYFSjYhD200UqQ7f75/qLd91tdNyYGmwuhKUe6bJrVZEY2L/HQxxJE1PAY4nJqo3CHHKXVvlbpE3awJD4/wJ4gVDokcR1l9jHRe4kY92PscakHlPZD2rrg5HOT1Z7PFHTkHn0mRFgPnXrth3M856UHSfanL+T+uslNaYkns09HZfM2LhIMZgMhzc79G4rPjTOTsDz+FkxeTEGKe4YqH6MxQRE0wxddjf1aVeSWiDpVGww/HYoyBAD7nvUdRgdnbXs8jgJ7rXSpJgcuSuHToFu0+Jdko51Q2oOD5DuX8f8TWuMXJvzzBvCexcxkVKGMDiEy7o6CjHvBYXaszixHfHGt+j9CXoT7t6erq91VF6lS4C6t4ZrVsbNwRuno9F29KgRyv0P9dI3d8dP8iymgmJc/ilYDFdCkcXH3ul+ThPFucwNuvDs4tNnV0b9iBzqWbx0/upxGRNdE5fkqh0xPe6qY5OInPE8gbp19QMuZWxOOZd4Nit+D6NF75FuvTVrcoPCbZpj2c7Ujpl+1ZVEnPGdxz5oZC6oo8K7uy57Pjn3qoFzPQWeO2vM13fEIo+f3914EghtIibuoaSkHVIWubQIjCgNdJyiX/3wJXKFHQwG5LFCpfahGjyUiG/tPJHqkpC/EH1lKkE8X0Y/Ed9rkvGFcHdwUMKruZY8D3aKibTZiyMlERl88hDIdYqIzcYwX0uNtLFLn0lhPJHDtgOdx7ItpVYreawNssiS7Ekz2Nmbb2VvlLIjaQXFIO3519pT2Ad/l4huqxwaA3SBF8igRMasca7NhxVSQSiLtbu4PPbnyXfYK0ezc8WffzqaFRa2REnB/vT8VAMzp5MZwKMAAAAAAAA" alt="Dolormed"
-             style="height:22px;object-fit:contain;max-width:110px;background:white;border-radius:5px;padding:2px 5px;">
+    <!-- IPS Status (minimal) -->
+    <div class="sb-section">Estado</div>
+    <div style="padding:4px 8px 8px;">
+      <div id="sb-status-dolormed" onclick="switchActiveIPS('dolormed')"
+           style="display:flex;align-items:center;gap:8px;padding:8px 10px;
+                  border-radius:8px;cursor:pointer;margin-bottom:4px;
+                  background:rgba(255,255,255,.07);transition:background .15s;"
+           onmouseover="this.style.background='rgba(255,255,255,.12)'"
+           onmouseout="this.style.background='rgba(255,255,255,.07)'">
+        <div style="width:8px;height:8px;border-radius:50%;background:#52b788;flex-shrink:0;"></div>
+        <div style="overflow:hidden;">
+          <div style="font-size:11px;font-weight:700;color:white;white-space:nowrap;">Dolormed</div>
+          <div id="sb-meta-dolormed" style="font-size:10px;color:rgba(255,255,255,.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Sin base cargada</div>
+        </div>
+        <span id="sb-badge-dolormed" class="sb-ips-badge empty" style="margin-left:auto;flex-shrink:0;">—</span>
       </div>
-      <div class="sb-ips-meta" id="sb-meta-dolormed">Sin base cargada</div>
-      <div class="sb-ips-status">
-        <span class="sb-ips-badge empty" id="sb-badge-dolormed">Pendiente</span>
+      <div id="sb-status-redesimat" onclick="switchActiveIPS('redesimat')"
+           style="display:flex;align-items:center;gap:8px;padding:8px 10px;
+                  border-radius:8px;cursor:pointer;
+                  background:rgba(255,255,255,.07);transition:background .15s;"
+           onmouseover="this.style.background='rgba(255,255,255,.12)'"
+           onmouseout="this.style.background='rgba(255,255,255,.07)'">
+        <div style="width:8px;height:8px;border-radius:50%;background:#457b9d;flex-shrink:0;"></div>
+        <div style="overflow:hidden;">
+          <div style="font-size:11px;font-weight:700;color:white;white-space:nowrap;">Redes IMAT</div>
+          <div id="sb-meta-redesimat" style="font-size:10px;color:rgba(255,255,255,.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Sin base cargada</div>
+        </div>
+        <span id="sb-badge-redesimat" class="sb-ips-badge empty" style="margin-left:auto;flex-shrink:0;">—</span>
       </div>
     </div>
 
-    <!-- Redesimat -->
-    <div class="sb-ips-card" id="sb-card-redesimat" onclick="switchActiveIPS('redesimat')">
-      <div class="sb-ips-header">
-        <img src="data:image/webp;base64,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" alt="Redes IMAT"
-             style="height:22px;object-fit:contain;max-width:110px;background:white;border-radius:5px;padding:2px 5px;">
-      </div>
-      <div class="sb-ips-meta" id="sb-meta-redesimat">Sin base cargada</div>
-      <div class="sb-ips-status">
-        <span class="sb-ips-badge empty" id="sb-badge-redesimat">Pendiente</span>
-      </div>
-    </div>
-
-    <!-- Load panel (hidden, triggered from admin section) -->
+        <!-- Load panel (hidden, triggered from admin section) -->
     <div style="display:none;" id="sb-load-panel">
       <input type="date" id="sb-cutoff-input">
       <input type="file" id="sb-file-input" accept=".xlsx,.xls"
@@ -995,9 +999,11 @@ window.showSection = function showSection(name) {
 
 window.switchActiveIPS = function switchActiveIPS(ips) {
   selectedIPS = ips;
-  document.querySelectorAll('.sb-ips-card').forEach(c => c.classList.remove('active-ips'));
-  const card = document.getElementById('sb-card-' + ips);
-  if (card) card.classList.add('active-ips');
+  // Highlight active IPS in sidebar
+  ['dolormed','redesimat'].forEach(id => {
+    const el = document.getElementById('sb-status-' + id);
+    if (el) el.style.background = id === ips ? 'rgba(255,255,255,.18)' : 'rgba(255,255,255,.07)';
+  });
 
   if (ipsStore[ips].data) {
     reportData = ipsStore[ips].data;
@@ -1024,26 +1030,6 @@ function renderSection() {
 }
 
 // ── SIDEBAR LOAD PANEL ──
-window.openLoadPanel = function openLoadPanel(ips) {
-  sbLoadingIPS   = ips;
-  sbSelectedFile = null;
-  const panel = document.getElementById('sb-load-panel');
-  panel.style.display = 'block';
-  const nameEl = document.getElementById('sb-file-name');
-  if (nameEl) nameEl.textContent = '';
-  const btnEl = document.getElementById('sb-load-btn');
-  if (btnEl) btnEl.disabled = true;
-  const cutoffEl = document.getElementById('sb-cutoff-input');
-  if (cutoffEl) cutoffEl.value = '';
-  // Reset file input
-  const fi = document.getElementById('sb-file-input');
-  if (fi) fi.value = '';
-  sbSelectedFile = null;
-};
-window.cancelLoadPanel = function cancelLoadPanel() {
-  document.getElementById('sb-load-panel').style.display = 'none';
-  sbLoadingIPS = null; sbSelectedFile = null;
-};
 function onSBFileSelect(e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -1053,113 +1039,12 @@ function onSBFileSelect(e) {
   const btnEl = document.getElementById('sb-load-btn');
   if (btnEl) btnEl.disabled = false;
 }
-window.loadSBFile = function loadSBFile() {
-  // Always read fresh from the input element — most reliable approach
-  const fileInput = document.getElementById('sb-file-input');
-  const fileToLoad = (fileInput && fileInput.files && fileInput.files[0])
-    ? fileInput.files[0]
-    : sbSelectedFile;
-
-  if (!fileToLoad) {
-    alert('Seleccione un archivo primero.');
-    return;
-  }
-  if (!sbLoadingIPS) {
-    alert('Error: no se detectó la IPS. Intente de nuevo.');
-    return;
-  }
-  const ips = sbLoadingIPS;
-  const cutoffVal = document.getElementById('sb-cutoff-input').value;
-  window._manualCutoff = cutoffVal ? new Date(cutoffVal + 'T12:00:00') : null;
-  selectedIPS = ips;
-  cancelLoadPanel();  // safe to call now — we already saved the references
-
-  // Show loading state in report body
-  document.getElementById('report-body').innerHTML =
-    '<div style="padding:80px;text-align:center;color:var(--text-light);">' +
-    '<div style="width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--primary);' +
-    'border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px;"></div>' +
-    'Procesando base de datos...</div>';
-
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      const data = new Uint8Array(e.target.result);
-      const wb   = XLSX.read(data, { type:'array', cellDates:true });
-      const ws   = wb.Sheets[wb.SheetNames[0]];
-      const rows = XLSX.utils.sheet_to_json(ws, { defval:null });
-      // Cross-load validation
-      const crossCheck = validateIPSMatch(rows, ips);
-      if (crossCheck.mismatch) {
-        const msg = 'BD incorrecta\n\nSeleccionó: ' + crossCheck.selected + '\nLa base parece ser: ' + crossCheck.detectedName + '\nPrefijos: ' + crossCheck.prefixes.join(', ') + '\n\n¿Continuar de todas formas?';
-        if (!confirm(msg)) {
-          document.getElementById('report-body').innerHTML =
-            '<div style="padding:60px;text-align:center;color:var(--text-light);">Carga cancelada. Use el panel lateral para intentar de nuevo.</div>';
-          return;
-        }
-      }
-
-      const processed = processData(rows);
-
-      // Integrity check
-      const lastSnap = loadLastSnapshot(ips);
-      if (lastSnap) {
-        const newSnap = buildSnapshot(processed);
-        const intResult = checkIntegrity(newSnap, lastSnap);
-        window._pendingIntegrity = intResult.hasIssues ? { result:intResult, oldSnap:lastSnap, newSnap } : null;
-      }
-
-      // Store in ipsStore
-      ipsStore[ips].data     = processed;
-      ipsStore[ips].cutoff   = processed.cutoffStr;
-      ipsStore[ips].loadedAt = new Date().toLocaleString('es-CO');
-
-      saveSnapshot(processed);
-      saveToHistory(processed);
-      // Save to Supabase for cross-device persistence
-      saveToSupabase(ips, processed).then(ok => {
-        if (ok) console.log('Saved to Supabase');
-      });
-      // Clear file input
-      const fi = document.getElementById('sb-file-input');
-      if (fi) fi.value = '';
-      sbSelectedFile = null;
-
-      // Update sidebar card
-      updateSBCard(ips, processed);
-
-      // Show report
-      reportData = processed;
-      window._reportData = processed;
-      updateTopBar(processed);
-
-      // Switch to individual view first, then render
-      showSection('individual');
-      switchActiveIPS(ips);  // this calls renderReport internally
-
-      // Show integrity banner if needed
-      if (window._pendingIntegrity) {
-        setTimeout(() => {
-          showIntegrityReport(window._pendingIntegrity.result,
-            window._pendingIntegrity.oldSnap, window._pendingIntegrity.newSnap);
-          window._pendingIntegrity = null;
-        }, 200);
-      }
-    } catch(err) {
-      console.error('loadSBFile error:', err);
-      alert('Error procesando el archivo: ' + err.message);
-      document.getElementById('report-body').innerHTML =
-        '<div style="padding:60px;text-align:center;color:#dc2626;">Error al procesar: ' + err.message + '</div>';
-    }
-  };
-  reader.readAsArrayBuffer(fileToLoad);
-};
 
 function updateSBCard(ips, data) {
-  document.getElementById('sb-meta-' + ips).textContent = 'Corte: ' + data.cutoffStr + ' · ' + data.enriched.length.toLocaleString('es-CO') + ' facturas';
+  const meta = document.getElementById('sb-meta-' + ips);
+  if (meta) meta.textContent = 'Corte: ' + data.cutoffStr;
   const badge = document.getElementById('sb-badge-' + ips);
-  badge.textContent = 'Cargada';
-  badge.className   = 'sb-ips-badge loaded';
+  if (badge) { badge.textContent = '✓'; badge.className = 'sb-ips-badge loaded'; }
 }
 
 const IPS_LOGOS = {
@@ -1347,59 +1232,52 @@ function restoreFromSnapshot(snap) {
 // ══════════════════════════════════════════════════════════
 //  APP STARTUP
 // ═══════════════════════════════════════════════════════
-document.addEventListener('DOMContentLoaded', async () => {
-  // Show welcome screen immediately — don't block UI
-  document.getElementById('report-body').innerHTML =
+document.addEventListener('DOMContentLoaded', function() {
+  // Show welcome screen immediately
+  const rb = document.getElementById('report-body');
+  if (rb) rb.innerHTML =
     '<div style="padding:80px 32px;text-align:center;color:var(--text-light);">' +
     '<div style="font-size:48px;margin-bottom:16px;opacity:.3;">&#9783;</div>' +
     '<div style="font-size:18px;font-weight:600;color:var(--text-mid);margin-bottom:8px;">Bienvenido al Sistema de Informes ADRES</div>' +
     '<div style="font-size:14px;max-width:400px;margin:0 auto;line-height:1.7;">Vaya a <strong>Configuración</strong> para cargar las bases de datos.</div>' +
     '</div>';
 
-  // Try Supabase in background — never block UI
-  try {
-    const ok = initSupabase();
-    if (!ok) { console.warn("Supabase no disponible - modo offline"); return; }
-
-    const ipsIds = ['dolormed', 'redesimat'];
-    let anyLoaded = false;
-
-    for (const ipsId of ipsIds) {
-      try {
-        const result = await loadFromSupabase(ipsId);
-        if (result && result.snap) {
-          const snap = restoreFromSnapshot(result.snap);
-          ipsStore[ipsId].data     = snap;
-          ipsStore[ipsId].cutoff   = snap.cutoffStr;
-          ipsStore[ipsId].loadedAt = new Date(result.updatedAt).toLocaleString('es-CO') + ' (Supabase)';
-          updateSBCard(ipsId, snap);
-          anyLoaded = true;
-        }
-      } catch(e) {
-        console.warn('Could not load ' + ipsId + ' from Supabase:', e.message);
-      }
-    }
-
-    if (anyLoaded) {
-      const firstLoaded = ipsIds.find(id => ipsStore[id].data);
-      if (firstLoaded) {
-        selectedIPS = firstLoaded;
-        reportData = ipsStore[firstLoaded].data;
-        window._reportData = reportData;
-        document.body.className = firstLoaded === 'redesimat' ? 'theme-redesimat' : '';
-        updateTopBar(reportData);
-        renderReport(reportData);
-        document.querySelectorAll('.sb-ips-card').forEach(c => c.classList.remove('active-ips'));
-        const card = document.getElementById('sb-card-' + firstLoaded);
-        if (card) card.classList.add('active-ips');
-        document.getElementById('report-body').innerHTML =
-          document.getElementById('report-body').innerHTML;
-      }
-    }
-  } catch(e) {
-    console.warn('Supabase init error (non-fatal):', e.message);
-  }
+  // Load from Supabase in background after a short delay
+  setTimeout(function() {
+    try { initSupabase(); } catch(e) { return; }
+    loadAllFromSupabase();
+  }, 500);
 });
+
+function loadAllFromSupabase() {
+  var ipsIds = ['dolormed', 'redesimat'];
+  var loaded = 0;
+  ipsIds.forEach(function(ipsId) {
+    loadFromSupabase(ipsId).then(function(result) {
+      if (!result || !result.snap) return;
+      try {
+        var snap = restoreFromSnapshot(result.snap);
+        ipsStore[ipsId].data     = snap;
+        ipsStore[ipsId].cutoff   = snap.cutoffStr;
+        ipsStore[ipsId].loadedAt = new Date(result.updatedAt).toLocaleString('es-CO') + ' (nube)';
+        updateSBCard(ipsId, snap);
+        loaded++;
+        if (loaded === 1) {
+          // Auto-show first loaded IPS
+          selectedIPS = ipsId;
+          reportData = snap;
+          window._reportData = snap;
+          document.body.className = ipsId === 'redesimat' ? 'theme-redesimat' : '';
+          updateTopBar(snap);
+          renderReport(snap);
+          document.querySelectorAll('.sb-ips-card').forEach(function(c) { c.classList.remove('active-ips'); });
+          var card = document.getElementById('sb-card-' + ipsId);
+          if (card) card.classList.add('active-ips');
+        }
+      } catch(e) { console.warn('Error restoring ' + ipsId + ':', e.message); }
+    }).catch(function(e) { console.warn('Supabase load ' + ipsId + ':', e.message); });
+  });
+}
 
 // ═══════════════════════════════════════════════════════
 //  IPS SELECTION
@@ -3479,176 +3357,128 @@ window.renderCompTendencias = function renderCompTendencias() {
 //  ADMIN SECTION
 // ═══════════════════════════════════════════════════════
 window.renderAdmin = function renderAdmin() {
-  const body = document.getElementById('admin-body');
+  var body = document.getElementById('admin-body');
   if (!body) return;
 
-  const ipsList = [
-    { id:'dolormed',  name:'Clínica Dolormed S.A.S',  color:'#2d6a4f', dot:'#52b788' },
-    { id:'redesimat', name:'Clínica Redes IMAT S.A.S', color:'#1d3557', dot:'#457b9d' },
+  var ipsList = [
+    { id:'dolormed',  name:'Clinica Dolormed S.A.S',  color:'#2d6a4f', dot:'#52b788' },
+    { id:'redesimat', name:'Clinica Redes IMAT S.A.S', color:'#1d3557', dot:'#457b9d' },
   ];
 
-  let html = '<div style="padding:0 0 48px;">';
-  html += '<div class="section-title">Configuración<span>Gestión de bases de datos y sistema</span></div>';
-
-  // ── CARGUE DE BASES DE DATOS ──
-  html += '<div class="section-title" style="font-size:14px;margin-bottom:12px;margin-top:4px;">Bases de Datos — Cargar / Actualizar</div>';
+  var html = '<div style="padding:0 0 48px;">';
+  html += '<div class="section-title">Configuracion<span>Gestion de bases de datos</span></div>';
   html += '<div class="grid-2" style="margin-bottom:32px;">';
 
-  ipsList.forEach(ips => {
-    const store = ipsStore[ips.id];
-    const isLoaded = !!store.data;
-
+  ipsList.forEach(function(ips) {
+    var store = ipsStore[ips.id];
+    var isLoaded = !!store.data;
     html += '<div class="card"><div class="card-body">' +
-      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">' +
-        '<div style="width:10px;height:10px;border-radius:50%;background:' + ips.dot + ';flex-shrink:0;"></div>' +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">' +
+        '<div style="width:10px;height:10px;border-radius:50%;background:' + ips.dot + ';"></div>' +
         '<div style="font-weight:700;font-size:15px;color:' + ips.color + ';">' + ips.name + '</div>' +
       '</div>' +
       (isLoaded
-        ? '<div style="font-size:12px;color:var(--text-light);margin-bottom:12px;line-height:1.6;">' +
-            '<strong>Estado:</strong> Cargada &nbsp;·&nbsp; ' +
-            '<strong>Corte:</strong> ' + store.cutoff + '<br>' +
-            '<strong>Último cargue:</strong> ' + store.loadedAt +
-          '</div>'
+        ? '<div style="font-size:12px;color:var(--text-light);margin-bottom:12px;">Cargada · Corte: <strong>' + store.cutoff + '</strong><br>' + store.loadedAt + '</div>'
         : '<div style="font-size:12px;color:var(--text-light);margin-bottom:12px;">Sin base de datos cargada.</div>'
       ) +
-
-      // Inline load form
-      '<div id="load-form-' + ips.id + '">' +
-        '<div style="margin-bottom:8px;">' +
-          '<label style="font-size:11px;font-weight:600;color:var(--text-light);display:block;margin-bottom:4px;">Fecha de corte</label>' +
-          '<input type="date" id="cutoff-' + ips.id + '"' +
-            ' style="width:100%;padding:7px 10px;border-radius:7px;border:1.5px solid var(--border);' +
-            'font-family:DM Sans,sans-serif;font-size:13px;box-sizing:border-box;">' +
-        '</div>' +
-        '<div style="margin-bottom:8px;">' +
-          '<label style="font-size:11px;font-weight:600;color:var(--text-light);display:block;margin-bottom:4px;">Archivo Excel (.xlsx)</label>' +
-          '<label style="display:block;padding:10px;border:1.5px dashed var(--border);border-radius:7px;' +
-                 'text-align:center;cursor:pointer;font-size:12px;color:var(--text-light);' +
-                 'box-sizing:border-box;" id="file-label-' + ips.id + '">' +
-            'Seleccionar archivo' +
-            '<input type="file" id="file-input-' + ips.id + '" accept=".xlsx,.xls"' +
-                   ' onchange="onAdminFileSelect(event,\"' + ips.id + '\"" style="display:none;">' +
-          '</label>' +
-          '<div style="font-size:11px;color:var(--text-light);margin-top:4px;" id="file-name-' + ips.id + '"></div>' +
-        '</div>' +
-        '<button id="btn-cargar-' + ips.id + '"' +
-          ' onclick="loadAdminFile(\"' + ips.id + '\")" disabled' +
-          ' style="width:100%;padding:10px;background:' + ips.color + ';color:white;border:none;' +
-          'border-radius:8px;font-family:DM Sans,sans-serif;font-size:13px;font-weight:600;' +
-          'cursor:pointer;opacity:.5;transition:opacity .2s;">' +
-          (isLoaded ? 'Actualizar base de datos' : 'Cargar base de datos') +
-        '</button>' +
+      '<div style="margin-bottom:8px;">' +
+        '<label style="font-size:11px;font-weight:600;color:var(--text-light);display:block;margin-bottom:4px;">Fecha de corte</label>' +
+        '<input type="date" id="adm-cutoff-' + ips.id + '"' +
+          ' style="width:100%;padding:7px 10px;border-radius:7px;border:1.5px solid var(--border);' +
+          'font-family:DM Sans,sans-serif;font-size:13px;box-sizing:border-box;">' +
       '</div>' +
+      '<div style="margin-bottom:8px;">' +
+        '<label style="font-size:11px;font-weight:600;color:var(--text-light);display:block;margin-bottom:4px;">Archivo Excel</label>' +
+        '<input type="file" id="adm-file-' + ips.id + '" accept=".xlsx,.xls"' +
+          ' style="width:100%;font-size:12px;color:var(--text-mid);padding:6px;' +
+          'border:1.5px dashed var(--border);border-radius:7px;box-sizing:border-box;cursor:pointer;">' +
+        '<div id="adm-fname-' + ips.id + '" style="font-size:11px;color:var(--text-light);margin-top:4px;"></div>' +
+      '</div>' +
+      '<button id="adm-btn-' + ips.id + '"' +
+        ' style="width:100%;padding:10px;background:' + ips.color + ';color:white;border:none;' +
+        'border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;"' +
+        ' onclick="window.doAdminLoad(\"' + ips.id + '\")">' +
+        (isLoaded ? 'Actualizar base de datos' : 'Cargar base de datos') +
+      '</button>' +
     '</div></div>';
   });
 
   html += '</div>';
 
-  // ── HISTORIAL DE CARGUES ──
+  // Historial
   html += '<div class="section-title" style="font-size:14px;margin-bottom:12px;">Historial de cargues</div>';
-
-  ipsList.forEach(ips => {
-    const snaps = (() => {
-      try { return JSON.parse(localStorage.getItem('adres_snap_' + ips.id + '_history') || '[]'); }
-      catch(e) { return []; }
-    })();
-
+  ipsList.forEach(function(ips) {
+    var snaps = [];
+    try { snaps = JSON.parse(localStorage.getItem('adres_snap_' + ips.id + '_history') || '[]'); } catch(e) {}
     html += '<div class="card" style="margin-bottom:16px;">' +
       '<div class="card-header">' +
         '<div class="card-title" style="color:' + ips.color + ';">' + ips.name + '</div>' +
-        '<span style="font-size:12px;color:var(--text-light);">' + snaps.length + ' cargue(s) registrado(s)</span>' +
-      '</div>' +
-      '<div class="card-body">';
-
+        '<span style="font-size:12px;color:var(--text-light);">' + snaps.length + ' cargue(s)</span>' +
+      '</div><div class="card-body">';
     if (!snaps.length) {
-      html += '<div style="font-size:13px;color:var(--text-light);">Sin historial registrado.</div>';
+      html += '<div style="font-size:13px;color:var(--text-light);">Sin historial.</div>';
     } else {
       html += '<table class="admin-table"><thead><tr>' +
-        '<th>Fecha cargue</th><th>Corte</th><th>Facturas</th><th>Radicado</th><th>Pagos</th><th>Cartera</th>' +
-        '</tr></thead><tbody>';
-      snaps.slice(0,10).forEach(s => {
-        const totRad  = s.byYear ? Object.values(s.byYear).reduce((a,y)=>a+(y.rad||0),0) : 0;
-        const totPago = s.byYear ? Object.values(s.byYear).reduce((a,y)=>a+(y.pago||0),0) : 0;
-        html += '<tr>' +
-          '<td>' + new Date(s.loadedAt).toLocaleString('es-CO') + '</td>' +
+        '<th>Fecha</th><th>Corte</th><th>Facturas</th><th>Radicado</th></tr></thead><tbody>';
+      snaps.slice(0,8).forEach(function(s) {
+        var totRad = s.byYear ? Object.values(s.byYear).reduce(function(a,y){return a+(y.rad||0);},0) : 0;
+        html += '<tr><td>' + new Date(s.loadedAt).toLocaleString('es-CO') + '</td>' +
           '<td>' + (s.cutoffStr||'—') + '</td>' +
           '<td class="mono">' + fmt0(s.totalFact||0) + '</td>' +
-          '<td class="amount">' + fmtCOP(totRad) + '</td>' +
-          '<td class="amount">' + fmtCOP(totPago) + '</td>' +
-          '<td class="amount">' + fmtCOP(s.cartera||0) + '</td>' +
-        '</tr>';
+          '<td class="amount">' + fmtCOP(totRad) + '</td></tr>';
       });
       html += '</tbody></table>';
     }
     html += '</div></div>';
   });
-
   html += '</div>';
   body.innerHTML = html;
-
-  // Enable buttons when file selected
-  ipsList.forEach(ips => {
-    const btn = document.getElementById('btn-cargar-' + ips.id);
-    const inp = document.getElementById('file-input-' + ips.id);
-    if (inp) inp.addEventListener('change', () => {
-      if (inp.files && inp.files[0]) {
-        if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
-      }
-    });
-  });
 };
 
-window.onAdminFileSelect = function onAdminFileSelect(e, ipsId) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const nameEl = document.getElementById('file-name-' + ipsId);
-  if (nameEl) nameEl.textContent = file.name;
-  const btn = document.getElementById('btn-cargar-' + ipsId);
-  if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
-};
+window.doAdminLoad = function doAdminLoad(ipsId) {
+  var fileInput  = document.getElementById('adm-file-' + ipsId);
+  var cutoffInput = document.getElementById('adm-cutoff-' + ipsId);
+  var file = fileInput && fileInput.files && fileInput.files[0] ? fileInput.files[0] : null;
+  if (!file) { alert('Seleccione un archivo Excel primero.'); return; }
 
-window.loadAdminFile = function loadAdminFile(ipsId) {
-  const fileInput = document.getElementById('file-input-' + ipsId);
-  const cutoffInput = document.getElementById('cutoff-' + ipsId);
-  const fileToLoad = fileInput && fileInput.files && fileInput.files[0] ? fileInput.files[0] : null;
-
-  if (!fileToLoad) { alert('Seleccione un archivo primero.'); return; }
-
-  const cutoffVal = cutoffInput ? cutoffInput.value : '';
+  var cutoffVal = cutoffInput ? cutoffInput.value : '';
   window._manualCutoff = cutoffVal ? new Date(cutoffVal + 'T12:00:00') : null;
   selectedIPS = ipsId;
 
-  // Show loading in report body
-  document.getElementById('report-body').innerHTML =
-    '<div style="padding:80px;text-align:center;color:var(--text-light);">' +
+  var btn = document.getElementById('adm-btn-' + ipsId);
+  if (btn) { btn.textContent = 'Procesando...'; btn.disabled = true; }
+
+  var rb = document.getElementById('report-body');
+  if (rb) rb.innerHTML = '<div style="padding:80px;text-align:center;color:var(--text-light);">' +
     '<div style="width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--primary);' +
     'border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px;"></div>' +
-    'Procesando base de datos ' + (ipsId === 'dolormed' ? 'Dolormed' : 'Redes IMAT') + '...</div>';
+    'Procesando ' + (ipsId === 'dolormed' ? 'Dolormed' : 'Redes IMAT') + '...</div>';
 
-  const reader = new FileReader();
+  var reader = new FileReader();
   reader.onload = function(e) {
     try {
-      const data = new Uint8Array(e.target.result);
-      const wb   = XLSX.read(data, { type:'array', cellDates:true });
-      const ws   = wb.Sheets[wb.SheetNames[0]];
-      const rows = XLSX.utils.sheet_to_json(ws, { defval:null });
+      var data = new Uint8Array(e.target.result);
+      var wb   = XLSX.read(data, { type:'array', cellDates:true });
+      var ws   = wb.Sheets[wb.SheetNames[0]];
+      var rows = XLSX.utils.sheet_to_json(ws, { defval:null });
 
-      const crossCheck = validateIPSMatch(rows, ipsId);
+      var crossCheck = validateIPSMatch(rows, ipsId);
       if (crossCheck.mismatch) {
-        const msg = 'BD incorrecta\n\nSeleccionó: ' + crossCheck.selected + '\nLa base parece ser: ' + crossCheck.detectedName + '\nPrefijos: ' + crossCheck.prefixes.join(', ') + '\n\n¿Continuar de todas formas?';
+        var msg = 'BD incorrecta\n\nSeleccionado: ' + crossCheck.selected +
+          '\nDetectado: ' + crossCheck.detectedName +
+          '\n\nDesea continuar?';
         if (!confirm(msg)) {
-          document.getElementById('report-body').innerHTML = '<div style="padding:60px;text-align:center;color:var(--text-light);">Carga cancelada.</div>';
+          if (btn) { btn.textContent = 'Cargar base de datos'; btn.disabled = false; }
           return;
         }
       }
 
-      const processed = processData(rows);
-
-      const lastSnap = loadLastSnapshot(ipsId);
+      var processed = processData(rows);
+      var lastSnap  = loadLastSnapshot(ipsId);
       if (lastSnap) {
-        const newSnap = buildSnapshot(processed);
-        const intResult = checkIntegrity(newSnap, lastSnap);
-        window._pendingIntegrity = intResult.hasIssues ? { result:intResult, oldSnap:lastSnap, newSnap } : null;
+        var newSnap    = buildSnapshot(processed);
+        var intResult  = checkIntegrity(newSnap, lastSnap);
+        window._pendingIntegrity = intResult.hasIssues ? { result:intResult, oldSnap:lastSnap, newSnap:newSnap } : null;
       }
 
       ipsStore[ipsId].data     = processed;
@@ -3657,69 +3487,34 @@ window.loadAdminFile = function loadAdminFile(ipsId) {
 
       saveSnapshot(processed);
       saveToHistory(processed);
-      saveToSupabase(ipsId, processed);
-
+      saveToSupabase(ipsId, processed).catch(function(e){ console.warn('Supabase save:', e.message); });
       updateSBCard(ipsId, processed);
 
       reportData = processed;
       window._reportData = processed;
       updateTopBar(processed);
-
       showSection('individual');
       switchActiveIPS(ipsId);
 
       if (window._pendingIntegrity) {
-        setTimeout(() => {
-          showIntegrityReport(window._pendingIntegrity.result, window._pendingIntegrity.oldSnap, window._pendingIntegrity.newSnap);
+        setTimeout(function() {
+          showIntegrityReport(window._pendingIntegrity.result,
+            window._pendingIntegrity.oldSnap, window._pendingIntegrity.newSnap);
           window._pendingIntegrity = null;
-        }, 200);
+        }, 300);
       }
     } catch(err) {
-      console.error('loadAdminFile error:', err);
-      alert('Error procesando el archivo: ' + err.message);
-      document.getElementById('report-body').innerHTML = '<div style="padding:60px;text-align:center;color:#dc2626;">Error: ' + err.message + '</div>';
+      console.error('doAdminLoad error:', err);
+      alert('Error: ' + err.message);
+      if (btn) { btn.textContent = 'Cargar base de datos'; btn.disabled = false; }
     }
   };
-  reader.readAsArrayBuffer(fileToLoad);
+  reader.onerror = function() { alert('Error leyendo el archivo.'); };
+  reader.readAsArrayBuffer(file);
 };
 
 
 
-function saveToHistory(data) {
-  try {
-    const hist = JSON.parse(localStorage.getItem('adres_report_history') || '[]');
-    const entry = {
-      id: Date.now(), date: new Date().toISOString(),
-      ips: data.ips, ipsName: data.ipsName,
-      cutoffStr: data.cutoffStr,
-      totalRad: data.totalRad, carteraTotal: data.carteraTotal,
-    };
-    hist.unshift(entry);
-    localStorage.setItem('adres_report_history', JSON.stringify(hist.slice(0, 24)));
-  } catch(e) {}
-}
-
-function resetApp() {
-  // From upload screen — reset everything
-  window._reportData = null;
-  ipsStore.dolormed  = { data:null, cutoff:null, loadedAt:null };
-  ipsStore.redesimat = { data:null, cutoff:null, loadedAt:null };
-  // Clear all IPS data and show empty state
-  document.getElementById('report-body').innerHTML =
-    '<div style="padding:80px 32px;text-align:center;color:var(--text-light);">' +
-    '<div style="font-size:14px;">Base de datos eliminada. Cargue una nueva desde el panel lateral.</div></div>';
-  ['dolormed','redesimat'].forEach(id => {
-    document.getElementById('sb-badge-' + id).textContent = 'Pendiente';
-    document.getElementById('sb-badge-' + id).className = 'sb-ips-badge empty';
-    document.getElementById('sb-meta-' + id).textContent = 'Sin base cargada';
-  });
-  document.body.className = '';
-  if (window._tendChart) { window._tendChart.destroy(); window._tendChart = null; }
-}
-
-// ═══════════════════════════════════════════════════════
-//  EMAIL MODAL
-// ═══════════════════════════════════════════════════════
 window.openEmailModal = function openEmailModal() {
   if (!window._reportData) return;
   const d = window._reportData;
