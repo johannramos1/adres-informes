@@ -2916,99 +2916,126 @@ window.renderComparativo = function renderComparativo() {
   });
   html += `</div></div>`;
 
-  // == VISTA 2: Tabla comparativa por a\u00f1o ==
+    // == VISTA 2: Tabla comparativa por año ==
   html += `<div class="section-title" style="margin:32px 32px 16px;">
     Comparativo Anual
-    <span>Indicadores por a\u00f1o - todas las IPS cargadas</span>
+    <span>Indicadores por año - todas las IPS cargadas</span>
   </div>`;
-  html += `<div style="padding:0 32px 24px;">`;
 
-  // Build year union
-  const allYears = [...new Set(loaded.flatMap(i => ipsStore[i.id].data.years))].sort();
+  html += '<div style="overflow-x:auto;padding:0 32px 32px;">';
+  html += '<table class="admin-table" style="width:100%;border-collapse:collapse;">';
 
-  html += `<div class="card"><div class="card-body-flush"><div class="table-scroll">
-    <table class="nc-table">
-      <thead><tr>
-        <th>A\u00f1o</th>
-        ${loaded.map(i => `<th colspan="5" style="text-align:center;background:${i.light};">${i.name}</th>`).join('')}
-      </tr>
-      <tr>
-        <th></th>
-        ${loaded.map(i => `<th>Radicado</th><th style="color:#2d6a4f;">% Pagado</th><th style="color:#dc2626;">% Glosa Viva</th><th style="color:#7c3aed;">% NC (Pérdida)</th><th style="color:#6b7280;">% Sin Auditar</th>`).join('')}
-      </tr></thead>
-      <tbody>`;
+  // ── Header row 1: IPS names ──
+  html += '<thead><tr>';
+  html += '<th style="width:70px;"></th>';
+  loaded.forEach(function(ips) {
+    var hStyle = 'text-align:center;background:' + ips.light + ';color:' + ips.color + ';font-weight:700;font-size:12px;letter-spacing:.3px;padding:10px 8px;';
+    html += '<th colspan="5" style="' + hStyle + '">' + ips.name.toUpperCase() + '</th>';
+  });
+  html += '</tr>';
 
-  allYears.forEach(y => {
-    html += `<tr>`;
-    html += `<td style="font-weight:700;">${y}</td>`;
-    loaded.forEach(ips => {
-      const d = ipsStore[ips.id].data;
-      const keys = Object.keys(d.byMes).filter(k => k.startsWith(y+''));
-      if (!keys.length) { html += `<td colspan="5" style="color:var(--text-light);text-align:center;">-</td>`; return; }
-      const totRad   = keys.reduce((s,k) => s+d.byMes[k].radBruto,    0);
-      const totPI    = keys.reduce((s,k) => s+d.byMes[k].pagoInicial, 0);
-      const totPG    = keys.reduce((s,k) => s+d.byMes[k].pagoGlosa,   0);
-      const totGlosa = keys.reduce((s,k) => s+d.byMes[k].glosa,       0);
-      const totNc    = keys.reduce((s,k) => s+d.byMes[k].nc,          0);
-      // Partition: Pagado + NC + GlosaViva + SinAuditar = 100%
-      const netGlosa  = Math.max(0, totGlosa - totPG);
-      const ncCap     = Math.min(totNc, netGlosa);
-      const glosaViva = Math.max(0, netGlosa - ncCap);
-      const sinAud    = Math.max(0, totRad - totPI - totPG - netGlosa);
-      const pagado    = totPI + totPG;
-      const pPag  = totRad>0 ? Math.round(pagado/totRad*100)   : 0;
-      const pNc   = totRad>0 ? Math.round(ncCap/totRad*100)    : 0;
-      const pGv   = totRad>0 ? Math.round(glosaViva/totRad*100): 0;
-      const pSin  = totRad>0 ? Math.round(sinAud/totRad*100)   : 0;
-      const colorP = pPag>=85?'#15803d':pPag>=75?'#b45309':'#dc2626';
-      const colorG = pGv<=15?'#15803d':pGv<=25?'#b45309':'#dc2626';
-      html += '<td class="amount">' + fmtCOP(totRad) + '</td>' +
-        '<td class="mono" style="font-weight:700;color:'+colorP+';">'+pPag+'%</td>' +
-        '<td class="mono" style="font-weight:700;color:'+colorG+';">'+pGv+'%</td>' +
-        '<td class="mono" style="font-weight:700;color:#7c3aed;">'+pNc+'%</td>' +
-        '<td class="mono" style="color:#6b7280;">'+pSin+'%</td>';
+  // ── Header row 2: columns ──
+  html += '<tr>';
+  html += '<th style="padding:8px 14px;font-size:11px;color:var(--text-light);">AÑO</th>';
+  loaded.forEach(function() {
+    html += '<th style="padding:6px 8px;font-size:10px;font-weight:700;color:var(--text-mid);text-align:right;white-space:nowrap;">RADICADO</th>' +
+      '<th style="padding:6px 8px;font-size:10px;font-weight:700;color:#2d6a4f;text-align:right;white-space:nowrap;">PAGADO</th>' +
+      '<th style="padding:6px 8px;font-size:10px;font-weight:700;color:#dc2626;text-align:right;white-space:nowrap;">GLOSA VIVA</th>' +
+      '<th style="padding:6px 8px;font-size:10px;font-weight:700;color:#7c3aed;text-align:right;white-space:nowrap;">NC PÉRDIDA</th>' +
+      '<th style="padding:6px 8px;font-size:10px;font-weight:700;color:#6b7280;text-align:right;white-space:nowrap;">% AUDITADO</th>';
+  });
+  html += '</tr></thead><tbody>';
+
+  // ── Data rows by year ──
+  allYears.forEach(function(y) {
+    html += '<tr>';
+    html += '<td style="padding:8px 14px;font-weight:600;font-size:13px;color:var(--text-mid);">' + y + '</td>';
+    loaded.forEach(function(ips) {
+      var d2 = ipsStore[ips.id].data;
+      var keys = Object.keys(d2.byMes).filter(function(k){ return k.startsWith(String(y)); });
+      if (!keys.length) {
+        html += '<td colspan="5" style="text-align:center;color:var(--text-light);font-size:12px;">—</td>';
+        return;
+      }
+      var totRad   = keys.reduce(function(s,k){return s+d2.byMes[k].radBruto;},0);
+      var totPI    = keys.reduce(function(s,k){return s+d2.byMes[k].pagoInicial;},0);
+      var totPG    = keys.reduce(function(s,k){return s+d2.byMes[k].pagoGlosa;},0);
+      var totGlosa = keys.reduce(function(s,k){return s+d2.byMes[k].glosa;},0);
+      var totNc    = keys.reduce(function(s,k){return s+d2.byMes[k].nc;},0);
+
+      // Partition
+      var netGlosa  = Math.max(0, totGlosa - totPG);
+      var ncCap     = Math.min(totNc, netGlosa + (totPG > 0 ? totPG : 0));
+      ncCap         = Math.min(totNc, netGlosa);
+      var glosaViva = Math.max(0, netGlosa - ncCap);
+      var pagado    = totPI + totPG;
+      var sinAud    = Math.max(0, totRad - totPI - totPG - netGlosa);
+
+      var pPag  = totRad>0 ? Math.round(pagado/totRad*100)    : 0;
+      var pGv   = totRad>0 ? Math.round(glosaViva/totRad*100) : 0;
+      var pNc   = totRad>0 ? Math.round(ncCap/totRad*100)     : 0;
+      var pAud  = totRad>0 ? Math.min(100,Math.round((totPI+totGlosa+totNc)/totRad*100)) : 0;
+
+      // Semaphore colors (same as individual reports)
+      var cPag = pPag>=85?'#15803d':pPag>=75?'#b45309':'#dc2626';
+      var cGv  = pGv<=15?'#15803d':pGv<=25?'#b45309':'#dc2626';
+
+      function valPct(val, pct, color) {
+        return '<td style="padding:6px 8px;text-align:right;vertical-align:middle;">' +
+          '<div style="font-family:DM Mono,monospace;font-size:12px;font-weight:700;">' + fmtCOP(val) + '</div>' +
+          '<div style="font-size:10px;font-weight:700;color:' + color + ';margin-top:1px;">' + pct + '%</div>' +
+          '</td>';
+      }
+
+      html += '<td style="padding:6px 8px;text-align:right;font-family:DM Mono,monospace;font-size:12px;font-weight:700;">' + fmtCOP(totRad) + '</td>';
+      html += valPct(pagado,    pPag, cPag);
+      html += valPct(glosaViva, pGv,  cGv);
+      html += valPct(ncCap,     pNc,  '#7c3aed');
+      html += '<td style="padding:6px 8px;text-align:right;font-family:DM Mono,monospace;font-size:12px;color:#6b7280;">' + pAud + '%</td>';
     });
-    html += `</tr>`;
+    html += '</tr>';
   });
 
-  // Fila Total/Promedio
-  // == Fila Total / Promedio ==
+  // ── Total / Prom row ──
   html += '<tr style="background:#eef2f7;border-top:2px solid #94a3b8;">';
   html += '<td style="padding:8px 14px;font-size:11px;font-weight:700;color:var(--text-light);">Total / Prom.</td>';
   loaded.forEach(function(ip3) {
     var d3 = ipsStore[ip3.id].data;
     var aK = Object.keys(d3.byMes);
     var tR = aK.reduce(function(s,k){return s+d3.byMes[k].radBruto;},0);
-    var yPF=[],yNC=[],yGF=[],ySA=[];
+    var yPF=[],yGF=[],yNF=[],yAF=[];
     allYears.forEach(function(y) {
       var ks=Object.keys(d3.byMes).filter(function(k){return k.startsWith(String(y));});
       if (!ks.length) return;
-      var r=ks.reduce(function(s,k){return s+d3.byMes[k].radBruto;},0);
-      var pi=ks.reduce(function(s,k){return s+d3.byMes[k].pagoInicial;},0);
-      var pg=ks.reduce(function(s,k){return s+d3.byMes[k].pagoGlosa;},0);
-      var g=ks.reduce(function(s,k){return s+d3.byMes[k].glosa;},0);
-      var nc=ks.reduce(function(s,k){return s+d3.byMes[k].nc;},0);
-      if (r>0){
-        var ng=Math.max(0,g-pg); var ncc=Math.min(nc,ng); var gv=Math.max(0,ng-ncc); var sa=Math.max(0,r-pi-pg-ng);
+      var r  =ks.reduce(function(s,k){return s+d3.byMes[k].radBruto;},0);
+      var pi =ks.reduce(function(s,k){return s+d3.byMes[k].pagoInicial;},0);
+      var pg =ks.reduce(function(s,k){return s+d3.byMes[k].pagoGlosa;},0);
+      var g  =ks.reduce(function(s,k){return s+d3.byMes[k].glosa;},0);
+      var nc =ks.reduce(function(s,k){return s+d3.byMes[k].nc;},0);
+      if (r>0) {
+        var ng=Math.max(0,g-pg); var ncc=Math.min(nc,ng); var gv=Math.max(0,ng-ncc);
         yPF.push(Math.round((pi+pg)/r*100));
-        yNC.push(Math.round(ncc/r*100));
         yGF.push(Math.round(gv/r*100));
-        ySA.push(Math.round(sa/r*100));
+        yNF.push(Math.round(ncc/r*100));
+        yAF.push(Math.min(100,Math.round((pi+g+nc)/r*100)));
       }
     });
     var avg=function(a){return a.length?Math.round(a.reduce(function(x,y){return x+y;},0)/a.length):0;};
-    var pF=avg(yPF),nF=avg(yNC),gF=avg(yGF),sF=avg(ySA);
+    var pF=avg(yPF), gF=avg(yGF), nF=avg(yNF), aF=avg(yAF);
     var cP=pF>=85?'#15803d':pF>=75?'#b45309':'#dc2626';
     var cG=gF<=15?'#15803d':gF<=25?'#b45309':'#dc2626';
-    html += '<td class="amount" style="font-weight:700;">'+fmtCOP(tR)+'</td>'+
-      '<td class="mono" style="font-weight:700;color:'+cP+';">'+pF+'% <small style="color:var(--text-light);font-size:9px;">prom</small></td>'+
-      '<td class="mono" style="font-weight:700;color:'+cG+';">'+gF+'% <small style="color:var(--text-light);font-size:9px;">prom</small></td>'+
-      '<td class="mono">'+sF+'% <small style="color:var(--text-light);font-size:9px;">prom</small></td>';
+    var sm=' <small style="color:var(--text-light);font-size:9px;">prom</small>';
+    html += '<td style="padding:6px 8px;text-align:right;font-family:DM Mono,monospace;font-size:12px;font-weight:700;">' + fmtCOP(tR) + '</td>' +
+      '<td style="padding:6px 8px;text-align:right;font-family:DM Mono,monospace;font-size:11px;font-weight:700;color:'+cP+';">'+pF+'%'+sm+'</td>' +
+      '<td style="padding:6px 8px;text-align:right;font-family:DM Mono,monospace;font-size:11px;font-weight:700;color:'+cG+';">'+gF+'%'+sm+'</td>' +
+      '<td style="padding:6px 8px;text-align:right;font-family:DM Mono,monospace;font-size:11px;font-weight:700;color:#7c3aed;">'+nF+'%'+sm+'</td>' +
+      '<td style="padding:6px 8px;text-align:right;font-family:DM Mono,monospace;font-size:11px;color:#6b7280;">'+aF+'%'+sm+'</td>';
   });
   html += '</tr>';
-  html += `</tbody></table></div></div></div></div>`;
 
-  // == VISTA 3: Tabla macro individual por IPS ==
+  html += `</tbody></table></div>`;
+
+  // == VISTA 3// == VISTA 3: Tabla macro individual por IPS ==
   html += `<div class="section-title" style="margin:32px 32px 16px;">
     Indicador General por IPS
     <span>Detalle mes a mes - seleccione IPS</span>
