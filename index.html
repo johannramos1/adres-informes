@@ -1040,7 +1040,7 @@ function onSBFileSelect(e) {
   if (btnEl) btnEl.disabled = false;
 }
 
-function updateSBCard(ips, data) {
+window.updateSBCard = function updateSBCard(ips, data) {
   const meta = document.getElementById('sb-meta-' + ips);
   if (meta) meta.textContent = 'Corte: ' + data.cutoffStr;
   const badge = document.getElementById('sb-badge-' + ips);
@@ -1053,7 +1053,7 @@ const IPS_LOGOS = {
   adres:     'data:image/webp;base64,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',
 };
 
-function updateTopBar(data) {
+window.updateTopBar = function updateTopBar(data) {
   const badge = document.getElementById('top-ips-badge');
   if (badge) {
     badge.textContent = data.ips === 'dolormed' ? 'Dolormed' : 'Redes IMAT';
@@ -1073,7 +1073,7 @@ const SB_URL = 'https://qzpgqmcnluperbivnpku.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF6cGdxbWNubHVwZXJiaXZucGt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5MjQ4NDUsImV4cCI6MjA5NDUwMDg0NX0.V0KnX_v2n2VcDWdNYmowo4Xmg_fGNQ1xL5u6tYGl9Tc';
 let sbClient = null;
 
-function initSupabase() {
+window.initSupabase = function initSupabase() {
   try {
     var restUrl = SB_URL + '/rest/v1/';
     var headers = {
@@ -1123,7 +1123,7 @@ function initSupabase() {
 }
 
 // == Save processed snapshot to Supabase ==
-function saveToSupabase(ips, data) {
+window.saveToSupabase = function saveToSupabase(ips, data) {
   if (!sbClient) return Promise.resolve(false);
   try {
     var snapshot = buildSnapshotFull(ips, data);
@@ -1142,7 +1142,7 @@ function saveToSupabase(ips, data) {
 }
 
 // == Load snapshot from Supabase ==
-function loadFromSupabase(ips) {
+window.loadFromSupabase = function loadFromSupabase(ips) {
   if (!sbClient) return Promise.resolve(null);
   return sbClient.from('adres_snapshots')
     .select('data,updated_at')
@@ -1159,7 +1159,7 @@ function loadFromSupabase(ips) {
 }
 
 // == Build full serializable snapshot (all byMes data for display) ==
-function buildSnapshotFull(ips, data) {
+window.buildSnapshotFull = window.buildSnapshotFull = function buildSnapshotFull(ips, data) {
   return {
     ips,
     ipsName:    data.ipsName,
@@ -1212,7 +1212,7 @@ function buildSnapshotFull(ips, data) {
 }
 
 // == Restore data from Supabase snapshot (no Excel needed) ==
-function restoreFromSnapshot(snap) {
+window.restoreFromSnapshot = function restoreFromSnapshot(snap) {
   // Re-parse dates in ncEventsByMes
   if (snap.ncEventsByMes) {
     Object.values(snap.ncEventsByMes).forEach(v => {
@@ -1252,7 +1252,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }, 500);
 });
 
-function loadAllFromSupabase() {
+window.loadAllFromSupabase = function loadAllFromSupabase() {
   var ipsIds = ['dolormed', 'redesimat'];
   var loaded = 0;
   ipsIds.forEach(function(ipsId) {
@@ -1371,7 +1371,7 @@ function generateReport() {
 // =======================================================
 //  DATA PROCESSING ENGINE
 // =======================================================
-function processData(rows) {
+window.processData = function processData(rows) {
   // Auto-detect IPS from column names
   const sampleKeys = Object.keys(rows[0] || {});
   const autoRedesimat = sampleKeys.some(k => k.toUpperCase().includes('NOTIFICACION GL'));
@@ -1668,7 +1668,7 @@ function detectColumns(sampleRow) {
 // =======================================================
 //  RENDER REPORT
 // =======================================================
-function renderReport(d) {
+window.renderReport = function renderReport(d) {
   
   
 
@@ -2787,7 +2787,7 @@ function renderAnalisisMes(d) {
 //  IPS VALIDATION & INTEGRITY LOG
 // =======================================================
 
-function validateIPSMatch(rows, selectedIPS) {
+window.validateIPSMatch = function validateIPSMatch(rows, selectedIPS) {
   // Detect IPS from column names
   const sampleKeys = Object.keys(rows[0] || {});
   const isRedesColums = sampleKeys.some(k => k.toUpperCase().includes('NOTIFICACION GL'));
@@ -2815,7 +2815,7 @@ function validateIPSMatch(rows, selectedIPS) {
 }
 
 // == SNAPSHOT: fingerprint per month (for integrity validation) ==
-function buildSnapshot(data) {
+window.buildSnapshot = function buildSnapshot(data) {
   const snap = {
     ips:       data.ips,
     ipsName:   data.ipsName,
@@ -2853,7 +2853,7 @@ function buildSnapshot(data) {
 }
 
 // == INTEGRITY CHECK: STRICT - nothing ever decreases ==
-function checkIntegrity(newSnap, oldSnap) {
+window.checkIntegrity = function checkIntegrity(newSnap, oldSnap) {
   const issues = []; // { nivel, periodo, campo, anterior, nuevo, diff }
 
   const check = (nivel, periodo, campo, oldVal, newVal) => {
@@ -2904,7 +2904,7 @@ function checkIntegrity(newSnap, oldSnap) {
 }
 
 // == SAVE SNAPSHOT to localStorage ==
-function saveSnapshot(data) {
+window.saveSnapshot = function saveSnapshot(data) {
   try {
     const key     = `adres_snap_${data.ips}`;
     const snap    = buildSnapshot(data);
@@ -2916,7 +2916,7 @@ function saveSnapshot(data) {
 }
 
 // == LOAD LAST SNAPSHOT ==
-function loadLastSnapshot(ips) {
+window.loadLastSnapshot = function loadLastSnapshot(ips) {
   try {
     const key = `adres_snap_${ips}`;
     const raw = localStorage.getItem(key);
@@ -2925,7 +2925,7 @@ function loadLastSnapshot(ips) {
 }
 
 // == SHOW INTEGRITY REPORT in UI ==
-function showIntegrityReport(result, oldSnap, newSnap) {
+window.showIntegrityReport = function showIntegrityReport(result, oldSnap, newSnap) {
   const el = document.getElementById('integrity-banner');
   if (!el) return;
 
@@ -3649,12 +3649,12 @@ function fmtDate(d) {
 }
 function fmtMes(m)        { return MESES_SHORT[parseInt(m)] || m; }
 function fmtMesNombre(m)  { return MESES[parseInt(m)] || m; }
-function fmtPeriod(k) {
+window.fmtPeriod = function fmtPeriod(k) {
   if (!k) return '-';
   const [y, m] = k.split('-');
   return fmtMesNombre(m) + ' ' + y;
 }
-function fmtCOP(v) {
+window.fmtCOP = function fmtCOP(v) {
   if (!v && v !== 0) return '-';
   return '$ ' + Math.round(v).toLocaleString('es-CO');
 }
@@ -3667,7 +3667,7 @@ function fmtM(v) {
   if (Math.abs(v) >= 1e6) return '$ ' + (v/1e6).toFixed(1) + 'M';
   return '$ ' + Math.round(v).toLocaleString('es-CO');
 }
-function fmt0(v)  { return Math.round(v||0).toLocaleString('es-CO'); }
+window.fmt0 = function fmt0(v)  { return Math.round(v||0).toLocaleString('es-CO'); }
 function pct(num, den, digits=0) {
   const val = den === 1 ? num : (den > 0 ? num/den : 0);
   return Math.round(val*100) + '%';
@@ -3690,6 +3690,29 @@ window.switchHistTab = function switchHistTab(year, btn) {
   btn.classList.add('active');
   const el = document.getElementById('hist-' + year);
   if (el) el.classList.add('active');
+};
+
+
+// ===== MISSING FUNCTIONS =====
+window.saveToHistory = function saveToHistory(data) {
+  try {
+    var hist = JSON.parse(localStorage.getItem('adres_report_history') || '[]');
+    hist.unshift({ id: Date.now(), date: new Date().toISOString(),
+      ips: data.ips, ipsName: data.ipsName, cutoffStr: data.cutoffStr,
+      totalRad: data.totalRad, carteraTotal: data.carteraTotal });
+    localStorage.setItem('adres_report_history', JSON.stringify(hist.slice(0,24)));
+  } catch(e) {}
+};
+
+function resetApp() {
+  window._reportData = null;
+  ipsStore.dolormed  = { data:null, cutoff:null, loadedAt:null };
+  ipsStore.redesimat = { data:null, cutoff:null, loadedAt:null };
+  document.body.className = '';
+  if (window._tendChart) { window._tendChart.destroy(); window._tendChart = null; }
+  if (window._compChart) { window._compChart.destroy(); window._compChart = null; }
+  var rb = document.getElementById('report-body');
+  if (rb) rb.innerHTML = '<div style="padding:60px;text-align:center;">Base de datos eliminada.</div>';
 };
 
 </script>
