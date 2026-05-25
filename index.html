@@ -1682,7 +1682,7 @@ window.renderReport = function renderReport(d) {
       <span style="font-size:12px;color:var(--text-light);font-weight:400;">A\u00f1os:</span>
       <select id="prom-year-select" multiple
         onchange="renderPromCards(window._reportData)"
-        style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
+        style="font-family:DM Sans,sans-serif;font-size:13px;font-weight:500;
                border:1.5px solid var(--border);border-radius:8px;
                background:white;color:var(--text-dark);cursor:pointer;
                padding:4px 8px;min-width:80px;max-height:90px;
@@ -1738,7 +1738,7 @@ window.renderReport = function renderReport(d) {
     <div class="card-header" style="padding-bottom:14px;">
       <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;width:100%;">
         <select id="tend-year-sel" onchange="renderTendencias(window._reportData)"
-          style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;
+          style="font-family:DM Sans,sans-serif;font-size:13px;font-weight:600;
                  padding:8px 12px;border-radius:8px;border:1.5px solid var(--border);
                  background:white;color:var(--text-dark);cursor:pointer;">${tendYearOpts}</select>
         <div style="display:flex;gap:14px;flex-wrap:wrap;">${varChecks}</div>
@@ -1832,7 +1832,36 @@ function renderPromCards(d) {
   container.innerHTML = html;
 }
 
-function buildMacroTable(d) {
+
+window.buildAnalisisMensual = function buildAnalisisMensual(d) {
+  var sortedMonths = Object.keys(d.byMes).sort().reverse();
+  var opts = sortedMonths.map(function(k) {
+    var parts = k.split('-');
+    return '<option value="' + k + '">' + fmtMesNombre(parts[1]) + ' ' + parts[0] + '</option>';
+  }).join('');
+  var defaultMes = d.lastPagoMes || d.lastGlosaMes || (sortedMonths[0] || '');
+
+  return '<div class="section-title" style="margin-top:8px;">' +
+    'An\u00e1lisis Mensual' +
+    '<span>Por mes de registro de eventos</span>' +
+    '<div style="margin-left:auto;">' +
+      '<select id="mes-analisis-select" onchange="renderAnalisisMes(window._reportData)"' +
+        ' style="font-family:DM Sans,sans-serif;font-size:13px;font-weight:600;' +
+        'padding:7px 12px;border-radius:8px;border:1.5px solid var(--border);' +
+        'background:white;color:var(--text-dark);cursor:pointer;">' +
+        opts +
+      '</select>' +
+    '</div>' +
+  '</div>' +
+  '<div class="card grid-1">' +
+    '<div class="card-body">' +
+      '<div id="analisis-resumen" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;"></div>' +
+      '<div id="analisis-body"></div>' +
+    '</div>' +
+  '</div>';
+};
+
+window.buildMacroTable = function buildMacroTable(d) {
   const years = [...new Set(Object.keys(d.byMes).map(k => parseInt(k)))].sort();
 
   // Build rows from byMes (already grouped by fecha radicacion)
@@ -2045,7 +2074,7 @@ function buildMacroTable(d) {
   </div>`;
 }
 
-function buildPromedioCard(p, year, ips) {
+window.buildPromedioCard = function buildPromedioCard(p, year, ips) {
   if (!p) return '';
   var color = ips === 'redesimat' ? '#1d3557' : '#2d6a4f';
 
@@ -3007,7 +3036,7 @@ window.renderComparativo = function renderComparativo() {
   html += `<div class="card"><div class="card-header" style="padding-bottom:14px;">
     <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;width:100%;">
       <select id="comp-year-sel" onchange="renderCompTendencias()"
-        style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;
+        style="font-family:DM Sans,sans-serif;font-size:13px;font-weight:600;
                padding:8px 12px;border-radius:8px;border:1.5px solid var(--border);
                background:white;cursor:pointer;">
         <option value="all">Todos los a\u00f1os (anual)</option>
