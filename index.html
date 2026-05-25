@@ -1238,35 +1238,34 @@ function initSupabase() {
 
 // ── Save processed snapshot to Supabase ──
 async function saveToSupabase(ips, data) {
-  if (!sbClient || SB_URL.includes('YOUR_PROJECT')) return false;
+  if (!sbClient) return false;
   try {
     const snapshot = buildSnapshotFull(ips, data);
     const { error } = await sbClient
       .from('adres_snapshots')
-      .upsert({ ips_id: ips, data: snapshot, updated_at: new Date().toISOString() },
-               { onConflict: 'ips_id' });
-    if (error) throw error;
-    console.log('Snapshot saved to Supabase for', ips);
+      .upsert({ ips_id: ips, data: snapshot, updated_at: new Date().toISOString() });
+    if (error) { console.warn('Supabase upsert error:', error.message); return false; }
+    console.log('Guardado en Supabase:', ips);
     return true;
   } catch(e) {
-    console.warn('Supabase save failed:', e.message);
+    console.warn('Supabase save failed (red/offline):', e.message);
     return false;
   }
 }
 
 // ── Load snapshot from Supabase ──
 async function loadFromSupabase(ips) {
-  if (!sbClient || SB_URL.includes('YOUR_PROJECT')) return null;
+  if (!sbClient) return null;
   try {
     const { data, error } = await sbClient
       .from('adres_snapshots')
-      .select('data, updated_at')
+      .select('data,updated_at')
       .eq('ips_id', ips)
       .single();
     if (error || !data) return null;
     return { snap: data.data, updatedAt: data.updated_at };
   } catch(e) {
-    console.warn('Supabase load failed:', e.message);
+    console.warn('Supabase load failed (red/offline):', e.message);
     return null;
   }
 }
@@ -1359,9 +1358,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Try Supabase in background — never block UI
   try {
-    await new Promise(r => setTimeout(r, 300));
     const ok = initSupabase();
-    if (!ok) { console.warn("Supabase unavailable - offline mode"); return; }
+    if (!ok) { console.warn("Supabase no disponible - modo offline"); return; }
 
     const ipsIds = ['dolormed', 'redesimat'];
     let anyLoaded = false;
