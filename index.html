@@ -975,12 +975,12 @@ let sbLoadingIPS  = null;
 let sbSelectedFile = null;
 
 // ── SIDEBAR FUNCTIONS ──
-function toggleSidebar() {
+window.toggleSidebar = function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('collapsed');
   document.body.classList.toggle('sb-collapsed');
-}
+};
 
-function showSection(name) {
+window.showSection = function showSection(name) {
   document.querySelectorAll('.app-section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('section-' + name).classList.add('active');
@@ -989,9 +989,9 @@ function showSection(name) {
   document.getElementById('top-section-title').textContent = titles[name] || '';
   if (name === 'comparativo') renderComparativo();
   if (name === 'admin') renderAdmin();
-}
+};
 
-function switchActiveIPS(ips) {
+window.switchActiveIPS = function switchActiveIPS(ips) {
   selectedIPS = ips;
   document.querySelectorAll('.sb-ips-card').forEach(c => c.classList.remove('active-ips'));
   const card = document.getElementById('sb-card-' + ips);
@@ -1011,7 +1011,7 @@ function switchActiveIPS(ips) {
       '<div style="font-size:14px;font-weight:500;color:var(--text-mid);margin-bottom:8px;">Base de datos de ' + ipsName + ' no cargada</div>' +
       '<div style="font-size:13px;">Use el botón "Cargar base de datos" en el panel lateral.</div></div>';
   }
-}
+};
 
 function renderSection() {
   // Re-render current active section
@@ -1022,7 +1022,7 @@ function renderSection() {
 }
 
 // ── SIDEBAR LOAD PANEL ──
-function openLoadPanel(ips) {
+window.openLoadPanel = function openLoadPanel(ips) {
   sbLoadingIPS   = ips;
   sbSelectedFile = null;
   const panel = document.getElementById('sb-load-panel');
@@ -1037,11 +1037,11 @@ function openLoadPanel(ips) {
   const fi = document.getElementById('sb-file-input');
   if (fi) fi.value = '';
   sbSelectedFile = null;
-}
-function cancelLoadPanel() {
+};
+window.cancelLoadPanel = function cancelLoadPanel() {
   document.getElementById('sb-load-panel').style.display = 'none';
   sbLoadingIPS = null; sbSelectedFile = null;
-}
+};
 function onSBFileSelect(e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -1051,7 +1051,7 @@ function onSBFileSelect(e) {
   const btnEl = document.getElementById('sb-load-btn');
   if (btnEl) btnEl.disabled = false;
 }
-function loadSBFile() {
+window.loadSBFile = function loadSBFile() {
   // Always read fresh from the input element — most reliable approach
   const fileInput = document.getElementById('sb-file-input');
   const fileToLoad = (fileInput && fileInput.files && fileInput.files[0])
@@ -1151,7 +1151,7 @@ function loadSBFile() {
     }
   };
   reader.readAsArrayBuffer(fileToLoad);
-}
+};
 
 function updateSBCard(ips, data) {
   document.getElementById('sb-meta-' + ips).textContent = 'Corte: ' + data.cutoffStr + ' · ' + data.enriched.length.toLocaleString('es-CO') + ' facturas';
@@ -1309,46 +1309,56 @@ function restoreFromSnapshot(snap) {
 //  APP STARTUP
 // ═══════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', async () => {
-  initSupabase();
+  // Show welcome screen immediately — don't block UI
+  document.getElementById('report-body').innerHTML =
+    '<div style="padding:80px 32px;text-align:center;color:var(--text-light);">' +
+    '<div style="font-size:48px;margin-bottom:16px;opacity:.3;">&#9783;</div>' +
+    '<div style="font-size:18px;font-weight:600;color:var(--text-mid);margin-bottom:8px;">Bienvenido al Sistema de Informes ADRES</div>' +
+    '<div style="font-size:14px;max-width:400px;margin:0 auto;line-height:1.7;">Vaya a <strong>Configuración</strong> para cargar las bases de datos.</div>' +
+    '</div>';
 
-  // Try to load snapshots from Supabase
-  const ipsIds = ['dolormed', 'redesimat'];
-  let anyLoaded = false;
+  // Try Supabase in background — never block UI
+  try {
+    const ok = initSupabase();
+    if (!ok) return;
 
-  for (const ipsId of ipsIds) {
-    const result = await loadFromSupabase(ipsId);
-    if (result && result.snap) {
-      const snap = restoreFromSnapshot(result.snap);
-      ipsStore[ipsId].data     = snap;
-      ipsStore[ipsId].cutoff   = snap.cutoffStr;
-      ipsStore[ipsId].loadedAt = new Date(result.updatedAt).toLocaleString('es-CO') + ' (Supabase)';
-      updateSBCard(ipsId, snap);
-      anyLoaded = true;
-      console.log('Loaded from Supabase:', ipsId, snap.cutoffStr);
+    const ipsIds = ['dolormed', 'redesimat'];
+    let anyLoaded = false;
+
+    for (const ipsId of ipsIds) {
+      try {
+        const result = await loadFromSupabase(ipsId);
+        if (result && result.snap) {
+          const snap = restoreFromSnapshot(result.snap);
+          ipsStore[ipsId].data     = snap;
+          ipsStore[ipsId].cutoff   = snap.cutoffStr;
+          ipsStore[ipsId].loadedAt = new Date(result.updatedAt).toLocaleString('es-CO') + ' (Supabase)';
+          updateSBCard(ipsId, snap);
+          anyLoaded = true;
+        }
+      } catch(e) {
+        console.warn('Could not load ' + ipsId + ' from Supabase:', e.message);
+      }
     }
-  }
 
-  if (anyLoaded) {
-    // Auto-show first loaded IPS
-    const firstLoaded = ipsIds.find(id => ipsStore[id].data);
-    if (firstLoaded) {
-      selectedIPS = firstLoaded;
-      reportData = ipsStore[firstLoaded].data;
-      window._reportData = reportData;
-      document.body.className = firstLoaded === 'redesimat' ? 'theme-redesimat' : '';
-      updateTopBar(reportData);
-      renderReport(reportData);
-      document.querySelectorAll('.sb-ips-card').forEach(c => c.classList.remove('active-ips'));
-      const card = document.getElementById('sb-card-' + firstLoaded);
-      if (card) card.classList.add('active-ips');
+    if (anyLoaded) {
+      const firstLoaded = ipsIds.find(id => ipsStore[id].data);
+      if (firstLoaded) {
+        selectedIPS = firstLoaded;
+        reportData = ipsStore[firstLoaded].data;
+        window._reportData = reportData;
+        document.body.className = firstLoaded === 'redesimat' ? 'theme-redesimat' : '';
+        updateTopBar(reportData);
+        renderReport(reportData);
+        document.querySelectorAll('.sb-ips-card').forEach(c => c.classList.remove('active-ips'));
+        const card = document.getElementById('sb-card-' + firstLoaded);
+        if (card) card.classList.add('active-ips');
+        document.getElementById('report-body').innerHTML =
+          document.getElementById('report-body').innerHTML;
+      }
     }
-  } else {
-    document.getElementById('report-body').innerHTML =
-      '<div style="padding:80px 32px;text-align:center;color:var(--text-light);">' +
-      '<div style="font-size:48px;margin-bottom:16px;opacity:.3;">&#9783;</div>' +
-      '<div style="font-size:18px;font-weight:600;color:var(--text-mid);margin-bottom:8px;">Bienvenido al Sistema de Informes ADRES</div>' +
-      '<div style="font-size:14px;max-width:400px;margin:0 auto;line-height:1.7;">Cargue la base de datos de cada IPS desde Configuración para generar los informes.</div>' +
-      '</div>';
+  } catch(e) {
+    console.warn('Supabase init error (non-fatal):', e.message);
   }
 });
 
@@ -2430,7 +2440,7 @@ function renderTendencias(d) {
   });
 }
 
-function exportNcExcel(d, mes) {
+window.exportNcExcel = function exportNcExcel(d, mes) {
   const nc = d.ncEventsByMes[mes] || { detalle:[] };
   if (!nc.detalle.length) return;
   const wb = XLSX.utils.book_new();
@@ -2445,7 +2455,7 @@ function exportNcExcel(d, mes) {
   ws['!cols'] = [{wch:8},{wch:12},{wch:14},{wch:16},{wch:16},{wch:18}];
   XLSX.utils.book_append_sheet(wb, ws, 'NC Aceptadas');
   XLSX.writeFile(wb, 'NC_Aceptadas_' + mes + '.xlsx');
-}
+};
 
 function renderCorreoSection(d, mes) {
   const wrapper = document.getElementById('correo-section-wrapper');
@@ -2691,14 +2701,14 @@ function renderCorreoSection(d, mes) {
 
 }
 
-function toggleCorreoPanel() {
+window.toggleCorreoPanel = function toggleCorreoPanel() {
   const panel = document.getElementById('correo-panel');
   const icon  = document.getElementById('correo-toggle-icon');
   if (!panel) return;
   const open = panel.style.display !== 'none';
   panel.style.display = open ? 'none' : 'block';
   if (icon) icon.textContent = open ? '' : '';
-}
+};
 
 function renderAnalisisMes(d) {
   if (!d) return;
@@ -3062,7 +3072,7 @@ function showIntegrityReport(result, oldSnap, newSnap) {
   el.style.display = 'block';
 }
 
-function exportIntegrityReport(d) {
+window.exportIntegrityReport = function exportIntegrityReport(d) {
   if (!d) return;
   const oldSnap = loadLastSnapshot(d.ips);
   if (!oldSnap) return;
@@ -3123,13 +3133,13 @@ function exportIntegrityReport(d) {
 
   const fname = `Integridad_${d.ips}_${newSnap.cutoffStr.replace(/[/]/g,'-')}.xlsx`;
   XLSX.writeFile(wb, fname);
-}
+};
 
 
 // ═══════════════════════════════════════════════════════
 //  COMPARATIVO GERENCIAL
 // ═══════════════════════════════════════════════════════
-function renderComparativo() {
+window.renderComparativo = function renderComparativo() {
   const body = document.getElementById('comparativo-body');
   if (!body) return;
 
@@ -3323,9 +3333,9 @@ function renderComparativo() {
 
   body.innerHTML = html;
   setTimeout(() => renderCompTendencias(), 80);
-}
+};
 
-function switchCompTab(ipsId, btn) {
+window.switchCompTab = function switchCompTab(ipsId, btn) {
   document.querySelectorAll('#comp-ips-tabs .hist-tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
   const ipsList = ['dolormed','redesimat'];
@@ -3333,9 +3343,9 @@ function switchCompTab(ipsId, btn) {
     const el = document.getElementById('comp-tab-' + id);
     if (el) el.style.display = id === ipsId ? 'block' : 'none';
   });
-}
+};
 
-function renderCompTendencias() {
+window.renderCompTendencias = function renderCompTendencias() {
   const container = document.getElementById('comp-tend-body');
   if (!container) return;
   const yearSel = document.getElementById('comp-year-sel')?.value || 'all';
@@ -3424,12 +3434,12 @@ function renderCompTendencias() {
       }
     }
   });
-}
+};
 
 // ═══════════════════════════════════════════════════════
 //  ADMIN SECTION
 // ═══════════════════════════════════════════════════════
-function renderAdmin() {
+window.renderAdmin = function renderAdmin() {
   const body = document.getElementById('admin-body');
   if (!body) return;
 
@@ -3547,18 +3557,18 @@ function renderAdmin() {
       }
     });
   });
-}
+};
 
-function onAdminFileSelect(e, ipsId) {
+window.onAdminFileSelect = function onAdminFileSelect(e, ipsId) {
   const file = e.target.files[0];
   if (!file) return;
   const nameEl = document.getElementById('file-name-' + ipsId);
   if (nameEl) nameEl.textContent = file.name;
   const btn = document.getElementById('btn-cargar-' + ipsId);
   if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
-}
+};
 
-function loadAdminFile(ipsId) {
+window.loadAdminFile = function loadAdminFile(ipsId) {
   const fileInput = document.getElementById('file-input-' + ipsId);
   const cutoffInput = document.getElementById('cutoff-' + ipsId);
   const fileToLoad = fileInput && fileInput.files && fileInput.files[0] ? fileInput.files[0] : null;
@@ -3632,7 +3642,7 @@ function loadAdminFile(ipsId) {
     }
   };
   reader.readAsArrayBuffer(fileToLoad);
-}
+};
 
 
 
@@ -3671,7 +3681,7 @@ function resetApp() {
 // ═══════════════════════════════════════════════════════
 //  EMAIL MODAL
 // ═══════════════════════════════════════════════════════
-function openEmailModal() {
+window.openEmailModal = function openEmailModal() {
   if (!window._reportData) return;
   const d = window._reportData;
   const mes = document.getElementById('mes-analisis-select')?.value || d.lastPagoMes || d.lastGlosaMes;
@@ -3778,7 +3788,7 @@ MOTIVOS NC: PDTE ÁREA GLOSAS.
 
   document.getElementById('email-content').textContent = texto;
   document.getElementById('email-modal').classList.add('open');
-}
+};
 function closeEmailModal() { document.getElementById('email-modal').classList.remove('open'); }
 function copyEmail() {
   const text = document.getElementById('email-content').textContent;
@@ -3825,7 +3835,7 @@ function pct(num, den, digits=0) {
   const val = den === 1 ? num : (den > 0 ? num/den : 0);
   return Math.round(val*100) + '%';
 }
-function filterMacroYear(year, btn) {
+window.filterMacroYear = function filterMacroYear(year, btn) {
   document.querySelectorAll('#macro-tabs .hist-tab').forEach(t => t.classList.remove('active'));
   if (btn) btn.classList.add('active');
   document.querySelectorAll('#macro-tbody tr').forEach(row => {
@@ -3836,14 +3846,14 @@ function filterMacroYear(year, btn) {
     if (year === 'all') { card.style.display = ''; }
     else { card.style.display = (parseInt(card.getAttribute('data-group')) === parseInt(year)) ? '' : 'none'; }
   });
-}
-function switchHistTab(year, btn) {
+};
+window.switchHistTab = function switchHistTab(year, btn) {
   document.querySelectorAll('.hist-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.hist-content').forEach(c => c.classList.remove('active'));
   btn.classList.add('active');
   const el = document.getElementById('hist-' + year);
   if (el) el.classList.add('active');
-}
+};
 
 </script>
 </body>
