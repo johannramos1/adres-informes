@@ -1314,59 +1314,7 @@ function handleFile(file) {
 // =======================================================
 //  GENERATE REPORT
 // =======================================================
-function generateReport() {
-  // Legacy function - main flow now uses loadSBFile via sidebar
-  return;
-  if (!selectedFile) return;
-  
-  
-
-  const cutoffInputVal = document.getElementById('cutoff-input').value;
-  window._manualCutoff = cutoffInputVal ? new Date(cutoffInputVal + 'T12:00:00') : null;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      const data = new Uint8Array(e.target.result);
-      const wb = XLSX.read(data, { type: 'array', cellDates: true });
-      const ws = wb.Sheets[wb.SheetNames[0]];
-      const rows = XLSX.utils.sheet_to_json(ws, { defval: null });
-
-      const crossCheck = validateIPSMatch(rows, selectedIPS);
-      if (crossCheck.mismatch) {
-        
-        
-        document.getElementById('btn-generate').disabled = false;
-        const msg = 'BD incorrecta\n\nSeleccion\u00f3: ' + crossCheck.selected + '\nLa base parece ser: ' + crossCheck.detectedName + '\nPrefijos: ' + crossCheck.prefixes.join(', ') + '\n\n\u00bfContinuar de todas formas?';
-        if (!confirm(msg)) return;
-      }
-
-      const processed = processData(rows);
-
-      const lastSnap = loadLastSnapshot(processed.ips);
-      if (lastSnap) {
-        const newSnap = buildSnapshot(processed);
-        const intResult = checkIntegrity(newSnap, lastSnap);
-        window._pendingIntegrity = intResult.hasIssues ? { result:intResult, oldSnap:lastSnap, newSnap } : null;
-      }
-
-      // Store in ipsStore
-      ipsStore[processed.ips].data     = processed;
-      ipsStore[processed.ips].cutoff   = processed.cutoffStr;
-      ipsStore[processed.ips].loadedAt = new Date().toLocaleString('es-CO');
-      updateSBCard(processed.ips, processed);
-
-      reportData = processed;
-      saveSnapshot(processed);
-      saveToHistory(processed);
-      updateTopBar(processed);
-      renderReport(processed);
-    } catch(err) {
-      alert('Error procesando el archivo: ' + err.message);
-      resetApp();
-    }
-  };
-  reader.readAsArrayBuffer(selectedFile);
-}
+function generateReport() { /* legacy - disabled */ }
 
 // =======================================================
 //  DATA PROCESSING ENGINE
