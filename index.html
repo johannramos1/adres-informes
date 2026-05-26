@@ -824,13 +824,64 @@ body.sb-collapsed #main-content {
 @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
 .no-data { text-align: center; padding: 48px 24px; color: var(--text-light); font-size: 15px; }
+
+/* ═══ LOGIN ═══ */
+#login-screen {
+  display:flex; align-items:center; justify-content:center;
+  min-height:100vh; background:linear-gradient(135deg,#1a2f23 0%,#2d4a38 50%,#1d3557 100%);
+  font-family:'DM Sans',sans-serif;
+}
+.login-box {
+  background:white; border-radius:16px; padding:48px 40px;
+  width:100%; max-width:400px; box-shadow:0 24px 64px rgba(0,0,0,.3);
+}
+.login-logo { text-align:center; margin-bottom:32px; }
+.login-logo img { height:52px; }
+.login-title { font-size:22px; font-weight:700; color:#1a2f23; text-align:center; margin-bottom:4px; }
+.login-sub   { font-size:13px; color:#6b7280; text-align:center; margin-bottom:32px; }
+.login-field { margin-bottom:16px; }
+.login-field label { display:block; font-size:12px; font-weight:600; color:#374151; margin-bottom:6px; text-transform:uppercase; letter-spacing:.5px; }
+.login-field input { width:100%; padding:12px 14px; border:1.5px solid #e5e7eb; border-radius:10px;
+  font-family:'DM Sans',sans-serif; font-size:14px; box-sizing:border-box; transition:border-color .2s; }
+.login-field input:focus { outline:none; border-color:#2d6a4f; }
+.login-btn { width:100%; padding:14px; background:#2d6a4f; color:white; border:none;
+  border-radius:10px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:700;
+  cursor:pointer; margin-top:8px; transition:background .2s; }
+.login-btn:hover { background:#1a3d2d; }
+.login-btn:disabled { opacity:.6; cursor:not-allowed; }
+.login-error { display:none; background:#fef2f2; border:1px solid #fecaca; color:#dc2626;
+  padding:10px 14px; border-radius:8px; font-size:13px; margin-top:12px; text-align:center; }
+.login-footer { text-align:center; margin-top:24px; font-size:11px; color:#9ca3af; }
 </style>
 </head>
 <body>
 
 <!-- =============================== REPORT SCREEN =============================== -->
 <div id="report-screen" style="display:block;">
-<div id="app-shell">
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60'%3E%3Crect width='200' height='60' fill='%232d6a4f' rx='8'/%3E%3Ctext x='100' y='38' font-family='Arial' font-size='22' font-weight='bold' fill='white' text-anchor='middle'%3EADRES%3C/text%3E%3C/svg%3E" alt="ADRES">
+    </div>
+    <div class="login-title">Sistema de Informes Gerenciales</div>
+    <div class="login-sub">Ingrese sus credenciales para continuar</div>
+    <div class="login-field">
+      <label>Usuario</label>
+      <input type="text" id="login-user" placeholder="usuario" autocomplete="username"
+             onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="login-field">
+      <label>Contraseña</label>
+      <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password"
+             onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="login-btn" id="login-btn" onclick="doLogin()">Ingresar</button>
+    <div class="login-error" id="login-error"></div>
+    <div class="login-footer">Grupo Empresarial · Informes ADRES</div>
+  </div>
+</div>
+
+<div id="app-shell" style="display:none;">
 
   <!-- ======== SIDEBAR ======== -->
   <div id="sidebar">
@@ -1244,6 +1295,82 @@ window.restoreFromSnapshot = function restoreFromSnapshot(snap) {
 // ==========================================================
 //  APP STARTUP
 // =======================================================
+
+// ═══════════════════════════════════════════════════════
+//  LOGIN — misma tabla 'usuarios' que informe médicos
+// ═══════════════════════════════════════════════════════
+var SESSION_USER = null;
+
+function doLogin() {
+  var user = (document.getElementById('login-user').value || '').trim().toLowerCase();
+  var pass = document.getElementById('login-pass').value;
+  var btn  = document.getElementById('login-btn');
+  var err  = document.getElementById('login-error');
+  err.style.display = 'none';
+  if (!user || !pass) { err.textContent = 'Complete usuario y contraseña.'; err.style.display = 'block'; return; }
+  btn.textContent = 'Verificando...'; btn.disabled = true;
+
+  var url = SB_URL + '/rest/v1/usuarios?usuario=eq.' + encodeURIComponent(user) + '&activo=eq.true&select=id,nombre,usuario,clave';
+  fetch(url, {
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Accept': 'application/json' }
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(rows) {
+    if (rows && rows.length > 0 && rows[0].clave === pass) {
+      SESSION_USER = { id: rows[0].id, nombre: rows[0].nombre, usuario: rows[0].usuario };
+      sessionStorage.setItem('adres_session', JSON.stringify(SESSION_USER));
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app-shell').style.display = '';
+      // Log acceso
+      fetch(SB_URL + '/rest/v1/accesos_log', {
+        method: 'POST',
+        headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY,
+                   'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+        body: JSON.stringify([{ usuario: user, exitoso: true, sistema: 'adres' }])
+      }).catch(function(){});
+      initApp();
+    } else {
+      err.textContent = 'Usuario o contraseña incorrectos.';
+      err.style.display = 'block';
+      document.getElementById('login-pass').value = '';
+    }
+  })
+  .catch(function(e) {
+    err.textContent = 'Error de conexión: ' + e.message;
+    err.style.display = 'block';
+  })
+  .finally(function() {
+    btn.textContent = 'Ingresar'; btn.disabled = false;
+  });
+}
+
+function doLogout() {
+  SESSION_USER = null;
+  sessionStorage.removeItem('adres_session');
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app-shell').style.display = 'none';
+  document.getElementById('login-user').value = '';
+  document.getElementById('login-pass').value = '';
+  document.getElementById('login-error').style.display = 'none';
+}
+
+function checkSession() {
+  try {
+    var s = sessionStorage.getItem('adres_session');
+    if (s) {
+      SESSION_USER = JSON.parse(s);
+      return true;
+    }
+  } catch(e) {}
+  return false;
+}
+
+function initApp() {
+  // Load Supabase data in background
+  try { initSupabase(); } catch(e) {}
+  loadAllFromSupabase();
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   // Show welcome screen immediately
   const rb = document.getElementById('report-body');
@@ -2082,7 +2209,7 @@ window.buildPromedioCard = function buildPromedioCard(p, year, ips) {
   var C_PAGO_INI  = '#2d9e6b';  // green - pagado inicial
   var C_GLOSA_INI = '#e5a800';  // amber - glosado inicial
   var C_PAGO_FIN  = '#1d6ca8';  // blue  - pagado final
-  var C_GLOSA_FIN = '#c0392b';  // red   - glosado final
+  var C_GLOSA_FIN = '#8b5cf6';  // purple - glosa viva (matches resumen cards)
 
   var pctGlo  = Math.round((p.promPctGlosadoMes  || 0) * 100);
   var pctPag  = Math.round((p.promPctPagadoMes   || 0) * 100);
@@ -2130,8 +2257,8 @@ window.buildPromedioCard = function buildPromedioCard(p, year, ips) {
         '<div style="font-size:9px;color:var(--text-light);">incl. glosa+NC</div>' +
       '</div>' +
       '<div style="background:#fef2f2;border-radius:8px;padding:8px 10px;text-align:center;">' +
-        '<div style="font-size:10px;color:#dc2626;font-weight:600;">PROM. GLOSA VIVA</div>' +
-        '<div style="font-size:20px;font-weight:700;color:' + C_GLOSA_FIN + ';font-family:DM Mono,monospace;">' + pctGloF + '%</div>' +
+        '<div style="font-size:10px;color:#8b5cf6;font-weight:600;">PROM. GLOSA VIVA</div>' +
+        '<div style="font-size:20px;font-weight:700;color:#8b5cf6;font-family:DM Mono,monospace;">' + pctGloF + '%</div>' +
         '<div style="font-size:9px;color:var(--text-light);">glosa neta s/radicado</div>' +
       '</div>' +
     '</div>' +
