@@ -3380,28 +3380,62 @@ window.renderRezago = function renderRezago(d) {
 // ═══════════════════════════════════════════════════════
 window.renderTendencias = function renderTendencias(d) {
   if (!d) return;
-  var container = document.getElementById('tend-chart-container');
+  // FIX: ID correcto del contenedor
+  var container = document.getElementById('tendencias-body');
   if (!container) return;
-  var selVar  = document.getElementById('tend-var-sel');
   var selYear = document.getElementById('tend-year-sel');
-  var varVal  = selVar  ? selVar.value  : 'rad';
-  var yearVal = selYear ? parseInt(selYear.value) : d.currentYear;
+  var yearVal = selYear ? selYear.value : String(d.currentYear);
 
-  var keys = Object.keys(d.byMes).filter(function(k){ return parseInt(k)===yearVal; }).sort();
-  if (!keys.length) { container.innerHTML='<div style="padding:40px;text-align:center;color:var(--text-light);">Sin datos para el a\u00f1o seleccionado.</div>'; return; }
+  // FIX: leer checkboxes (no select) y soportar múltiples series
+  var checkedVars = [];
+  document.querySelectorAll('.tend-var-check:checked').forEach(function(cb){ checkedVars.push(cb.value); });
+  if (!checkedVars.length) checkedVars = ['rad'];
 
-  var labels  = keys.map(function(k){ return fmtMesNombre(k.split('-')[1]); });
-  var datasets = [];
+  // FIX: tabla de variables con pagoG incluido
   var vars = {
-    rad:   {label:'Radicado',         color:'#2d6a4f', fn:function(m){return m.radBruto;}},
-    pago:  {label:'Pagos Iniciales',  color:'#059669', fn:function(m){return m.pagoInicial;}},
-    glosa: {label:'Glosas+Dev',       color:'#f59e0b', fn:function(m){return m.glosa;}},
-    nc:    {label:'NC Aceptadas',     color:'#6366f1', fn:function(m){return m.nc;}}
+    rad:   {label:'Radicación',       color:'#2d6a4f', fn:function(m){return m.radBruto||0;}},
+    pago:  {label:'Pagos Iniciales',  color:'#059669', fn:function(m){return m.pagoInicial||0;}},
+    pagoG: {label:'Pagos de Glosa',   color:'#3b82f6', fn:function(m){return m.pagoGlosa||0;}},
+    glosa: {label:'Glosas',           color:'#f59e0b', fn:function(m){return m.glosa||0;}},
+    nc:    {label:'NC Aceptadas',     color:'#6366f1', fn:function(m){return m.nc||0;}}
   };
-  var v = vars[varVal] || vars.rad;
-  datasets.push({ label:v.label, data:keys.map(function(k){return d.byMes[k]?v.fn(d.byMes[k]):0;}), borderColor:v.color, backgroundColor:v.color+'22', borderWidth:2.5, pointRadius:4, tension:.3, fill:true });
 
-  container.innerHTML='<canvas id="tend-canvas" style="height:260px;"></canvas>';
+  var keys;
+  if (yearVal === 'all') {
+    // Agrupar por año: sumar valores de todos los meses de cada año
+    var byYear = {};
+    Object.keys(d.byMes).sort().forEach(function(k){
+      var yr = k.split('-')[0];
+      if (!byYear[yr]) byYear[yr] = {};
+      var m = d.byMes[k];
+      Object.keys(vars).forEach(function(vk){
+        byYear[yr][vk] = (byYear[yr][vk]||0) + vars[vk].fn(m);
+      });
+    });
+    var yearKeys = Object.keys(byYear).sort();
+    if (!yearKeys.length) { container.innerHTML='<div style="padding:40px;text-align:center;color:var(--text-light);">Sin datos disponibles.</div>'; return; }
+    var labels = yearKeys;
+    var datasets = checkedVars.map(function(vk){
+      var v = vars[vk]; if (!v) return null;
+      return { label:v.label, data:yearKeys.map(function(yr){return byYear[yr][vk]||0;}),
+        borderColor:v.color, backgroundColor:v.color+'33', borderWidth:2.5, pointRadius:5, tension:.3, fill:false };
+    }).filter(Boolean);
+    _drawTendChart(container, labels, datasets);
+  } else {
+    keys = Object.keys(d.byMes).filter(function(k){ return k.startsWith(yearVal+'-'); }).sort();
+    if (!keys.length) { container.innerHTML='<div style="padding:40px;text-align:center;color:var(--text-light);">Sin datos para el año seleccionado.</div>'; return; }
+    var labels = keys.map(function(k){ return fmtMesNombre(k.split('-')[1]); });
+    var datasets = checkedVars.map(function(vk){
+      var v = vars[vk]; if (!v) return null;
+      return { label:v.label, data:keys.map(function(k){return d.byMes[k]?v.fn(d.byMes[k]):0;}),
+        borderColor:v.color, backgroundColor:v.color+'33', borderWidth:2.5, pointRadius:4, tension:.3, fill:false };
+    }).filter(Boolean);
+    _drawTendChart(container, labels, datasets);
+  }
+};
+
+function _drawTendChart(container, labels, datasets) {
+  container.innerHTML='<canvas id="tend-canvas" style="height:320px;width:100%;display:block;"></canvas>';
   var ctx = document.getElementById('tend-canvas');
   if (!ctx) return;
   if (window._tendChart) { window._tendChart.destroy(); window._tendChart=null; }
@@ -3409,12 +3443,12 @@ window.renderTendencias = function renderTendencias(d) {
     type:'line', data:{ labels:labels, datasets:datasets },
     options:{
       responsive:true, maintainAspectRatio:false,
-      layout:{ padding:{ top:24 } },
+      layout:{ padding:{ top:24, right:16 } },
       plugins:{
-        legend:{ display:false },
+        legend:{ display:datasets.length>1, position:'top', labels:{font:{family:'DM Sans',size:12},boxWidth:14,padding:16} },
         tooltip:{ callbacks:{ label:function(c){ return ' '+c.dataset.label+': '+fmtCOP(c.raw); } } },
         datalabels:{ display:true, anchor:'end', align:'top', font:{family:'DM Mono',size:10,weight:'600'}, color:'#374151',
-          formatter:function(v){ return v>=1e9?(v/1e9).toFixed(1)+'B':v>=1e6?(v/1e6).toFixed(0)+'M':v>=1e3?(v/1e3).toFixed(0)+'K':String(v); } }
+          formatter:function(v){ return v>=1e9?(v/1e9).toFixed(1)+'B':v>=1e6?(v/1e6).toFixed(0)+'M':v>=1e3?(v/1e3).toFixed(0)+'K':String(Math.round(v)); } }
       },
       scales:{
         x:{ grid:{display:false}, ticks:{font:{family:'DM Mono',size:11}} },
@@ -3423,7 +3457,7 @@ window.renderTendencias = function renderTendencias(d) {
       }
     }
   });
-};
+}
 
 // =======================================================
 //  ADMIN SECTION
