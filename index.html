@@ -1545,9 +1545,10 @@ window.processData = function processData(rows) {
     m.pctNc          = m.nc          / base;                             // % NC aceptadas
     m.glosadoFinal   = Math.max(0, m.glosa - m.pagoGlosa) / base;       // glosado final
     m.pagadoFinal    = (m.pagoInicial + m.pagoGlosa) / base;             // pagado final (sin NC)
-    m.pctAuditado    = isRedes
-      ? Math.min(1, (m.pagoInicial + m.glosa + m.nc) / base)            // Redesimat: value-based
-      : (m.n > 0 ? m.auditados / m.n : 0);                              // Dolormed: row-based
+    // FIX 2026: misma f\u00f3rmula que la fila Total anual (totGlosa + totPI) / totRad.
+    // Sin sumar NC (la NC es glosa aceptada: mismo dinero, sumarla duplicaba el %)
+    // y sin conteo por filas (inflaba el % en meses parcialmente auditados).
+    m.pctAuditado    = Math.min(1, (m.pagoInicial + m.glosa) / base);   // value-based, ambas IPS
   });
 
   // == NC detail list (for table) ==
