@@ -1274,6 +1274,15 @@ window.buildSnapshotFull = window.buildSnapshotFull = function buildSnapshotFull
 
 // == Restore data from Supabase snapshot (no Excel needed) ==
 window.restoreFromSnapshot = function restoreFromSnapshot(snap) {
+  // FIX (self-healing): recalcular pctAuditado con la f\u00f3rmula vigente.
+  // Los snapshots antiguos guardan el valor precalculado con la f\u00f3rmula anterior;
+  // aqu\u00ed se recalcula desde sus componentes para que siempre refleje la l\u00f3gica actual.
+  if (snap.byMes) {
+    Object.values(snap.byMes).forEach(function(m) {
+      var base = m.radBruto > 0 ? m.radBruto : 1;
+      m.pctAuditado = Math.min(1, ((m.pagoInicial||0) + (m.glosa||0)) / base);
+    });
+  }
   // Re-parse dates in ncEventsByMes
   if (snap.ncEventsByMes) {
     Object.values(snap.ncEventsByMes).forEach(v => {
